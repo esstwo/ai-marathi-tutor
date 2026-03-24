@@ -1,0 +1,161 @@
+[
+    {
+      "lesson_id": 1,
+      "title": {
+        "marathi": "नमस्कार",
+        "english": "Greetings"
+      },
+      "theme": "Everyday greetings used at home and with friends",
+      "vocabulary": [
+        {
+          "marathi": "नमस्कार",
+          "english": "Hello / Greetings",
+          "romanized": "Namaskaar"
+        },
+        {
+          "marathi": "कसं आहेस?",
+          "english": "How are you? (to a friend)",
+          "romanized": "Kasa aaahes?"
+        },
+        {
+          "marathi": "बरं आहे",
+          "english": "I'm fine / All good",
+          "romanized": "Bara aahe"
+        },
+        {
+          "marathi": "बाय बाय",
+          "english": "Bye bye",
+          "romanized": "Bye bye"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "How do you say 'Hello' in Marathi?",
+          "options": ["धन्यवाद", "नमस्कार", "बरं आहे", "झोप"],
+          "correct_answer": "नमस्कार",
+          "correct_romanized": "Namaskaar"
+        },
+        {
+          "question_id": 2,
+          "question": "Your friend asks 'कसं आहेस?' — what are they asking?",
+          "options": ["What is your name?", "Where are you going?", "How are you?", "Do you want food?"],
+          "correct_answer": "How are you?",
+          "correct_romanized": "Kasa aaahes?"
+        },
+        {
+          "question_id": 3,
+          "question": "You feel great today! Which phrase do you use?",
+          "options": ["बाय बाय", "झोप", "बरं आहे", "नमस्कार"],
+          "correct_answer": "बरं आहे",
+          "correct_romanized": "Bara aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 2,
+      "title": {
+        "marathi": "कुटुंब",
+        "english": "Family Members"
+      },
+      "theme": "Names for family members used at home in everyday Marathi",
+      "vocabulary": [
+        {
+          "marathi": "आई",
+          "english": "Mom / Mother",
+          "romanized": "Aai"
+        },
+        {
+          "marathi": "बाबा",
+          "english": "Dad / Father",
+          "romanized": "Baabaa"
+        },
+        {
+          "marathi": "आजी",
+          "english": "Grandma",
+          "romanized": "Aajee"
+        },
+        {
+          "marathi": "दादा",
+          "english": "Older brother / Grandpa (regional)",
+          "romanized": "Daadaa"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "What does 'आई' mean in English?",
+          "options": ["Grandma", "Sister", "Mom", "Aunt"],
+          "correct_answer": "Mom",
+          "correct_romanized": "Aai"
+        },
+        {
+          "question_id": 2,
+          "question": "You want to call your grandmother. What do you say?",
+          "options": ["बाबा", "आजी", "दादा", "आई"],
+          "correct_answer": "आजी",
+          "correct_romanized": "Aajee"
+        },
+        {
+          "question_id": 3,
+          "question": "Which word means 'Dad' in Marathi?",
+          "options": ["आई", "आजी", "बाबा", "ताई"],
+          "correct_answer": "बाबा",
+          "correct_romanized": "Baabaa"
+        }
+      ]
+    },
+    {
+      "lesson_id": 3,
+      "title": {
+        "marathi": "खाद्यपदार्थ",
+        "english": "Food Words"
+      },
+      "theme": "Common foods kids eat at home — yummy Marathi words for the kitchen!",
+      "vocabulary": [
+        {
+          "marathi": "भाकरी",
+          "english": "Flatbread (jowar/bajra roti)",
+          "romanized": "Bhaakree"
+        },
+        {
+          "marathi": "भात",
+          "english": "Rice",
+          "romanized": "Bhaat"
+        },
+        {
+          "marathi": "दूध",
+          "english": "Milk",
+          "romanized": "Doodh"
+        },
+        {
+          "marathi": "आंबा",
+          "english": "Mango",
+          "romanized": "Aambaa"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "What is 'भात' in English?",
+          "options": ["Milk", "Mango", "Rice", "Bread"],
+          "correct_answer": "Rice",
+          "correct_romanized": "Bhaat"
+        },
+        {
+          "question_id": 2,
+          "question": "आई says 'दूध पी!' — what is she asking you to drink?",
+          "options": ["Juice", "Water", "Tea", "Milk"],
+          "correct_answer": "Milk",
+          "correct_romanized": "Doodh"
+        },
+        {
+          "question_id": 3,
+          "question": "It's summer and your favourite fruit is here! What's the Marathi word for Mango?",
+          "options": ["भाकरी", "आंबा", "दूध", "भात"],
+          "correct_answer": "आंबा",
+          "correct_romanized": "Aambaa"
+        }
+      ]
+    }
+  ]
