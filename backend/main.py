@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from backend.routers import auth, children, conversation
+from backend.routers import auth, lessons, conversations, progress
 
 load_dotenv()
 
@@ -16,8 +16,9 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-app.include_router(children.router)
-app.include_router(conversation.router)
+app.include_router(lessons.router)
+app.include_router(conversations.router)
+app.include_router(progress.router)
 
 
 @app.get("/health")
