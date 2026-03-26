@@ -54,3 +54,33 @@ class SendMessageRequest(BaseModel):
 class SendMessageResponse(BaseModel):
     marathi_text: str
     english_hint: str | None = None
+
+
+# --- Lesson schemas ---
+
+
+class VocabWord(BaseModel):
+    marathi: str
+    english: str
+    pronunciation: str
+
+
+class QuizQuestion(BaseModel):
+    question: str
+    options: list[str]
+    correct_index: int
+
+
+class LessonResponse(BaseModel):
+    id: str
+    level: int
+    sequence: int
+    title: str
+    theme: str
+    vocabulary: list[VocabWord]
+    quiz_questions: list[QuizQuestion]
+
+
+class LessonCompleteRequest(BaseModel):
+    child_id: str
+    score: int
