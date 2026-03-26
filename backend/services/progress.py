@@ -118,6 +118,64 @@ def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
     }
 
 
+def get_parent_progress(parent_id: str) -> dict:
+    """Aggregate progress across all children belonging to a parent.
+
+    Returns:
+        {"lessons_completed": int, "total_lessons": 3, "xp_total": int,
+         "streak_days": int, "conversations_count": int, "avg_marathi_ratio": float}
+    """
+    children = (
+        supabase_admin.table("children")
+        .select("id, xp_total, streak_days")
+        .eq("parent_id", parent_id)
+        .execute()
+    ).data or []
+
+    if not children:
+        return {
+            "lessons_completed": 0,
+            "total_lessons": 3,
+            "xp_total": 0,
+            "streak_days": 0,
+            "conversations_count": 0,
+            "avg_marathi_ratio": 0.0,
+        }
+
+    child_ids = [c["id"] for c in children]
+
+    xp_total = sum(c["xp_total"] for c in children)
+    streak_days = max(c["streak_days"] for c in children)
+
+    lessons_completed = (
+        supabase_admin.table("child_lesson_progress")
+        .select("id", count="exact")
+        .in_("child_id", child_ids)
+        .eq("status", "completed")
+        .execute()
+    ).count or 0
+
+    conversations = (
+        supabase_admin.table("conversations")
+        .select("id, marathi_ratio")
+        .in_("child_id", child_ids)
+        .execute()
+    ).data or []
+
+    conversations_count = len(conversations)
+    ratios = [c["marathi_ratio"] for c in conversations if c.get("marathi_ratio") is not None]
+    avg_marathi_ratio = round(sum(ratios) / len(ratios), 2) if ratios else 0.0
+
+    return {
+        "lessons_completed": lessons_completed,
+        "total_lessons": 3,
+        "xp_total": xp_total,
+        "streak_days": streak_days,
+        "conversations_count": conversations_count,
+        "avg_marathi_ratio": avg_marathi_ratio,
+    }
+
+
 def get_progress(child_id: str) -> dict:
     """Fetch current progress stats for a child.
 

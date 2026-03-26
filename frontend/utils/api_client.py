@@ -102,3 +102,9 @@ def get_progress(child_id: str) -> dict:
     res = requests.get(f"{API_BASE_URL}/progress/{child_id}")
     res.raise_for_status()
     return res.json()
+
+
+def get_parent_progress(parent_id: str) -> dict:
+    res = requests.get(f"{API_BASE_URL}/parents/{parent_id}/progress")
+    res.raise_for_status()
+    return res.json()
