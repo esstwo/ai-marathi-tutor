@@ -10,11 +10,11 @@ and game-based missions.
 
 ## Tech Stack
 
-- **Frontend:** Streamlit
+- **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
 - **Backend:** Python + FastAPI
 - **Database:** Supabase (PostgreSQL + Auth)
-- **AI:** Groq API
-- **Deployment:** Streamlit Cloud (frontend) + Render (backend)
+- **AI:** Groq API (Llama 3.3 70B)
+- **Deployment:** Vercel/Netlify (frontend) + Render (backend)
 
 ## Project Structure
 
@@ -25,12 +25,33 @@ backend/
     supabase_client.py     # Supabase client init
     migrations.sql         # Full database schema (run in Supabase SQL Editor)
   models/
-    schemas.py             # Pydantic request models
+    schemas.py             # Pydantic request/response models
   routers/
-    auth.py                # POST /auth/signup
-    children.py            # POST /children
-frontend/
-  app.py                   # Streamlit app (signup + child setup flow)
+    auth.py                # Signup, login, child creation
+    lessons.py             # Lesson retrieval and completion
+    conversations.py       # AI chat management
+    progress.py            # Progress tracking
+  services/
+    mitra.py               # Groq LLM conversation service
+    progress.py            # XP/streak calculations
+  prompts/
+    mitra_system.py        # Mitra personality prompt template
+frontend-react/
+  src/
+    components/            # Navbar, LessonCard, LessonView, ProtectedRoute, shadcn/ui
+    contexts/              # AuthContext (token, user, children, activeChild)
+    services/              # Axios API client with Bearer token interceptor
+    types/                 # TypeScript interfaces matching backend schemas
+    pages/
+      Index.tsx            # Landing page
+      Login.tsx            # Sign in / sign up
+      ChildSetup.tsx       # Child profile creation + selection
+      Home.tsx             # Dashboard with stats + quick actions
+      Lessons.tsx          # Lesson browser with level selector
+      Chats.tsx            # AI conversation with Mitra
+      Progress.tsx         # Child progress + level roadmap
+      ParentProgress.tsx   # Parent aggregated dashboard
+frontend/                  # Legacy Streamlit frontend (deprecated)
 content/
   level1_lessons.json      # Level 1 lesson data (vocabulary + quizzes)
 scripts/
@@ -39,27 +60,50 @@ scripts/
 
 ## API Endpoints
 
-| Method | Path           | Description                        | Auth     |
-|--------|----------------|------------------------------------|----------|
-| GET    | /health        | Health check                       | None     |
-| POST   | /auth/signup   | Create account (email, password, name) | None |
-| POST   | /children      | Add a child profile (name, age, avatar) | Bearer token |
+| Method | Path                                | Description                          | Auth         |
+|--------|-------------------------------------|--------------------------------------|--------------|
+| GET    | /health                             | Health check                         | None         |
+| POST   | /auth/signup                        | Create account                       | None         |
+| POST   | /auth/login                         | Authenticate user                    | None         |
+| POST   | /auth/children                      | Add a child profile                  | Bearer token |
+| GET    | /lessons/by-level/{level}           | List lessons for a level             | None         |
+| GET    | /lessons/{lesson_id}                | Get lesson with vocabulary + quiz    | None         |
+| POST   | /lessons/{lesson_id}/complete       | Record completion, award XP          | None         |
+| POST   | /conversations/start                | Start AI conversation                | None         |
+| POST   | /conversations/{id}/message         | Send message, get AI response        | None         |
+| POST   | /conversations/{id}/end             | End chat, calculate XP               | None         |
+| GET    | /progress/{child_id}                | Get child progress stats             | None         |
+| GET    | /parents/{parent_id}/progress       | Aggregated stats across children     | None         |
 
 ## Setup
 
 1. Clone this repo
-2. Copy `.env.example` to `.env` and fill in your API keys
-3. Install dependencies: `pip install -r requirements.txt`
+2. Copy `.env.example` to `.env` and fill in your API keys:
+   ```
+   SUPABASE_URL=...
+   SUPABASE_KEY=...
+   SUPABASE_SERVICE_KEY=...
+   GROQ_API_KEY=...
+   ```
+3. Install backend dependencies: `pip install -r requirements.txt`
 4. Run the database migration: apply `backend/db/migrations.sql` in Supabase SQL Editor
 5. Seed lesson content: `python -m scripts.seed_content`
-6. Start backend: `uvicorn backend.main:app --reload`
-7. Start frontend: `streamlit run frontend/app.py`
+6. Start backend:
+   ```bash
+   uvicorn backend.main:app --reload
+   ```
+7. Start React frontend:
+   ```bash
+   cd frontend-react
+   npm install
+   npm run dev
+   ```
+8. Open `http://localhost:5173`
 
 ## Deployment
 
-- **Frontend:** Deploy to [Streamlit Cloud](https://share.streamlit.io) — point main file to `frontend/app.py`
+- **Frontend:** Deploy `frontend-react/` to Vercel or Netlify — set `VITE_API_BASE_URL` env var to the backend URL
 - **Backend:** Deploy to [Render](https://render.com) — start command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-- Set `API_BASE_URL` in Streamlit secrets to point the frontend at the Render backend
 
 ## Project Status
 
