@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 165 40% 96%;
+    --foreground: 220 25% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 18%;
+
+    --primary: 175 55% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 60% 72%;
+    --secondary-foreground: 210 35% 15%;
+
+    --muted: 170 30% 92%;
+    --muted-foreground: 200 15% 45%;
+
+    --accent: 145 50% 68%;
+    --accent-foreground: 160 35% 15%;
+
+    --destructive: 0 70% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 170 25% 86%;
+    --input: 170 25% 86%;
+    --ring: 175 55% 42%;
+
+    --radius: 1rem;
+
+    --peach: 25 80% 82%;
+    --mint: 155 50% 76%;
+    --lavender: 260 50% 82%;
+    --sky: 200 65% 78%;
+    --lemon: 50 70% 80%;
+    --coral: 10 75% 75%;
+    --bubblegum: 330 60% 80%;
+
+    --sidebar-background: 165 25% 96%;
+    --sidebar-foreground: 200 15% 25%;
+    --sidebar-primary: 175 55% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 155 45% 90%;
+    --sidebar-accent-foreground: 160 35% 15%;
+    --sidebar-border: 170 25% 86%;
+    --sidebar-ring: 175 55% 42%;
+
+    --font-display: 'Quicksand', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+  }
+
+  .dark {
+    --background: 190 20% 10%;
+    --foreground: 170 20% 93%;
+    --card: 190 20% 13%;
+    --card-foreground: 170 20% 93%;
+    --popover: 190 20% 13%;
+    --popover-foreground: 170 20% 93%;
+    --primary: 175 55% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 30% 25%;
+    --secondary-foreground: 170 20% 93%;
+    --muted: 190 15% 20%;
+    --muted-foreground: 170 15% 60%;
+    --accent: 145 40% 28%;
+    --accent-foreground: 170 20% 93%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 190 15% 20%;
+    --input: 190 15% 20%;
+    --ring: 175 55% 42%;
+    --sidebar-background: 190 20% 10%;
+    --sidebar-foreground: 170 20% 93%;
+    --sidebar-primary: 175 55% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 155 30% 18%;
+    --sidebar-accent-foreground: 170 20% 93%;
+    --sidebar-border: 190 15% 20%;
+    --sidebar-ring: 175 55% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--peach) / 0.35),
+      hsl(var(--lavender) / 0.25),
+      hsl(var(--mint) / 0.3),
+      hsl(var(--sky) / 0.25)
+    );
+  }
+
+  .gradient-card {
+    background: linear-gradient(
+      145deg,
+      hsl(var(--card)),
+      hsl(var(--lavender) / 0.08)
+    );
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .fun-shadow {
+    box-shadow:
+      0 4px 20px -4px hsl(var(--primary) / 0.15),
+      0 8px 30px -8px hsl(var(--lavender) / 0.2);
+  }
+
+  .fun-shadow-hover {
+    box-shadow:
+      0 8px 30px -4px hsl(var(--primary) / 0.25),
+      0 12px 40px -8px hsl(var(--lavender) / 0.3);
+  }
+}

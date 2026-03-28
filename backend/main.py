@@ -10,7 +10,7 @@ app = FastAPI(title="MarathiMitra API")
 
 ALLOWED_ORIGINS = os.getenv(
     "ALLOWED_ORIGINS",
-    "http://localhost:8501",  # local Streamlit default
+    "http://localhost:8501,http://localhost:5173",  # Streamlit + React dev
 ).split(",")
 
 app.add_middleware(
