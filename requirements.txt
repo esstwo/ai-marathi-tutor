@@ -5,3 +5,4 @@ python-dotenv
 pydantic[email]
 streamlit
 groq
+google-cloud-texttospeech

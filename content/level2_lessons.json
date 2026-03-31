@@ -1,0 +1,161 @@
+[
+    {
+      "lesson_id": 1,
+      "title": {
+        "marathi": "शाळा",
+        "english": "At School"
+      },
+      "theme": "Words and phrases you hear and use at school every day",
+      "vocabulary": [
+        {
+          "marathi": "शाळा",
+          "english": "School",
+          "romanized": "Shaalaa"
+        },
+        {
+          "marathi": "पुस्तक",
+          "english": "Book",
+          "romanized": "Pustak"
+        },
+        {
+          "marathi": "शिक्षक",
+          "english": "Teacher",
+          "romanized": "Shikshak"
+        },
+        {
+          "marathi": "वर्ग",
+          "english": "Classroom",
+          "romanized": "Varg"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "What does 'पुस्तक' mean?",
+          "options": ["Pen", "Book", "Bag", "Desk"],
+          "correct_answer": "Book",
+          "correct_romanized": "Pustak"
+        },
+        {
+          "question_id": 2,
+          "question": "Who is a 'शिक्षक'?",
+          "options": ["Student", "Principal", "Teacher", "Friend"],
+          "correct_answer": "Teacher",
+          "correct_romanized": "Shikshak"
+        },
+        {
+          "question_id": 3,
+          "question": "Where do students sit and learn? What is 'Classroom' in Marathi?",
+          "options": ["शाळा", "पुस्तक", "वर्ग", "शिक्षक"],
+          "correct_answer": "वर्ग",
+          "correct_romanized": "Varg"
+        }
+      ]
+    },
+    {
+      "lesson_id": 2,
+      "title": {
+        "marathi": "प्राणी",
+        "english": "Animals"
+      },
+      "theme": "Common animals kids see at home, on the street, or at the zoo",
+      "vocabulary": [
+        {
+          "marathi": "कुत्रा",
+          "english": "Dog",
+          "romanized": "Kutraa"
+        },
+        {
+          "marathi": "मांजर",
+          "english": "Cat",
+          "romanized": "Maanjar"
+        },
+        {
+          "marathi": "गाय",
+          "english": "Cow",
+          "romanized": "Gaay"
+        },
+        {
+          "marathi": "पक्षी",
+          "english": "Bird",
+          "romanized": "Pakshee"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "What animal is 'मांजर'?",
+          "options": ["Dog", "Bird", "Cat", "Cow"],
+          "correct_answer": "Cat",
+          "correct_romanized": "Maanjar"
+        },
+        {
+          "question_id": 2,
+          "question": "You see a 'गाय' on the road. What animal is it?",
+          "options": ["Horse", "Cow", "Goat", "Dog"],
+          "correct_answer": "Cow",
+          "correct_romanized": "Gaay"
+        },
+        {
+          "question_id": 3,
+          "question": "A 'पक्षी' is flying in the sky. What is it?",
+          "options": ["Butterfly", "Kite", "Plane", "Bird"],
+          "correct_answer": "Bird",
+          "correct_romanized": "Pakshee"
+        }
+      ]
+    },
+    {
+      "lesson_id": 3,
+      "title": {
+        "marathi": "शरीराचे अवयव",
+        "english": "Body Parts"
+      },
+      "theme": "Learn the Marathi names for parts of your body",
+      "vocabulary": [
+        {
+          "marathi": "डोळे",
+          "english": "Eyes",
+          "romanized": "Dole"
+        },
+        {
+          "marathi": "कान",
+          "english": "Ears",
+          "romanized": "Kaan"
+        },
+        {
+          "marathi": "हात",
+          "english": "Hand",
+          "romanized": "Haat"
+        },
+        {
+          "marathi": "पाय",
+          "english": "Leg / Foot",
+          "romanized": "Paay"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You use 'डोळे' to see. What body part is this?",
+          "options": ["Ears", "Nose", "Eyes", "Mouth"],
+          "correct_answer": "Eyes",
+          "correct_romanized": "Dole"
+        },
+        {
+          "question_id": 2,
+          "question": "What is the Marathi word for 'Hand'?",
+          "options": ["पाय", "कान", "हात", "डोळे"],
+          "correct_answer": "हात",
+          "correct_romanized": "Haat"
+        },
+        {
+          "question_id": 3,
+          "question": "You listen to music with your 'कान'. What are they?",
+          "options": ["Eyes", "Hands", "Feet", "Ears"],
+          "correct_answer": "Ears",
+          "correct_romanized": "Kaan"
+        }
+      ]
+    }
+  ]

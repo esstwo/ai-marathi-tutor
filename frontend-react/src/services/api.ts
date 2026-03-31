@@ -112,3 +112,10 @@ export async function getParentProgress(
   const { data } = await api.get(`/parents/${parentId}/progress`);
   return data;
 }
+
+export async function speakMarathiTTS(text: string): Promise<Blob> {
+  const { data } = await api.post("/tts/speak", { text }, {
+    responseType: "blob",
+  });
+  return data;
+}

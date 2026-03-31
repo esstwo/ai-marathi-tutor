@@ -1,5 +1,5 @@
 """
-Seed the lessons table in Supabase from content/level1_lessons.json.
+Seed the lessons table in Supabase from content JSON files.
 Usage: python -m scripts.seed_content
 """
 
@@ -48,10 +48,31 @@ def load_lessons(file_path: str, level: int):
 
 
 def seed():
-    rows = load_lessons("content/level1_lessons.json", level=1)
+    lesson_files = [
+        ("content/level1_lessons.json", 1),
+        ("content/level2_lessons.json", 2),
+    ]
 
-    result = supabase_admin.table("lessons").insert(rows).execute()
-    print(f"Inserted {len(result.data)} lessons.")
+    for file_path, level in lesson_files:
+        rows = load_lessons(file_path, level)
+        result = supabase_admin.table("lessons").insert(rows).execute()
+        print(f"Inserted {len(result.data)} Level {level} lessons.")
+        for row in result.data:
+            print(f"  - {row['title']}")
+
+
+def seed_new():
+    """Seed only new lessons (Level 1 lessons 4-5 and all Level 2)."""
+    # New Level 1 lessons (sequence 4 and 5)
+    level1_rows = load_lessons("content/level1_lessons.json", level=1)
+    new_level1 = [r for r in level1_rows if r["sequence"] >= 4]
+
+    # All Level 2 lessons
+    level2_rows = load_lessons("content/level2_lessons.json", level=2)
+
+    all_new = new_level1 + level2_rows
+    result = supabase_admin.table("lessons").insert(all_new).execute()
+    print(f"Inserted {len(result.data)} new lessons.")
     for row in result.data:
         print(f"  - {row['title']}")
 

@@ -157,5 +157,111 @@
           "correct_romanized": "Aambaa"
         }
       ]
+    },
+    {
+      "lesson_id": 4,
+      "title": {
+        "marathi": "रंग",
+        "english": "Colors"
+      },
+      "theme": "Learn the names of common colors you see every day",
+      "vocabulary": [
+        {
+          "marathi": "लाल",
+          "english": "Red",
+          "romanized": "Laal"
+        },
+        {
+          "marathi": "निळा",
+          "english": "Blue",
+          "romanized": "Nilaa"
+        },
+        {
+          "marathi": "पिवळा",
+          "english": "Yellow",
+          "romanized": "Pivlaa"
+        },
+        {
+          "marathi": "हिरवा",
+          "english": "Green",
+          "romanized": "Hirvaa"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "What color is 'निळा' in English?",
+          "options": ["Red", "Green", "Blue", "Yellow"],
+          "correct_answer": "Blue",
+          "correct_romanized": "Nilaa"
+        },
+        {
+          "question_id": 2,
+          "question": "A mango is yellow. What is the Marathi word for Yellow?",
+          "options": ["लाल", "हिरवा", "निळा", "पिवळा"],
+          "correct_answer": "पिवळा",
+          "correct_romanized": "Pivlaa"
+        },
+        {
+          "question_id": 3,
+          "question": "Trees and leaves are this color. What is 'Green' in Marathi?",
+          "options": ["हिरवा", "निळा", "लाल", "पिवळा"],
+          "correct_answer": "हिरवा",
+          "correct_romanized": "Hirvaa"
+        }
+      ]
+    },
+    {
+      "lesson_id": 5,
+      "title": {
+        "marathi": "संख्या",
+        "english": "Numbers 1–5"
+      },
+      "theme": "Count from one to five in Marathi — great for everyday use!",
+      "vocabulary": [
+        {
+          "marathi": "एक",
+          "english": "One",
+          "romanized": "Ek"
+        },
+        {
+          "marathi": "दोन",
+          "english": "Two",
+          "romanized": "Don"
+        },
+        {
+          "marathi": "तीन",
+          "english": "Three",
+          "romanized": "Teen"
+        },
+        {
+          "marathi": "चार",
+          "english": "Four",
+          "romanized": "Chaar"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "How do you say 'Two' in Marathi?",
+          "options": ["एक", "तीन", "दोन", "चार"],
+          "correct_answer": "दोन",
+          "correct_romanized": "Don"
+        },
+        {
+          "question_id": 2,
+          "question": "What number is 'चार'?",
+          "options": ["One", "Three", "Two", "Four"],
+          "correct_answer": "Four",
+          "correct_romanized": "Chaar"
+        },
+        {
+          "question_id": 3,
+          "question": "You have तीन apples. How many is that?",
+          "options": ["Five", "Two", "Three", "Four"],
+          "correct_answer": "Three",
+          "correct_romanized": "Teen"
+        }
+      ]
     }
   ]

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
   ArrowLeft, ArrowRight, Check, X, Star, ThumbsUp, Dumbbell,
-  Target, Sparkles, Rocket, BookOpen, Zap,
+  Target, Sparkles, Rocket, BookOpen, Zap, Volume2,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
@@ -43,6 +43,23 @@ const ConfettiBurst = () => (
     ))}
   </div>
 );
+
+const speakMarathi = async (text: string) => {
+  try {
+    const blob = await api.speakMarathiTTS(text);
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = () => URL.revokeObjectURL(url);
+    audio.play();
+  } catch {
+    console.warn("TTS backend unavailable, falling back to browser speech");
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "hi-IN";
+    utterance.rate = 0.85;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }
+};
 
 const LessonView = ({ lesson, onBack }: LessonViewProps) => {
   const { activeChild } = useAuth();
@@ -152,9 +169,19 @@ const LessonView = ({ lesson, onBack }: LessonViewProps) => {
                 <BookOpen className="w-12 h-12 text-primary" />
               </div>
             </div>
-            <p className="font-display text-5xl md:text-6xl font-bold text-foreground mb-3">
-              {word.marathi}
-            </p>
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <p className="font-display text-5xl md:text-6xl font-bold text-foreground">
+                {word.marathi}
+              </p>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full h-10 w-10 hover:bg-primary/10"
+                onClick={() => speakMarathi(word.marathi)}
+              >
+                <Volume2 className="w-6 h-6 text-primary" />
+              </Button>
+            </div>
             <p className="text-muted-foreground text-lg italic mb-2">
               {word.pronunciation}
             </p>
