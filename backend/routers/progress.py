@@ -1,24 +1,32 @@
 """Progress router — dashboard and XP stats."""
 
-from fastapi import APIRouter, HTTPException
+import logging
+from fastapi import APIRouter, Depends, HTTPException
 from backend.services.progress import get_progress, get_parent_progress
+from backend.dependencies.auth import get_current_parent, verify_child_ownership
 
+logger = logging.getLogger(__name__)
 router = APIRouter(tags=["progress"])
 
 
 @router.get("/progress/{child_id}")
-def child_progress(child_id: str):
+def child_progress(child_id: str, parent_id: str = Depends(get_current_parent)):
     """Return progress stats for a child."""
+    verify_child_ownership(child_id, parent_id)
     try:
         return get_progress(child_id)
     except Exception as e:
+        logger.exception("Failed to fetch child progress")
         raise HTTPException(status_code=500, detail=f"Failed to fetch progress: {e}")
 
 
 @router.get("/parents/{parent_id}/progress")
-def parent_progress(parent_id: str):
+def parent_progress(parent_id: str, current_parent_id: str = Depends(get_current_parent)):
     """Return aggregated progress across all children for a parent."""
+    if parent_id != current_parent_id:
+        raise HTTPException(status_code=403, detail="Access denied")
     try:
         return get_parent_progress(parent_id)
     except Exception as e:
+        logger.exception("Failed to fetch parent progress")
         raise HTTPException(status_code=500, detail=f"Failed to fetch parent progress: {e}")

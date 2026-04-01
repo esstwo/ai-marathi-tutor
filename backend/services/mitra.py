@@ -2,8 +2,17 @@
 
 import os
 import re
-from groq import Groq
+import time
+import logging
+from groq import Groq, RateLimitError, APITimeoutError, AuthenticationError, BadRequestError, APIConnectionError
 from dotenv import load_dotenv
+
+from backend.services.llm_errors import (
+    LLMRateLimitError, LLMTimeoutError, LLMAuthError,
+    LLMContentFilterError, LLMConnectionError,
+)
+
+logger = logging.getLogger(__name__)
 
 from backend.db.supabase_client import supabase_admin
 from backend.prompts.mitra_system import MITRA_BASE_PROMPT, LEVEL_LABELS
@@ -15,6 +24,44 @@ client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 MODEL = "llama-3.3-70b-versatile"
 MAX_HISTORY = 10
 MAX_TOKENS = 300
+
+
+def _call_llm(messages: list[dict], max_retries: int = 2) -> str:
+    """Call the Groq API with structured error handling and retry logic."""
+    for attempt in range(max_retries + 1):
+        try:
+            response = client.chat.completions.create(
+                model=MODEL,
+                max_tokens=MAX_TOKENS,
+                messages=messages,
+            )
+            return response.choices[0].message.content
+        except RateLimitError as e:
+            if attempt < max_retries:
+                wait = 2 ** (attempt + 1)
+                logger.warning("Groq rate limited, retrying in %ds (attempt %d/%d)", wait, attempt + 1, max_retries)
+                time.sleep(wait)
+            else:
+                logger.error("Groq rate limit exceeded after %d retries", max_retries)
+                raise LLMRateLimitError("Mitra is taking a break — please try again shortly.") from e
+        except APITimeoutError as e:
+            if attempt < max_retries:
+                logger.warning("Groq timeout, retrying (attempt %d/%d)", attempt + 1, max_retries)
+            else:
+                logger.error("Groq timeout after %d retries", max_retries)
+                raise LLMTimeoutError("Mitra took too long to respond — please try again.") from e
+        except AuthenticationError as e:
+            logger.error("Groq authentication failed: %s", e)
+            raise LLMAuthError("Service temporarily unavailable.") from e
+        except BadRequestError as e:
+            logger.error("Groq bad request (possible content filter): %s", e)
+            raise LLMContentFilterError("Could not generate a response for this input.") from e
+        except APIConnectionError as e:
+            if attempt < max_retries:
+                logger.warning("Groq connection error, retrying (attempt %d/%d)", attempt + 1, max_retries)
+            else:
+                logger.error("Groq connection failed after %d retries", max_retries)
+                raise LLMConnectionError("Could not reach the language service.") from e
 
 
 def _build_lesson_context(child_id: str) -> str:
@@ -133,13 +180,7 @@ def greet(child_id: str) -> dict:
         },
     ]
 
-    response = client.chat.completions.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=messages,
-    )
-
-    raw_text = response.choices[0].message.content
+    raw_text = _call_llm(messages)
     parsed = _parse_response(raw_text)
     parsed["raw"] = raw_text
     return parsed
@@ -172,13 +213,7 @@ def chat(child_id: str, message: str, conversation_history: list[dict]) -> dict:
     # Add the current message
     messages.append({"role": "user", "content": message})
 
-    response = client.chat.completions.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        messages=messages,
-    )
-
-    raw_text = response.choices[0].message.content
+    raw_text = _call_llm(messages)
     parsed = _parse_response(raw_text)
     parsed["raw"] = raw_text
 

@@ -1,6 +1,7 @@
 """Conversation router — start conversations and chat with Mitra."""
 
-from fastapi import APIRouter, HTTPException
+import logging
+from fastapi import APIRouter, Depends, HTTPException
 
 from backend.db.supabase_client import supabase_admin
 from backend.models.schemas import (
@@ -11,14 +12,22 @@ from backend.models.schemas import (
 )
 from backend.services.mitra import chat, greet
 from backend.services.progress import award_conversation_xp
+from backend.services.llm_errors import (
+    LLMRateLimitError, LLMTimeoutError, LLMAuthError,
+    LLMContentFilterError, LLMServiceError,
+)
+from backend.dependencies.auth import get_current_parent, verify_child_ownership
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/conversations", tags=["conversations"])
 
 
 @router.post("/start", response_model=StartConversationResponse)
-def start_conversation(req: StartConversationRequest):
+def start_conversation(req: StartConversationRequest, parent_id: str = Depends(get_current_parent)):
     """Create a new conversation and return Mitra's opening greeting."""
     try:
+        verify_child_ownership(req.child_id, parent_id)
         # Create conversation row
         conv = (
             supabase_admin.table("conversations")
@@ -54,14 +63,25 @@ def start_conversation(req: StartConversationRequest):
         )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except LLMRateLimitError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+    except LLMTimeoutError as e:
+        raise HTTPException(status_code=504, detail=str(e))
+    except LLMAuthError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except LLMContentFilterError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except LLMServiceError as e:
+        raise HTTPException(status_code=502, detail=str(e))
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception("Unexpected error starting conversation")
         raise HTTPException(status_code=500, detail=f"Failed to start conversation: {e}")
 
 
 @router.post("/{conversation_id}/message", response_model=SendMessageResponse)
-def send_message(conversation_id: str, req: SendMessageRequest):
+def send_message(conversation_id: str, req: SendMessageRequest, parent_id: str = Depends(get_current_parent)):
     """Send a child message and get Mitra's response."""
     try:
         # Fetch conversation to get child_id
@@ -76,6 +96,7 @@ def send_message(conversation_id: str, req: SendMessageRequest):
             raise HTTPException(status_code=404, detail="Conversation not found")
 
         child_id = conv.data["child_id"]
+        verify_child_ownership(child_id, parent_id)
         current_count = conv.data["message_count"] or 0
 
         # Persist child message
@@ -127,14 +148,25 @@ def send_message(conversation_id: str, req: SendMessageRequest):
         )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except LLMRateLimitError as e:
+        raise HTTPException(status_code=429, detail=str(e))
+    except LLMTimeoutError as e:
+        raise HTTPException(status_code=504, detail=str(e))
+    except LLMAuthError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except LLMContentFilterError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except LLMServiceError as e:
+        raise HTTPException(status_code=502, detail=str(e))
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception("Unexpected error in send_message")
         raise HTTPException(status_code=500, detail=f"Mitra service error: {e}")
 
 
 @router.post("/{conversation_id}/end")
-def end_conversation(conversation_id: str):
+def end_conversation(conversation_id: str, parent_id: str = Depends(get_current_parent)):
     """End a conversation, set ended_at, and award XP based on duration."""
     from datetime import datetime, timezone
 
@@ -148,6 +180,8 @@ def end_conversation(conversation_id: str):
         )
         if not conv.data:
             raise HTTPException(status_code=404, detail="Conversation not found")
+
+        verify_child_ownership(conv.data["child_id"], parent_id)
 
         if conv.data.get("ended_at"):
             return {"message": "Conversation already ended"}
@@ -169,4 +203,5 @@ def end_conversation(conversation_id: str):
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception("Unexpected error ending conversation")
         raise HTTPException(status_code=500, detail=f"Failed to end conversation: {e}")

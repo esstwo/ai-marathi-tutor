@@ -1,9 +1,10 @@
 """Auth router — signup, login, child creation."""
 
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException
 from supabase_auth.errors import AuthApiError
 from backend.db.supabase_client import supabase, supabase_admin
 from backend.models.schemas import SignupRequest, LoginRequest, ChildCreateRequest
+from backend.dependencies.auth import get_current_parent
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -73,14 +74,7 @@ def login(req: LoginRequest):
 
 
 @router.post("/children")
-def create_child(req: ChildCreateRequest, authorization: str = Header()):
-    token = authorization.replace("Bearer ", "")
-    user_response = supabase.auth.get_user(token)
-
-    if user_response is None or user_response.user is None:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-
-    parent_id = user_response.user.id
+def create_child(req: ChildCreateRequest, parent_id: str = Depends(get_current_parent)):
 
     if not 5 <= req.age <= 12:
         raise HTTPException(status_code=400, detail="Age must be between 5 and 12")

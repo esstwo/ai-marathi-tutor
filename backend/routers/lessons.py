@@ -2,11 +2,12 @@
 
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
 from backend.db.supabase_client import supabase_admin
 from backend.models.schemas import LessonResponse, LessonCompleteRequest
 from backend.services.progress import award_lesson_xp
+from backend.dependencies.auth import get_current_parent, verify_child_ownership
 
 router = APIRouter(prefix="/lessons", tags=["lessons"])
 
@@ -40,8 +41,9 @@ def get_lesson(lesson_id: str):
 
 
 @router.post("/{lesson_id}/complete")
-def complete_lesson(lesson_id: str, req: LessonCompleteRequest):
+def complete_lesson(lesson_id: str, req: LessonCompleteRequest, parent_id: str = Depends(get_current_parent)):
     """Record or update lesson completion for a child."""
+    verify_child_ownership(req.child_id, parent_id)
     # Check if progress row already exists
     existing = (
         supabase_admin.table("child_lesson_progress")
