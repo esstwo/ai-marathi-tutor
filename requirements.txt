@@ -6,3 +6,4 @@ pydantic[email]
 streamlit
 groq
 google-cloud-texttospeech
+fastmcp

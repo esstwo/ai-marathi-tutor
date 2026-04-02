@@ -1,7 +1,7 @@
 """Mitra Conversation Skill — prompt building, LLM calls, response parsing.
 
 This is the intelligence layer: it owns the system prompt, Groq API interaction,
-and response format. Data access goes through supabase_tools.
+and response format. Data access goes through the supabase-mcp server.
 """
 
 import os
@@ -16,7 +16,7 @@ from backend.services.llm_errors import (
     LLMRateLimitError, LLMTimeoutError, LLMAuthError,
     LLMContentFilterError, LLMConnectionError,
 )
-from backend.mcp.supabase_tools import get_child_profile, get_lesson_context
+from backend.mcp.client import call_supabase_tool
 from backend.prompts.mitra_system import MITRA_BASE_PROMPT, LEVEL_LABELS
 
 logger = logging.getLogger(__name__)
@@ -68,9 +68,9 @@ def call_llm(messages: list[dict], max_retries: int = 2) -> str:
                 raise LLMConnectionError("Could not reach the language service.") from e
 
 
-def build_lesson_context_text(child_id: str) -> str:
+async def build_lesson_context_text(child_id: str) -> str:
     """Format lesson context as text for the system prompt."""
-    lesson = get_lesson_context(child_id)
+    lesson = await call_supabase_tool("get_lesson_context", {"child_id": child_id})
 
     if not lesson:
         return "No lesson in progress. Have a general Marathi conversation appropriate for the child's level."
@@ -89,15 +89,16 @@ Key vocabulary to weave into conversation:
 Try to naturally use these words during the conversation. Don't drill them \u2014 weave them in."""
 
 
-def build_system_prompt(child: dict, child_id: str) -> str:
+async def build_system_prompt(child: dict, child_id: str) -> str:
     """Assemble the full system prompt with child context."""
     level = child["current_level"]
+    lesson_context = await build_lesson_context_text(child_id)
     return MITRA_BASE_PROMPT.format(
         age=child["age"],
         child_name=child["name"],
         level=level,
         level_label=LEVEL_LABELS.get(level, LEVEL_LABELS[1]),
-        lesson_context=build_lesson_context_text(child_id),
+        lesson_context=lesson_context,
     )
 
 
@@ -127,17 +128,17 @@ def parse_response(raw_text: str) -> dict:
     return {"marathi_text": marathi_text, "english_hint": english_hint}
 
 
-def greet(child_id: str) -> dict:
+async def greet(child_id: str) -> dict:
     """Generate Mitra's opening greeting for a new conversation.
 
     Returns:
         {"marathi_text": str, "english_hint": str | None, "raw": str}
     """
-    child = get_child_profile(child_id)
+    child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
     if not child:
         raise ValueError(f"Child not found: {child_id}")
 
-    system_prompt = build_system_prompt(child, child_id)
+    system_prompt = await build_system_prompt(child, child_id)
     messages = [
         {"role": "system", "content": system_prompt},
         {
@@ -156,7 +157,7 @@ def greet(child_id: str) -> dict:
     return parsed
 
 
-def chat(child_id: str, message: str, conversation_history: list[dict]) -> dict:
+async def chat(child_id: str, message: str, conversation_history: list[dict]) -> dict:
     """Main entry point for the Mitra conversation service.
 
     Args:
@@ -168,11 +169,11 @@ def chat(child_id: str, message: str, conversation_history: list[dict]) -> dict:
     Returns:
         {"marathi_text": str, "english_hint": str | None, "raw": str}
     """
-    child = get_child_profile(child_id)
+    child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
     if not child:
         raise ValueError(f"Child not found: {child_id}")
 
-    system_prompt = build_system_prompt(child, child_id)
+    system_prompt = await build_system_prompt(child, child_id)
 
     messages = [{"role": "system", "content": system_prompt}]
     for msg in conversation_history[-MAX_HISTORY:]:

@@ -3,15 +3,7 @@
 import math
 from datetime import date, datetime, timedelta
 
-from backend.mcp.supabase_tools import (
-    get_child_profile,
-    get_children_by_parent,
-    get_conversation,
-    update_child_stats,
-    count_completed_lessons,
-    count_conversations,
-    get_conversations_with_ratios,
-)
+from backend.mcp.client import call_supabase_tool
 
 XP_PER_LESSON = 10
 XP_PER_CONVERSATION_MINUTE = 5
@@ -43,17 +35,22 @@ def _update_streak(child: dict) -> dict:
         return {"streak_days": 1, "streak_last_date": today.isoformat()}
 
 
-def award_lesson_xp(child_id: str) -> dict:
+async def award_lesson_xp(child_id: str) -> dict:
     """Award XP for completing a lesson and update streak.
 
     Returns:
         {"xp_earned": int, "xp_total": int, "streak_days": int}
     """
-    child = get_child_profile(child_id)
+    child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
     streak = _update_streak(child)
     new_xp_total = child["xp_total"] + XP_PER_LESSON
 
-    update_child_stats(child_id, new_xp_total, streak["streak_days"], streak["streak_last_date"])
+    await call_supabase_tool("update_child_stats", {
+        "child_id": child_id,
+        "xp_total": new_xp_total,
+        "streak_days": streak["streak_days"],
+        "streak_last_date": streak["streak_last_date"],
+    })
 
     return {
         "xp_earned": XP_PER_LESSON,
@@ -62,16 +59,16 @@ def award_lesson_xp(child_id: str) -> dict:
     }
 
 
-def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
+async def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
     """Award XP based on conversation duration (rounded up to nearest minute) and update streak.
 
     Returns:
         {"xp_earned": int, "xp_total": int, "streak_days": int, "duration_minutes": int}
     """
-    conv = get_conversation(conversation_id)
+    conv = await call_supabase_tool("get_conversation", {"conversation_id": conversation_id})
 
     if not conv or not conv.get("ended_at"):
-        child = get_child_profile(child_id)
+        child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
         return {"xp_earned": 0, "xp_total": child["xp_total"],
                 "streak_days": child.get("streak_days", 0),
                 "duration_minutes": 0}
@@ -83,11 +80,16 @@ def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
 
     xp_earned = duration_minutes * XP_PER_CONVERSATION_MINUTE
 
-    child = get_child_profile(child_id)
+    child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
     streak = _update_streak(child)
     new_xp_total = child["xp_total"] + xp_earned
 
-    update_child_stats(child_id, new_xp_total, streak["streak_days"], streak["streak_last_date"])
+    await call_supabase_tool("update_child_stats", {
+        "child_id": child_id,
+        "xp_total": new_xp_total,
+        "streak_days": streak["streak_days"],
+        "streak_last_date": streak["streak_last_date"],
+    })
 
     return {
         "xp_earned": xp_earned,
@@ -97,14 +99,9 @@ def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
     }
 
 
-def get_parent_progress(parent_id: str) -> dict:
-    """Aggregate progress across all children belonging to a parent.
-
-    Returns:
-        {"lessons_completed": int, "total_lessons": 3, "xp_total": int,
-         "streak_days": int, "conversations_count": int, "avg_marathi_ratio": float}
-    """
-    children = get_children_by_parent(parent_id)
+async def get_parent_progress(parent_id: str) -> dict:
+    """Aggregate progress across all children belonging to a parent."""
+    children = await call_supabase_tool("get_children_by_parent", {"parent_id": parent_id})
 
     if not children:
         return {
@@ -121,9 +118,9 @@ def get_parent_progress(parent_id: str) -> dict:
     xp_total = sum(c["xp_total"] for c in children)
     streak_days = max(c["streak_days"] for c in children)
 
-    lessons_completed = count_completed_lessons(child_ids=child_ids)
+    lessons_completed = await call_supabase_tool("count_completed_lessons", {"child_ids": child_ids})
 
-    conversations = get_conversations_with_ratios(child_ids)
+    conversations = await call_supabase_tool("get_conversations_with_ratios", {"child_ids": child_ids})
     conversations_count = len(conversations)
     ratios = [c["marathi_ratio"] for c in conversations if c.get("marathi_ratio") is not None]
     avg_marathi_ratio = round(sum(ratios) / len(ratios), 2) if ratios else 0.0
@@ -138,17 +135,12 @@ def get_parent_progress(parent_id: str) -> dict:
     }
 
 
-def get_progress(child_id: str) -> dict:
-    """Fetch current progress stats for a child.
+async def get_progress(child_id: str) -> dict:
+    """Fetch current progress stats for a child."""
+    child = await call_supabase_tool("get_child_profile", {"child_id": child_id})
 
-    Returns:
-        {"xp_total": int, "streak_days": int, "current_level": int,
-         "lessons_completed": int, "conversations_count": int}
-    """
-    child = get_child_profile(child_id)
-
-    lessons_completed = count_completed_lessons(child_id=child_id)
-    conversations_count = count_conversations(child_id=child_id)
+    lessons_completed = await call_supabase_tool("count_completed_lessons", {"child_id": child_id})
+    conversations_count = await call_supabase_tool("count_conversations", {"child_id": child_id})
 
     return {
         "xp_total": child["xp_total"],

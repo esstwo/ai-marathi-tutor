@@ -18,14 +18,7 @@ from backend.services.llm_errors import (
     LLMContentFilterError, LLMServiceError,
 )
 from backend.dependencies.auth import get_current_parent, verify_child_ownership
-from backend.mcp.supabase_tools import (
-    start_conversation_record,
-    save_message,
-    get_conversation_messages,
-    get_conversation,
-    update_conversation_message_count,
-    end_conversation_record,
-)
+from backend.mcp.client import call_supabase_tool
 
 logger = logging.getLogger(__name__)
 
@@ -33,22 +26,29 @@ router = APIRouter(prefix="/conversations", tags=["conversations"])
 
 
 @router.post("/start", response_model=StartConversationResponse)
-def start_conversation(req: StartConversationRequest, parent_id: str = Depends(get_current_parent)):
+async def start_conversation(req: StartConversationRequest, parent_id: str = Depends(get_current_parent)):
     """Create a new conversation and return Mitra's opening greeting."""
     try:
         verify_child_ownership(req.child_id, parent_id)
 
-        conv = start_conversation_record(req.child_id)
+        conv = await call_supabase_tool("start_conversation_record", {"child_id": req.child_id})
         if not conv:
             raise HTTPException(status_code=500, detail="Failed to create conversation")
 
         conversation_id = conv["id"]
 
-        result = greet(req.child_id)
+        result = await greet(req.child_id)
 
-        save_message(conversation_id, "mitra", result["marathi_text"])
+        await call_supabase_tool("save_message", {
+            "conversation_id": conversation_id,
+            "role": "mitra",
+            "content": result["marathi_text"],
+        })
 
-        update_conversation_message_count(conversation_id, 1)
+        await call_supabase_tool("update_conversation_message_count", {
+            "conversation_id": conversation_id,
+            "count": 1,
+        })
 
         return StartConversationResponse(
             conversation_id=conversation_id,
@@ -75,10 +75,10 @@ def start_conversation(req: StartConversationRequest, parent_id: str = Depends(g
 
 
 @router.post("/{conversation_id}/message", response_model=SendMessageResponse)
-def send_message(conversation_id: str, req: SendMessageRequest, parent_id: str = Depends(get_current_parent)):
+async def send_message(conversation_id: str, req: SendMessageRequest, parent_id: str = Depends(get_current_parent)):
     """Send a child message and get Mitra's response."""
     try:
-        conv = get_conversation(conversation_id)
+        conv = await call_supabase_tool("get_conversation", {"conversation_id": conversation_id})
         if not conv:
             raise HTTPException(status_code=404, detail="Conversation not found")
 
@@ -86,23 +86,36 @@ def send_message(conversation_id: str, req: SendMessageRequest, parent_id: str =
         verify_child_ownership(child_id, parent_id)
         current_count = conv["message_count"] or 0
 
-        save_message(conversation_id, "child", req.message)
+        await call_supabase_tool("save_message", {
+            "conversation_id": conversation_id,
+            "role": "child",
+            "content": req.message,
+        })
 
-        history_rows = get_conversation_messages(conversation_id)
+        history_rows = await call_supabase_tool("get_conversation_messages", {
+            "conversation_id": conversation_id,
+        })
         conversation_history = [
             {"role": row["role"], "content": row["content"]}
             for row in history_rows
         ]
 
-        result = chat(
+        result = await chat(
             child_id=child_id,
             message=req.message,
             conversation_history=conversation_history[:-1],
         )
 
-        save_message(conversation_id, "mitra", result["marathi_text"])
+        await call_supabase_tool("save_message", {
+            "conversation_id": conversation_id,
+            "role": "mitra",
+            "content": result["marathi_text"],
+        })
 
-        update_conversation_message_count(conversation_id, current_count + 2)
+        await call_supabase_tool("update_conversation_message_count", {
+            "conversation_id": conversation_id,
+            "count": current_count + 2,
+        })
 
         return SendMessageResponse(
             marathi_text=result["marathi_text"],
@@ -128,10 +141,10 @@ def send_message(conversation_id: str, req: SendMessageRequest, parent_id: str =
 
 
 @router.post("/{conversation_id}/end")
-def end_conversation(conversation_id: str, parent_id: str = Depends(get_current_parent)):
+async def end_conversation(conversation_id: str, parent_id: str = Depends(get_current_parent)):
     """End a conversation, set ended_at, and award XP based on duration."""
     try:
-        conv = get_conversation(conversation_id)
+        conv = await call_supabase_tool("get_conversation", {"conversation_id": conversation_id})
         if not conv:
             raise HTTPException(status_code=404, detail="Conversation not found")
 
@@ -141,9 +154,12 @@ def end_conversation(conversation_id: str, parent_id: str = Depends(get_current_
             return {"message": "Conversation already ended"}
 
         now = datetime.now(timezone.utc).isoformat()
-        end_conversation_record(conversation_id, now)
+        await call_supabase_tool("end_conversation_record", {
+            "conversation_id": conversation_id,
+            "ended_at": now,
+        })
 
-        xp_result = award_conversation_xp(conv["child_id"], conversation_id)
+        xp_result = await award_conversation_xp(conv["child_id"], conversation_id)
 
         return {
             "message": "Conversation ended",

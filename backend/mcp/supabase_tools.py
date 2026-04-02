@@ -49,7 +49,7 @@ def create_child(parent_id: str, name: str, age: int, avatar: str = "\U0001f418"
     return result.data[0] if result.data else None
 
 
-def update_child_stats(child_id: str, xp_total: int, streak_days: int, streak_last_date: str) -> None:
+def update_child_stats(child_id: str, xp_total: int, streak_days: int, streak_last_date: str) -> dict:
     """Update XP and streak fields on a child record."""
     supabase_admin.table("children").update(
         {
@@ -58,6 +58,7 @@ def update_child_stats(child_id: str, xp_total: int, streak_days: int, streak_la
             "streak_last_date": streak_last_date,
         }
     ).eq("id", child_id).execute()
+    return {"ok": True}
 
 
 def verify_child_belongs_to_parent(child_id: str, parent_id: str) -> bool:
@@ -157,7 +158,7 @@ def get_lesson_context(child_id: str) -> dict | None:
     return lesson.data if lesson.data else None
 
 
-def record_lesson_completion(child_id: str, lesson_id: str, score: int) -> None:
+def record_lesson_completion(child_id: str, lesson_id: str, score: int) -> dict:
     """Upsert lesson completion into child_lesson_progress."""
     existing = (
         supabase_admin.table("child_lesson_progress")
@@ -183,6 +184,7 @@ def record_lesson_completion(child_id: str, lesson_id: str, score: int) -> None:
                 "completed_at": now,
             }
         ).execute()
+    return {"ok": True}
 
 
 # ── Conversation operations ───────────────────────────────────────────
@@ -197,7 +199,7 @@ def start_conversation_record(child_id: str) -> dict | None:
     return result.data[0] if result.data else None
 
 
-def save_message(conversation_id: str, role: str, content: str) -> None:
+def save_message(conversation_id: str, role: str, content: str) -> dict:
     """Insert a message into conversation_messages."""
     supabase_admin.table("conversation_messages").insert(
         {
@@ -206,6 +208,7 @@ def save_message(conversation_id: str, role: str, content: str) -> None:
             "content": content,
         }
     ).execute()
+    return {"ok": True}
 
 
 def get_conversation_messages(conversation_id: str) -> list[dict]:
@@ -232,18 +235,20 @@ def get_conversation(conversation_id: str) -> dict | None:
     return result.data
 
 
-def update_conversation_message_count(conversation_id: str, count: int) -> None:
+def update_conversation_message_count(conversation_id: str, count: int) -> dict:
     """Set message_count on a conversation."""
     supabase_admin.table("conversations").update(
         {"message_count": count}
     ).eq("id", conversation_id).execute()
+    return {"ok": True}
 
 
-def end_conversation_record(conversation_id: str, ended_at: str) -> None:
+def end_conversation_record(conversation_id: str, ended_at: str) -> dict:
     """Set ended_at on a conversation."""
     supabase_admin.table("conversations").update(
         {"ended_at": ended_at}
     ).eq("id", conversation_id).execute()
+    return {"ok": True}
 
 
 # ── Progress query operations ─────────────────────────────────────────
