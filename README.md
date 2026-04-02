@@ -123,6 +123,8 @@ scripts/
 
 ## Architecture
 
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for detailed diagrams and request flows.
+
 The backend uses a **plugin architecture** based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io):
 
 - **MCP Servers** (`backend/mcp/`) — all database operations and TTS are registered as MCP tools via FastMCP, callable by any MCP client
