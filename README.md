@@ -126,10 +126,10 @@ scripts/
 The backend uses a **plugin architecture** based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io):
 
 - **MCP Servers** (`backend/mcp/`) — all database operations and TTS are registered as MCP tools via FastMCP, callable by any MCP client
-- **Skills** (`backend/skills/`) — portable intelligence (prompt building, LLM interaction, response parsing) separated from plumbing
+- **Skills** (`backend/skills/`) — LLM-as-orchestrator: the LLM receives tool definitions and decides which tools to call via an agentic loop, with structured JSON output
 - **Gateway** (routers) — thin HTTP layer that calls MCP tools via an async in-process client
 
-This separation means the same tools can later be called by Claude Desktop, other LLM apps, or deployed as standalone MCP services.
+The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives MCP tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding. The gateway just runs the agentic tool-calling loop. This separation means the same tools can later be called by Claude Desktop, other LLM apps, or deployed as standalone MCP services.
 
 ## Project Status
 
