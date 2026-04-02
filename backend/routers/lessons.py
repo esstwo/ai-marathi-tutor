@@ -1,13 +1,15 @@
 """Lessons router — fetch lessons and record completion."""
 
-from datetime import datetime, timezone
-
 from fastapi import APIRouter, Depends, HTTPException
 
-from backend.db.supabase_client import supabase_admin
 from backend.models.schemas import LessonResponse, LessonCompleteRequest
 from backend.services.progress import award_lesson_xp
 from backend.dependencies.auth import get_current_parent, verify_child_ownership
+from backend.mcp.supabase_tools import (
+    list_lessons as db_list_lessons,
+    get_lesson_by_id,
+    record_lesson_completion,
+)
 
 router = APIRouter(prefix="/lessons", tags=["lessons"])
 
@@ -15,64 +17,25 @@ router = APIRouter(prefix="/lessons", tags=["lessons"])
 @router.get("/by-level/{level}", response_model=list[LessonResponse])
 def list_lessons_by_level(level: int):
     """Return all lessons for a given level, ordered by sequence."""
-    result = (
-        supabase_admin.table("lessons")
-        .select("*")
-        .eq("level", level)
-        .order("sequence")
-        .execute()
-    )
-    return result.data or []
+    return db_list_lessons(level)
 
 
 @router.get("/{lesson_id}", response_model=LessonResponse)
 def get_lesson(lesson_id: str):
     """Fetch a single lesson by ID."""
-    result = (
-        supabase_admin.table("lessons")
-        .select("*")
-        .eq("id", lesson_id)
-        .single()
-        .execute()
-    )
-    if not result.data:
+    result = get_lesson_by_id(lesson_id)
+    if not result:
         raise HTTPException(status_code=404, detail="Lesson not found")
-    return result.data
+    return result
 
 
 @router.post("/{lesson_id}/complete")
 def complete_lesson(lesson_id: str, req: LessonCompleteRequest, parent_id: str = Depends(get_current_parent)):
     """Record or update lesson completion for a child."""
     verify_child_ownership(req.child_id, parent_id)
-    # Check if progress row already exists
-    existing = (
-        supabase_admin.table("child_lesson_progress")
-        .select("id")
-        .eq("child_id", req.child_id)
-        .eq("lesson_id", lesson_id)
-        .execute()
-    )
 
-    now = datetime.now(timezone.utc).isoformat()
+    record_lesson_completion(req.child_id, lesson_id, req.score)
 
-    if existing.data:
-        # Update existing progress
-        supabase_admin.table("child_lesson_progress").update(
-            {"status": "completed", "score": req.score, "completed_at": now}
-        ).eq("id", existing.data[0]["id"]).execute()
-    else:
-        # Insert new progress
-        supabase_admin.table("child_lesson_progress").insert(
-            {
-                "child_id": req.child_id,
-                "lesson_id": lesson_id,
-                "status": "completed",
-                "score": req.score,
-                "completed_at": now,
-            }
-        ).execute()
-
-    # Award XP and update streak
     xp_result = award_lesson_xp(req.child_id)
 
     return {

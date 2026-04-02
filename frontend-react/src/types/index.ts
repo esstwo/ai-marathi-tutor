@@ -9,12 +9,14 @@ export interface Child {
 export interface LoginResponse {
   user_id: string;
   access_token: string;
+  refresh_token: string;
   children: Child[];
 }
 
 export interface SignupResponse {
   user_id: string;
   access_token: string;
+  refresh_token: string;
 }
 
 export interface VocabWord {

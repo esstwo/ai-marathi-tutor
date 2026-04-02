@@ -58,6 +58,7 @@ export function AuthProvider({ children: reactChildren }: { children: React.Reac
       const kids = res.children || [];
       const active = kids.length > 0 ? kids[0] : null;
       persist(res.access_token, res.user_id, kids, active);
+      if (res.refresh_token) localStorage.setItem("refresh_token", res.refresh_token);
       return { children: kids };
     },
     [persist]
@@ -67,12 +68,14 @@ export function AuthProvider({ children: reactChildren }: { children: React.Reac
     async (name: string, email: string, password: string) => {
       const res = await api.signup(name, email, password);
       persist(res.access_token, res.user_id, [], null);
+      if (res.refresh_token) localStorage.setItem("refresh_token", res.refresh_token);
     },
     [persist]
   );
 
   const logout = useCallback(() => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     localStorage.removeItem("user_id");
     localStorage.removeItem("children");
     localStorage.removeItem("active_child");

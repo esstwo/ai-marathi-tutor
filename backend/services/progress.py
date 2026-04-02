@@ -1,32 +1,29 @@
 """XP calculation, streak logic, and children table updates."""
 
 import math
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
-from backend.db.supabase_client import supabase_admin
+from backend.mcp.supabase_tools import (
+    get_child_profile,
+    get_children_by_parent,
+    get_conversation,
+    update_child_stats,
+    count_completed_lessons,
+    count_conversations,
+    get_conversations_with_ratios,
+)
 
 XP_PER_LESSON = 10
 XP_PER_CONVERSATION_MINUTE = 5
-
-
-def _get_child(child_id: str) -> dict:
-    result = (
-        supabase_admin.table("children")
-        .select("xp_total, streak_days, streak_last_date")
-        .eq("id", child_id)
-        .single()
-        .execute()
-    )
-    return result.data
 
 
 def _update_streak(child: dict) -> dict:
     """Compute new streak_days and streak_last_date based on today.
 
     Rules:
-      - streak_last_date == today  → no change
-      - streak_last_date == yesterday → increment streak_days
-      - otherwise (None or older)  → reset to 1
+      - streak_last_date == today  -> no change
+      - streak_last_date == yesterday -> increment streak_days
+      - otherwise (None or older)  -> reset to 1
     """
     today = date.today()
     last_date_raw = child.get("streak_last_date")
@@ -52,17 +49,11 @@ def award_lesson_xp(child_id: str) -> dict:
     Returns:
         {"xp_earned": int, "xp_total": int, "streak_days": int}
     """
-    child = _get_child(child_id)
+    child = get_child_profile(child_id)
     streak = _update_streak(child)
     new_xp_total = child["xp_total"] + XP_PER_LESSON
 
-    supabase_admin.table("children").update(
-        {
-            "xp_total": new_xp_total,
-            "streak_days": streak["streak_days"],
-            "streak_last_date": streak["streak_last_date"],
-        }
-    ).eq("id", child_id).execute()
+    update_child_stats(child_id, new_xp_total, streak["streak_days"], streak["streak_last_date"])
 
     return {
         "xp_earned": XP_PER_LESSON,
@@ -77,38 +68,26 @@ def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
     Returns:
         {"xp_earned": int, "xp_total": int, "streak_days": int, "duration_minutes": int}
     """
-    conv = (
-        supabase_admin.table("conversations")
-        .select("started_at, ended_at")
-        .eq("id", conversation_id)
-        .single()
-        .execute()
-    )
+    conv = get_conversation(conversation_id)
 
-    if not conv.data or not conv.data.get("ended_at"):
-        return {"xp_earned": 0, "xp_total": _get_child(child_id)["xp_total"],
-                "streak_days": _get_child(child_id).get("streak_days", 0),
+    if not conv or not conv.get("ended_at"):
+        child = get_child_profile(child_id)
+        return {"xp_earned": 0, "xp_total": child["xp_total"],
+                "streak_days": child.get("streak_days", 0),
                 "duration_minutes": 0}
 
-    from datetime import datetime
-    started = datetime.fromisoformat(conv.data["started_at"])
-    ended = datetime.fromisoformat(conv.data["ended_at"])
+    started = datetime.fromisoformat(conv["started_at"])
+    ended = datetime.fromisoformat(conv["ended_at"])
     duration_seconds = (ended - started).total_seconds()
     duration_minutes = math.ceil(max(duration_seconds, 0) / 60)
 
     xp_earned = duration_minutes * XP_PER_CONVERSATION_MINUTE
 
-    child = _get_child(child_id)
+    child = get_child_profile(child_id)
     streak = _update_streak(child)
     new_xp_total = child["xp_total"] + xp_earned
 
-    supabase_admin.table("children").update(
-        {
-            "xp_total": new_xp_total,
-            "streak_days": streak["streak_days"],
-            "streak_last_date": streak["streak_last_date"],
-        }
-    ).eq("id", child_id).execute()
+    update_child_stats(child_id, new_xp_total, streak["streak_days"], streak["streak_last_date"])
 
     return {
         "xp_earned": xp_earned,
@@ -125,12 +104,7 @@ def get_parent_progress(parent_id: str) -> dict:
         {"lessons_completed": int, "total_lessons": 3, "xp_total": int,
          "streak_days": int, "conversations_count": int, "avg_marathi_ratio": float}
     """
-    children = (
-        supabase_admin.table("children")
-        .select("id, xp_total, streak_days")
-        .eq("parent_id", parent_id)
-        .execute()
-    ).data or []
+    children = get_children_by_parent(parent_id)
 
     if not children:
         return {
@@ -147,21 +121,9 @@ def get_parent_progress(parent_id: str) -> dict:
     xp_total = sum(c["xp_total"] for c in children)
     streak_days = max(c["streak_days"] for c in children)
 
-    lessons_completed = (
-        supabase_admin.table("child_lesson_progress")
-        .select("id", count="exact")
-        .in_("child_id", child_ids)
-        .eq("status", "completed")
-        .execute()
-    ).count or 0
+    lessons_completed = count_completed_lessons(child_ids=child_ids)
 
-    conversations = (
-        supabase_admin.table("conversations")
-        .select("id, marathi_ratio")
-        .in_("child_id", child_ids)
-        .execute()
-    ).data or []
-
+    conversations = get_conversations_with_ratios(child_ids)
     conversations_count = len(conversations)
     ratios = [c["marathi_ratio"] for c in conversations if c.get("marathi_ratio") is not None]
     avg_marathi_ratio = round(sum(ratios) / len(ratios), 2) if ratios else 0.0
@@ -183,28 +145,10 @@ def get_progress(child_id: str) -> dict:
         {"xp_total": int, "streak_days": int, "current_level": int,
          "lessons_completed": int, "conversations_count": int}
     """
-    child = (
-        supabase_admin.table("children")
-        .select("xp_total, streak_days, current_level")
-        .eq("id", child_id)
-        .single()
-        .execute()
-    ).data
+    child = get_child_profile(child_id)
 
-    lessons_completed = (
-        supabase_admin.table("child_lesson_progress")
-        .select("id", count="exact")
-        .eq("child_id", child_id)
-        .eq("status", "completed")
-        .execute()
-    ).count or 0
-
-    conversations_count = (
-        supabase_admin.table("conversations")
-        .select("id", count="exact")
-        .eq("child_id", child_id)
-        .execute()
-    ).count or 0
+    lessons_completed = count_completed_lessons(child_id=child_id)
+    conversations_count = count_conversations(child_id=child_id)
 
     return {
         "xp_total": child["xp_total"],
