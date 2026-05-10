@@ -1,0 +1,1062 @@
+[
+    {
+      "lesson_id": 1,
+      "title": {
+        "marathi": "आजीशी बोलणे",
+        "english": "Talking to Ajji"
+      },
+      "theme": "Loving phrases you use when talking to your grandmother on the phone or in person",
+      "vocabulary": [
+        {
+          "marathi": "आजी, तू कशी आहेस?",
+          "english": "Ajji, how are you?",
+          "romanized": "Aaji, tu kashi aahes?"
+        },
+        {
+          "marathi": "मला तुझी खूप आठवण येते",
+          "english": "I miss you a lot",
+          "romanized": "Mala tujhi khoop aathvan yete"
+        },
+        {
+          "marathi": "मला एक गोष्ट सांग",
+          "english": "Tell me a story",
+          "romanized": "Mala ek goshta saang"
+        },
+        {
+          "marathi": "मी तुझ्यावर खूप प्रेम करतो",
+          "english": "I love you very much",
+          "romanized": "Mi tujhyaavar khoop prem karto"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You're on a video call with your आजी and want to ask how she's doing. What do you say?",
+          "options": ["मला एक गोष्ट सांग", "आजी, तू कशी आहेस?", "मी तुझ्यावर खूप प्रेम करतो", "मला तुझी खूप आठवण येते"],
+          "correct_answer": "आजी, तू कशी आहेस?",
+          "correct_romanized": "Aaji, tu kashi aahes?"
+        },
+        {
+          "question_id": 2,
+          "question": "You haven't seen your आजी in months and want to tell her you miss her. What do you say?",
+          "options": ["मला एक गोष्ट सांग", "आजी, तू कशी आहेस?", "मला तुझी खूप आठवण येते", "मी तुझ्यावर खूप प्रेम करतो"],
+          "correct_answer": "मला तुझी खूप आठवण येते",
+          "correct_romanized": "Mala tujhi khoop aathvan yete"
+        },
+        {
+          "question_id": 3,
+          "question": "It's bedtime and you want आजी to narrate a story. What do you ask?",
+          "options": ["मला एक गोष्ट सांग", "मला तुझी खूप आठवण येते", "आजी, तू कशी आहेस?", "मी तुझ्यावर खूप प्रेम करतो"],
+          "correct_answer": "मला एक गोष्ट सांग",
+          "correct_romanized": "Mala ek goshta saang"
+        }
+      ]
+    },
+    {
+      "lesson_id": 2,
+      "title": {
+        "marathi": "फोनवर",
+        "english": "Phone Greetings"
+      },
+      "theme": "How to answer the phone and have a short conversation in Marathi",
+      "vocabulary": [
+        {
+          "marathi": "हॅलो, कोण बोलतंय?",
+          "english": "Hello, who is speaking?",
+          "romanized": "Hello, kon boltaay?"
+        },
+        {
+          "marathi": "मी बोलतोय",
+          "english": "It's me speaking",
+          "romanized": "Mi boltoey"
+        },
+        {
+          "marathi": "तुम्हाला ऐकू येतंय का?",
+          "english": "Can you hear me?",
+          "romanized": "Tumhaalaa aiku yetaay ka?"
+        },
+        {
+          "marathi": "ठेवतो, नंतर बोलू",
+          "english": "Bye, talk later",
+          "romanized": "Thevto, nantar bolu"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "The phone rings and you pick up. You don't recognize the voice. What do you say?",
+          "options": ["मी बोलतोय", "ठेवतो, नंतर बोलू", "हॅलो, कोण बोलतंय?", "तुम्हाला ऐकू येतंय का?"],
+          "correct_answer": "हॅलो, कोण बोलतंय?",
+          "correct_romanized": "Hello, kon boltaay?"
+        },
+        {
+          "question_id": 2,
+          "question": "Your आजोबा asks 'who is this?' on the phone. How do you tell him it's you?",
+          "options": ["हॅलो, कोण बोलतंय?", "मी बोलतोय", "ठेवतो, नंतर बोलू", "तुम्हाला ऐकू येतंय का?"],
+          "correct_answer": "मी बोलतोय",
+          "correct_romanized": "Mi boltoey"
+        },
+        {
+          "question_id": 3,
+          "question": "The call is breaking up and you can't hear clearly. What do you ask?",
+          "options": ["ठेवतो, नंतर बोलू", "हॅलो, कोण बोलतंय?", "मी बोलतोय", "तुम्हाला ऐकू येतंय का?"],
+          "correct_answer": "तुम्हाला ऐकू येतंय का?",
+          "correct_romanized": "Tumhaalaa aiku yetaay ka?"
+        }
+      ]
+    },
+    {
+      "lesson_id": 3,
+      "title": {
+        "marathi": "माझा दिवस",
+        "english": "My Day"
+      },
+      "theme": "Telling someone about what you did today using simple past tense sentences",
+      "vocabulary": [
+        {
+          "marathi": "आज मी शाळेत गेलो",
+          "english": "Today I went to school",
+          "romanized": "Aaj mi shaalet gelo"
+        },
+        {
+          "marathi": "मी मित्रांसोबत खेळलो",
+          "english": "I played with friends",
+          "romanized": "Mi mitraansobat khello"
+        },
+        {
+          "marathi": "मी जेवण केलं",
+          "english": "I ate lunch",
+          "romanized": "Mi jevan kelam"
+        },
+        {
+          "marathi": "मी अभ्यास केला",
+          "english": "I did homework",
+          "romanized": "Mi abhyaas kela"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your आजी asks what you did today. You want to tell her you went to school. What do you say?",
+          "options": ["मी अभ्यास केला", "मी मित्रांसोबत खेळलो", "आज मी शाळेत गेलो", "मी जेवण केलं"],
+          "correct_answer": "आज मी शाळेत गेलो",
+          "correct_romanized": "Aaj mi shaalet gelo"
+        },
+        {
+          "question_id": 2,
+          "question": "After school you had fun at the playground. How do you describe that?",
+          "options": ["मी जेवण केलं", "मी मित्रांसोबत खेळलो", "मी अभ्यास केला", "आज मी शाळेत गेलो"],
+          "correct_answer": "मी मित्रांसोबत खेळलो",
+          "correct_romanized": "Mi mitraansobat khello"
+        },
+        {
+          "question_id": 3,
+          "question": "Your बाबा asks if you finished your studies. What do you tell him?",
+          "options": ["आज मी शाळेत गेलो", "मी जेवण केलं", "मी अभ्यास केला", "मी मित्रांसोबत खेळलो"],
+          "correct_answer": "मी अभ्यास केला",
+          "correct_romanized": "Mi abhyaas kela"
+        }
+      ]
+    },
+    {
+      "lesson_id": 4,
+      "title": {
+        "marathi": "शनिवार-रविवार",
+        "english": "Weekend Plans"
+      },
+      "theme": "Making plans and suggestions for the weekend with your family",
+      "vocabulary": [
+        {
+          "marathi": "चला बागेत जाऊ",
+          "english": "Let's go to the park",
+          "romanized": "Chala baaget jaau"
+        },
+        {
+          "marathi": "आपण खरेदीला जाऊ शकतो का?",
+          "english": "Can we go shopping?",
+          "romanized": "Aapan kharedi-la jaau shakto ka?"
+        },
+        {
+          "marathi": "मला खेळायचं आहे",
+          "english": "I want to play",
+          "romanized": "Mala khelaaycha aahe"
+        },
+        {
+          "marathi": "चला सिनेमा बघू",
+          "english": "Let's watch a movie",
+          "romanized": "Chala cinema baghu"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "It's a sunny Saturday and you want the family to visit the park. What do you suggest?",
+          "options": ["मला खेळायचं आहे", "चला सिनेमा बघू", "चला बागेत जाऊ", "आपण खरेदीला जाऊ शकतो का?"],
+          "correct_answer": "चला बागेत जाऊ",
+          "correct_romanized": "Chala baaget jaau"
+        },
+        {
+          "question_id": 2,
+          "question": "You want to ask your आई if the family can go to the mall. What do you say?",
+          "options": ["चला बागेत जाऊ", "आपण खरेदीला जाऊ शकतो का?", "चला सिनेमा बघू", "मला खेळायचं आहे"],
+          "correct_answer": "आपण खरेदीला जाऊ शकतो का?",
+          "correct_romanized": "Aapan kharedi-la jaau shakto ka?"
+        },
+        {
+          "question_id": 3,
+          "question": "A new animated film is out and you want to see it with your family. What do you say?",
+          "options": ["मला खेळायचं आहे", "चला बागेत जाऊ", "चला सिनेमा बघू", "आपण खरेदीला जाऊ शकतो का?"],
+          "correct_answer": "चला सिनेमा बघू",
+          "correct_romanized": "Chala cinema baghu"
+        }
+      ]
+    },
+    {
+      "lesson_id": 5,
+      "title": {
+        "marathi": "हॉटेलमध्ये",
+        "english": "At the Restaurant"
+      },
+      "theme": "Ordering food and talking about your meal at a restaurant",
+      "vocabulary": [
+        {
+          "marathi": "मला ऑर्डर करायचं आहे",
+          "english": "I want to order",
+          "romanized": "Mala order karaaycha aahe"
+        },
+        {
+          "marathi": "हे खूप तिखट आहे",
+          "english": "This is very spicy",
+          "romanized": "He khoop tikhat aahe"
+        },
+        {
+          "marathi": "मला पाणी द्या",
+          "english": "Give me water",
+          "romanized": "Mala paani dyaa"
+        },
+        {
+          "marathi": "जेवण खूप चविष्ट आहे",
+          "english": "The food is very tasty",
+          "romanized": "Jevan khoop chavishta aahe"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You're at an Indian restaurant and the waiter comes to your table. You're ready to choose. What do you say?",
+          "options": ["मला पाणी द्या", "हे खूप तिखट आहे", "मला ऑर्डर करायचं आहे", "जेवण खूप चविष्ट आहे"],
+          "correct_answer": "मला ऑर्डर करायचं आहे",
+          "correct_romanized": "Mala order karaaycha aahe"
+        },
+        {
+          "question_id": 2,
+          "question": "You take a bite and the chili is burning your mouth! What do you tell your parents?",
+          "options": ["जेवण खूप चविष्ट आहे", "मला ऑर्डर करायचं आहे", "हे खूप तिखट आहे", "मला पाणी द्या"],
+          "correct_answer": "हे खूप तिखट आहे",
+          "correct_romanized": "He khoop tikhat aahe"
+        },
+        {
+          "question_id": 3,
+          "question": "Your आई made a delicious meal and you want to compliment the food. What do you say?",
+          "options": ["मला पाणी द्या", "जेवण खूप चविष्ट आहे", "हे खूप तिखट आहे", "मला ऑर्डर करायचं आहे"],
+          "correct_answer": "जेवण खूप चविष्ट आहे",
+          "correct_romanized": "Jevan khoop chavishta aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 6,
+      "title": {
+        "marathi": "माझं मत",
+        "english": "Expressing Opinions"
+      },
+      "theme": "Sharing what you like, dislike, and feel about things around you",
+      "vocabulary": [
+        {
+          "marathi": "मला हे आवडतं",
+          "english": "I like this",
+          "romanized": "Mala he aavadtam"
+        },
+        {
+          "marathi": "मला हे आवडत नाही",
+          "english": "I don't like this",
+          "romanized": "Mala he aavadat naahi"
+        },
+        {
+          "marathi": "हे माझं आवडतं आहे",
+          "english": "This is my favorite",
+          "romanized": "He maajham aavadtam aahe"
+        },
+        {
+          "marathi": "हे खूप कंटाळवाणं आहे",
+          "english": "This is very boring",
+          "romanized": "He khoop kantaalvanam aahe"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your cousin shows you a new game and you really enjoy it. How do you express that?",
+          "options": ["मला हे आवडत नाही", "हे खूप कंटाळवाणं आहे", "मला हे आवडतं", "हे माझं आवडतं आहे"],
+          "correct_answer": "मला हे आवडतं",
+          "correct_romanized": "Mala he aavadtam"
+        },
+        {
+          "question_id": 2,
+          "question": "Someone offers you a food you really dislike. How do you politely say you don't like it?",
+          "options": ["हे माझं आवडतं आहे", "मला हे आवडत नाही", "मला हे आवडतं", "हे खूप कंटाळवाणं आहे"],
+          "correct_answer": "मला हे आवडत नाही",
+          "correct_romanized": "Mala he aavadat naahi"
+        },
+        {
+          "question_id": 3,
+          "question": "Your friend asks which cartoon you love the most. You want to say it's your favorite. What do you say?",
+          "options": ["मला हे आवडतं", "मला हे आवडत नाही", "हे खूप कंटाळवाणं आहे", "हे माझं आवडतं आहे"],
+          "correct_answer": "हे माझं आवडतं आहे",
+          "correct_romanized": "He maajham aavadtam aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 7,
+      "title": {
+        "marathi": "माझ्या भावना",
+        "english": "Feelings Deep"
+      },
+      "theme": "Expressing deeper emotions beyond happy and sad",
+      "vocabulary": [
+        {
+          "marathi": "मला खूप उत्साह आहे",
+          "english": "I'm very excited",
+          "romanized": "Mala khoop utsaah aahe"
+        },
+        {
+          "marathi": "मला भीती वाटतेय",
+          "english": "I'm feeling nervous",
+          "romanized": "Mala bhiti vaatatey"
+        },
+        {
+          "marathi": "मला अभिमान वाटतो",
+          "english": "I feel proud",
+          "romanized": "Mala abhimaan vaatato"
+        },
+        {
+          "marathi": "मला काही समजत नाही",
+          "english": "I'm confused",
+          "romanized": "Mala kaahi samjat naahi"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Tomorrow is your birthday party and you can't wait! How do you express your excitement?",
+          "options": ["मला भीती वाटतेय", "मला काही समजत नाही", "मला खूप उत्साह आहे", "मला अभिमान वाटतो"],
+          "correct_answer": "मला खूप उत्साह आहे",
+          "correct_romanized": "Mala khoop utsaah aahe"
+        },
+        {
+          "question_id": 2,
+          "question": "You have a big test tomorrow and you're worried about it. What do you tell your आई?",
+          "options": ["मला खूप उत्साह आहे", "मला भीती वाटतेय", "मला अभिमान वाटतो", "मला काही समजत नाही"],
+          "correct_answer": "मला भीती वाटतेय",
+          "correct_romanized": "Mala bhiti vaatatey"
+        },
+        {
+          "question_id": 3,
+          "question": "You won first place in a competition. How do you describe your feeling?",
+          "options": ["मला काही समजत नाही", "मला भीती वाटतेय", "मला खूप उत्साह आहे", "मला अभिमान वाटतो"],
+          "correct_answer": "मला अभिमान वाटतो",
+          "correct_romanized": "Mala abhimaan vaatato"
+        }
+      ]
+    },
+    {
+      "lesson_id": 8,
+      "title": {
+        "marathi": "मदत हवी",
+        "english": "Asking for Help"
+      },
+      "theme": "How to ask for help when you need it, in a polite way",
+      "vocabulary": [
+        {
+          "marathi": "तुम्ही मला मदत कराल का?",
+          "english": "Can you help me?",
+          "romanized": "Tumhi mala madat karaal ka?"
+        },
+        {
+          "marathi": "मला समजत नाही",
+          "english": "I don't understand",
+          "romanized": "Mala samjat naahi"
+        },
+        {
+          "marathi": "मला दाखवा कसं करायचं",
+          "english": "Show me how to do it",
+          "romanized": "Mala daakhvaa kasam karaaycha"
+        },
+        {
+          "marathi": "मला हे जमत नाही",
+          "english": "I can't do this",
+          "romanized": "Mala he jamat naahi"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You're stuck on a math problem and need your बाबा's help. What do you ask?",
+          "options": ["मला समजत नाही", "मला हे जमत नाही", "तुम्ही मला मदत कराल का?", "मला दाखवा कसं करायचं"],
+          "correct_answer": "तुम्ही मला मदत कराल का?",
+          "correct_romanized": "Tumhi mala madat karaal ka?"
+        },
+        {
+          "question_id": 2,
+          "question": "Your teacher explains something in Marathi but it goes over your head. What do you say?",
+          "options": ["तुम्ही मला मदत कराल का?", "मला समजत नाही", "मला हे जमत नाही", "मला दाखवा कसं करायचं"],
+          "correct_answer": "मला समजत नाही",
+          "correct_romanized": "Mala samjat naahi"
+        },
+        {
+          "question_id": 3,
+          "question": "You want someone to demonstrate how to fold a paper airplane. What do you say?",
+          "options": ["मला हे जमत नाही", "मला समजत नाही", "तुम्ही मला मदत कराल का?", "मला दाखवा कसं करायचं"],
+          "correct_answer": "मला दाखवा कसं करायचं",
+          "correct_romanized": "Mala daakhvaa kasam karaaycha"
+        }
+      ]
+    },
+    {
+      "lesson_id": 9,
+      "title": {
+        "marathi": "मित्र बनवणे",
+        "english": "Making Friends"
+      },
+      "theme": "Meeting new kids and making friends using simple Marathi phrases",
+      "vocabulary": [
+        {
+          "marathi": "तुझं नाव काय आहे?",
+          "english": "What's your name?",
+          "romanized": "Tujham naav kaay aahe?"
+        },
+        {
+          "marathi": "खेळायचं का?",
+          "english": "Want to play?",
+          "romanized": "Khelaaycha ka?"
+        },
+        {
+          "marathi": "तू माझा मित्र आहेस",
+          "english": "You're my friend",
+          "romanized": "Tu maajha mitra aahes"
+        },
+        {
+          "marathi": "चल एकत्र खेळू",
+          "english": "Let's play together",
+          "romanized": "Chal ekatra khelu"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You see a new kid at the park and want to introduce yourself. What do you ask first?",
+          "options": ["खेळायचं का?", "तुझं नाव काय आहे?", "चल एकत्र खेळू", "तू माझा मित्र आहेस"],
+          "correct_answer": "तुझं नाव काय आहे?",
+          "correct_romanized": "Tujham naav kaay aahe?"
+        },
+        {
+          "question_id": 2,
+          "question": "You want to invite the new kid to join your game. What do you ask?",
+          "options": ["तुझं नाव काय आहे?", "तू माझा मित्र आहेस", "खेळायचं का?", "चल एकत्र खेळू"],
+          "correct_answer": "खेळायचं का?",
+          "correct_romanized": "Khelaaycha ka?"
+        },
+        {
+          "question_id": 3,
+          "question": "You had a great time and want to suggest playing together again. What do you say?",
+          "options": ["तू माझा मित्र आहेस", "तुझं नाव काय आहे?", "चल एकत्र खेळू", "खेळायचं का?"],
+          "correct_answer": "चल एकत्र खेळू",
+          "correct_romanized": "Chal ekatra khelu"
+        }
+      ]
+    },
+    {
+      "lesson_id": 10,
+      "title": {
+        "marathi": "वाढदिवस",
+        "english": "Birthday Party"
+      },
+      "theme": "Words and phrases for celebrating birthdays with family and friends",
+      "vocabulary": [
+        {
+          "marathi": "वाढदिवसाच्या शुभेच्छा!",
+          "english": "Happy birthday!",
+          "romanized": "Vaadh-divasachya shubhechcha!"
+        },
+        {
+          "marathi": "तुला किती वर्षे झाली?",
+          "english": "How old are you?",
+          "romanized": "Tula kiti varshe jaali?"
+        },
+        {
+          "marathi": "केक कापा",
+          "english": "Cut the cake",
+          "romanized": "Cake kaapa"
+        },
+        {
+          "marathi": "भेटवस्तू उघडा",
+          "english": "Open the gift",
+          "romanized": "Bhetvastu ughada"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your cousin just arrived at your birthday party. What's the first thing they say to you?",
+          "options": ["केक कापा", "तुला किती वर्षे झाली?", "वाढदिवसाच्या शुभेच्छा!", "भेटवस्तू उघडा"],
+          "correct_answer": "वाढदिवसाच्या शुभेच्छा!",
+          "correct_romanized": "Vaadh-divasachya shubhechcha!"
+        },
+        {
+          "question_id": 2,
+          "question": "Someone at the party wants to know your age. What are they asking?",
+          "options": ["वाढदिवसाच्या शुभेच्छा!", "भेटवस्तू उघडा", "तुला किती वर्षे झाली?", "केक कापा"],
+          "correct_answer": "तुला किती वर्षे झाली?",
+          "correct_romanized": "Tula kiti varshe jaali?"
+        },
+        {
+          "question_id": 3,
+          "question": "Everyone has gathered around and it's time to slice the birthday cake. What does your आई say?",
+          "options": ["भेटवस्तू उघडा", "वाढदिवसाच्या शुभेच्छा!", "केक कापा", "तुला किती वर्षे झाली?"],
+          "correct_answer": "केक कापा",
+          "correct_romanized": "Cake kaapa"
+        }
+      ]
+    },
+    {
+      "lesson_id": 11,
+      "title": {
+        "marathi": "गोष्ट सांगणे",
+        "english": "Telling a Story"
+      },
+      "theme": "Classic storytelling phrases to narrate tales in Marathi",
+      "vocabulary": [
+        {
+          "marathi": "एक होता राजा",
+          "english": "Once there was a king",
+          "romanized": "Ek hota raaja"
+        },
+        {
+          "marathi": "तो खूप शूर होता",
+          "english": "He was very brave",
+          "romanized": "To khoop shoor hota"
+        },
+        {
+          "marathi": "मग काय झालं?",
+          "english": "Then what happened?",
+          "romanized": "Mag kaay jhalam?"
+        },
+        {
+          "marathi": "गोष्ट संपली",
+          "english": "The story is over",
+          "romanized": "Goshta sampli"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your आजी is starting a bedtime story about a king. How does she begin?",
+          "options": ["मग काय झालं?", "तो खूप शूर होता", "गोष्ट संपली", "एक होता राजा"],
+          "correct_answer": "एक होता राजा",
+          "correct_romanized": "Ek hota raaja"
+        },
+        {
+          "question_id": 2,
+          "question": "आजी pauses in the middle of the story. You're curious and want to know what happens next. What do you ask?",
+          "options": ["एक होता राजा", "गोष्ट संपली", "मग काय झालं?", "तो खूप शूर होता"],
+          "correct_answer": "मग काय झालं?",
+          "correct_romanized": "Mag kaay jhalam?"
+        },
+        {
+          "question_id": 3,
+          "question": "आजी finishes the tale and wants to wrap up. What does she say?",
+          "options": ["तो खूप शूर होता", "एक होता राजा", "मग काय झालं?", "गोष्ट संपली"],
+          "correct_answer": "गोष्ट संपली",
+          "correct_romanized": "Goshta sampli"
+        }
+      ]
+    },
+    {
+      "lesson_id": 12,
+      "title": {
+        "marathi": "लोकांचे वर्णन",
+        "english": "Describing People"
+      },
+      "theme": "Describing people you know using simple Marathi sentences",
+      "vocabulary": [
+        {
+          "marathi": "ती उंच आहे",
+          "english": "She is tall",
+          "romanized": "Ti unch aahe"
+        },
+        {
+          "marathi": "तो खूप विनोदी आहे",
+          "english": "He is very funny",
+          "romanized": "To khoop vinodi aahe"
+        },
+        {
+          "marathi": "ते खूप दयाळू आहेत",
+          "english": "They are very kind",
+          "romanized": "Te khoop dayaalu aahet"
+        },
+        {
+          "marathi": "माझा मित्र हुशार आहे",
+          "english": "My friend is smart",
+          "romanized": "Maajha mitra hushaar aahe"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You're telling your आई about a friend who always makes everyone laugh. How do you describe him?",
+          "options": ["ती उंच आहे", "माझा मित्र हुशार आहे", "तो खूप विनोदी आहे", "ते खूप दयाळू आहेत"],
+          "correct_answer": "तो खूप विनोदी आहे",
+          "correct_romanized": "To khoop vinodi aahe"
+        },
+        {
+          "question_id": 2,
+          "question": "Your neighbors always help everyone and are so nice. How do you describe them?",
+          "options": ["तो खूप विनोदी आहे", "ती उंच आहे", "ते खूप दयाळू आहेत", "माझा मित्र हुशार आहे"],
+          "correct_answer": "ते खूप दयाळू आहेत",
+          "correct_romanized": "Te khoop dayaalu aahet"
+        },
+        {
+          "question_id": 3,
+          "question": "Your friend always gets the best grades. How do you describe them to your बाबा?",
+          "options": ["ती उंच आहे", "तो खूप विनोदी आहे", "ते खूप दयाळू आहेत", "माझा मित्र हुशार आहे"],
+          "correct_answer": "माझा मित्र हुशार आहे",
+          "correct_romanized": "Maajha mitra hushaar aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 13,
+      "title": {
+        "marathi": "तुलना",
+        "english": "Comparing Things"
+      },
+      "theme": "Comparing objects, people, and ideas using Marathi phrases",
+      "vocabulary": [
+        {
+          "marathi": "हे त्यापेक्षा मोठं आहे",
+          "english": "This is bigger than that",
+          "romanized": "He tyaapeksha motham aahe"
+        },
+        {
+          "marathi": "ते जास्त चांगलं आहे",
+          "english": "That is better",
+          "romanized": "Te jaast chaanglam aahe"
+        },
+        {
+          "marathi": "दोन्ही सारखेच आहेत",
+          "english": "Both are the same",
+          "romanized": "Donhi saarkhech aahet"
+        },
+        {
+          "marathi": "हे वेगळं आहे",
+          "english": "This is different",
+          "romanized": "He veglam aahe"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You see two balloons and one is clearly larger. How do you say the first one is bigger?",
+          "options": ["ते जास्त चांगलं आहे", "दोन्ही सारखेच आहेत", "हे वेगळं आहे", "हे त्यापेक्षा मोठं आहे"],
+          "correct_answer": "हे त्यापेक्षा मोठं आहे",
+          "correct_romanized": "He tyaapeksha motham aahe"
+        },
+        {
+          "question_id": 2,
+          "question": "You're comparing two drawings and they look exactly alike. What do you say?",
+          "options": ["हे त्यापेक्षा मोठं आहे", "हे वेगळं आहे", "दोन्ही सारखेच आहेत", "ते जास्त चांगलं आहे"],
+          "correct_answer": "दोन्ही सारखेच आहेत",
+          "correct_romanized": "Donhi saarkhech aahet"
+        },
+        {
+          "question_id": 3,
+          "question": "Your friend's lunch looks nothing like yours. How do you point out that it's not the same?",
+          "options": ["दोन्ही सारखेच आहेत", "हे त्यापेक्षा मोठं आहे", "ते जास्त चांगलं आहे", "हे वेगळं आहे"],
+          "correct_answer": "हे वेगळं आहे",
+          "correct_romanized": "He veglam aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 14,
+      "title": {
+        "marathi": "भविष्याचे प्लान",
+        "english": "Future Plans"
+      },
+      "theme": "Talking about what you will do in the future and your dreams",
+      "vocabulary": [
+        {
+          "marathi": "उद्या मी जाणार आहे",
+          "english": "Tomorrow I will go",
+          "romanized": "Udyaa mi jaanaar aahe"
+        },
+        {
+          "marathi": "पुढच्या आठवड्यात आमचा कार्यक्रम आहे",
+          "english": "Next week we have an event",
+          "romanized": "Pudhchya aathavdyaat aamcha kaaryakram aahe"
+        },
+        {
+          "marathi": "मी मोठा झाल्यावर",
+          "english": "When I grow up",
+          "romanized": "Mi motha jhaalyaavar"
+        },
+        {
+          "marathi": "मला डॉक्टर व्हायचं आहे",
+          "english": "I want to become a doctor",
+          "romanized": "Mala doctor vhaaycha aahe"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your आजी asks about your plans for the next day. You're going somewhere. What do you say?",
+          "options": ["मी मोठा झाल्यावर", "मला डॉक्टर व्हायचं आहे", "उद्या मी जाणार आहे", "पुढच्या आठवड्यात आमचा कार्यक्रम आहे"],
+          "correct_answer": "उद्या मी जाणार आहे",
+          "correct_romanized": "Udyaa mi jaanaar aahe"
+        },
+        {
+          "question_id": 2,
+          "question": "Your काका asks what you want to be when you grow up. How do you start your answer?",
+          "options": ["उद्या मी जाणार आहे", "मी मोठा झाल्यावर", "पुढच्या आठवड्यात आमचा कार्यक्रम आहे", "मला डॉक्टर व्हायचं आहे"],
+          "correct_answer": "मी मोठा झाल्यावर",
+          "correct_romanized": "Mi motha jhaalyaavar"
+        },
+        {
+          "question_id": 3,
+          "question": "You dream of helping people and want to be a doctor. How do you say that?",
+          "options": ["पुढच्या आठवड्यात आमचा कार्यक्रम आहे", "उद्या मी जाणार आहे", "मी मोठा झाल्यावर", "मला डॉक्टर व्हायचं आहे"],
+          "correct_answer": "मला डॉक्टर व्हायचं आहे",
+          "correct_romanized": "Mala doctor vhaaycha aahe"
+        }
+      ]
+    },
+    {
+      "lesson_id": 15,
+      "title": {
+        "marathi": "आश्चर्य",
+        "english": "Expressing Surprise"
+      },
+      "theme": "Reacting to surprising news and unexpected events in Marathi",
+      "vocabulary": [
+        {
+          "marathi": "खरंच का?",
+          "english": "Really?",
+          "romanized": "Kharanch ka?"
+        },
+        {
+          "marathi": "अरे वाह!",
+          "english": "Wow!",
+          "romanized": "Are vaah!"
+        },
+        {
+          "marathi": "हे तर अद्भुत आहे!",
+          "english": "That's amazing!",
+          "romanized": "He tar adbhut aahe!"
+        },
+        {
+          "marathi": "माझा विश्वासच बसत नाही!",
+          "english": "I can't believe it!",
+          "romanized": "Maajha vishvaas-ch basat naahi!"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your friend tells you they saw a peacock in their backyard. You're not sure if it's true. What do you say?",
+          "options": ["अरे वाह!", "हे तर अद्भुत आहे!", "खरंच का?", "माझा विश्वासच बसत नाही!"],
+          "correct_answer": "खरंच का?",
+          "correct_romanized": "Kharanch ka?"
+        },
+        {
+          "question_id": 2,
+          "question": "Your आई shows you a beautiful rainbow outside. What's your first reaction?",
+          "options": ["खरंच का?", "अरे वाह!", "माझा विश्वासच बसत नाही!", "हे तर अद्भुत आहे!"],
+          "correct_answer": "अरे वाह!",
+          "correct_romanized": "Are vaah!"
+        },
+        {
+          "question_id": 3,
+          "question": "You find out your family is going to India next month and you're totally shocked! What do you say?",
+          "options": ["खरंच का?", "अरे वाह!", "हे तर अद्भुत आहे!", "माझा विश्वासच बसत नाही!"],
+          "correct_answer": "माझा विश्वासच बसत नाही!",
+          "correct_romanized": "Maajha vishvaas-ch basat naahi!"
+        }
+      ]
+    },
+    {
+      "lesson_id": 16,
+      "title": {
+        "marathi": "माफ करा",
+        "english": "Apologizing & Forgiving"
+      },
+      "theme": "Saying sorry and accepting apologies with grace",
+      "vocabulary": [
+        {
+          "marathi": "मला माफ करा",
+          "english": "I'm sorry",
+          "romanized": "Mala maaf karaa"
+        },
+        {
+          "marathi": "काही हरकत नाही",
+          "english": "It's okay",
+          "romanized": "Kaahi harkat naahi"
+        },
+        {
+          "marathi": "मी मुद्दाम केलं नाही",
+          "english": "I didn't mean to",
+          "romanized": "Mi muddaam kelam naahi"
+        },
+        {
+          "marathi": "काळजी करू नका",
+          "english": "Don't worry",
+          "romanized": "Kaalji karu naka"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You accidentally broke your sister's toy. What do you say to her?",
+          "options": ["काही हरकत नाही", "काळजी करू नका", "मला माफ करा", "मी मुद्दाम केलं नाही"],
+          "correct_answer": "मला माफ करा",
+          "correct_romanized": "Mala maaf karaa"
+        },
+        {
+          "question_id": 2,
+          "question": "Your friend bumped into you by accident and says sorry. You want to tell them it's fine. What do you say?",
+          "options": ["मला माफ करा", "काही हरकत नाही", "मी मुद्दाम केलं नाही", "काळजी करू नका"],
+          "correct_answer": "काही हरकत नाही",
+          "correct_romanized": "Kaahi harkat naahi"
+        },
+        {
+          "question_id": 3,
+          "question": "You spilled water on your friend's book and want to explain it was an accident. What do you say?",
+          "options": ["काळजी करू नका", "मला माफ करा", "मी मुद्दाम केलं नाही", "काही हरकत नाही"],
+          "correct_answer": "मी मुद्दाम केलं नाही",
+          "correct_romanized": "Mi muddaam kelam naahi"
+        }
+      ]
+    },
+    {
+      "lesson_id": 17,
+      "title": {
+        "marathi": "कौतुक",
+        "english": "Giving Compliments"
+      },
+      "theme": "Praising and complimenting others to make them feel good",
+      "vocabulary": [
+        {
+          "marathi": "तू खूप छान केलंस!",
+          "english": "You did great!",
+          "romanized": "Tu khoop chhaan kelamns!"
+        },
+        {
+          "marathi": "हे खूप सुंदर आहे",
+          "english": "This is very beautiful",
+          "romanized": "He khoop sundar aahe"
+        },
+        {
+          "marathi": "तू किती हुशार आहेस",
+          "english": "You're so smart",
+          "romanized": "Tu kiti hushaar aahes"
+        },
+        {
+          "marathi": "शाबास!",
+          "english": "Well done!",
+          "romanized": "Shaabas!"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "Your little brother just learned to ride a bicycle. You want to cheer him on. What do you say?",
+          "options": ["हे खूप सुंदर आहे", "तू किती हुशार आहेस", "तू खूप छान केलंस!", "शाबास!"],
+          "correct_answer": "शाबास!",
+          "correct_romanized": "Shaabas!"
+        },
+        {
+          "question_id": 2,
+          "question": "Your आई made a beautiful rangoli. How do you compliment it?",
+          "options": ["तू खूप छान केलंस!", "शाबास!", "हे खूप सुंदर आहे", "तू किती हुशार आहेस"],
+          "correct_answer": "हे खूप सुंदर आहे",
+          "correct_romanized": "He khoop sundar aahe"
+        },
+        {
+          "question_id": 3,
+          "question": "Your friend solved a tricky puzzle that no one else could. What do you say?",
+          "options": ["शाबास!", "हे खूप सुंदर आहे", "तू किती हुशार आहेस", "तू खूप छान केलंस!"],
+          "correct_answer": "तू किती हुशार आहेस",
+          "correct_romanized": "Tu kiti hushaar aahes"
+        }
+      ]
+    },
+    {
+      "lesson_id": 18,
+      "title": {
+        "marathi": "तब्येत",
+        "english": "Talking About Health"
+      },
+      "theme": "Telling someone how you feel when you are sick or unwell",
+      "vocabulary": [
+        {
+          "marathi": "माझं डोकं दुखतंय",
+          "english": "I have a headache",
+          "romanized": "Maajham dokam dukhtaay"
+        },
+        {
+          "marathi": "माझं पोट दुखतंय",
+          "english": "My stomach hurts",
+          "romanized": "Maajham pot dukhtaay"
+        },
+        {
+          "marathi": "मला बरं वाटतंय",
+          "english": "I feel better",
+          "romanized": "Mala baram vaattaay"
+        },
+        {
+          "marathi": "औषध घ्या",
+          "english": "Take medicine",
+          "romanized": "Aushadh ghyaa"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You wake up and your head is pounding. What do you tell your आई?",
+          "options": ["माझं पोट दुखतंय", "मला बरं वाटतंय", "औषध घ्या", "माझं डोकं दुखतंय"],
+          "correct_answer": "माझं डोकं दुखतंय",
+          "correct_romanized": "Maajham dokam dukhtaay"
+        },
+        {
+          "question_id": 2,
+          "question": "You ate too much ice cream and now your tummy hurts. What do you say?",
+          "options": ["माझं डोकं दुखतंय", "माझं पोट दुखतंय", "औषध घ्या", "मला बरं वाटतंय"],
+          "correct_answer": "माझं पोट दुखतंय",
+          "correct_romanized": "Maajham pot dukhtaay"
+        },
+        {
+          "question_id": 3,
+          "question": "After resting all day, you're feeling much better. What do you tell your बाबा?",
+          "options": ["औषध घ्या", "माझं डोकं दुखतंय", "माझं पोट दुखतंय", "मला बरं वाटतंय"],
+          "correct_answer": "मला बरं वाटतंय",
+          "correct_romanized": "Mala baram vaattaay"
+        }
+      ]
+    },
+    {
+      "lesson_id": 19,
+      "title": {
+        "marathi": "आदर",
+        "english": "Manners & Respect"
+      },
+      "theme": "Showing respect to elders using traditional Marathi manners and phrases",
+      "vocabulary": [
+        {
+          "marathi": "नमस्कार काका",
+          "english": "Namaste uncle",
+          "romanized": "Namaskaar kaaka"
+        },
+        {
+          "marathi": "पाया पडतो",
+          "english": "I touch your feet (respectful greeting)",
+          "romanized": "Paaya padto"
+        },
+        {
+          "marathi": "हो आजोबा",
+          "english": "Yes grandfather",
+          "romanized": "Ho aajoba"
+        },
+        {
+          "marathi": "तुमची आज्ञा असेल तर",
+          "english": "With your permission",
+          "romanized": "Tumchi aadnyaa asel tar"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "You visit your काका's house. How do you greet him respectfully?",
+          "options": ["पाया पडतो", "हो आजोबा", "नमस्कार काका", "तुमची आज्ञा असेल तर"],
+          "correct_answer": "नमस्कार काका",
+          "correct_romanized": "Namaskaar kaaka"
+        },
+        {
+          "question_id": 2,
+          "question": "You meet your आजोबा during a festival. What is the traditional way to show deep respect?",
+          "options": ["नमस्कार काका", "तुमची आज्ञा असेल तर", "हो आजोबा", "पाया पडतो"],
+          "correct_answer": "पाया पडतो",
+          "correct_romanized": "Paaya padto"
+        },
+        {
+          "question_id": 3,
+          "question": "You want to go outside to play but need to ask your elders first. What polite phrase do you use?",
+          "options": ["हो आजोबा", "नमस्कार काका", "पाया पडतो", "तुमची आज्ञा असेल तर"],
+          "correct_answer": "तुमची आज्ञा असेल तर",
+          "correct_romanized": "Tumchi aadnyaa asel tar"
+        }
+      ]
+    },
+    {
+      "lesson_id": 20,
+      "title": {
+        "marathi": "संस्कृती",
+        "english": "Cultural Phrases"
+      },
+      "theme": "Important cultural and festive phrases every Marathi child should know",
+      "vocabulary": [
+        {
+          "marathi": "जय महाराष्ट्र",
+          "english": "Hail Maharashtra (pride phrase)",
+          "romanized": "Jai Maharashtra"
+        },
+        {
+          "marathi": "देवाचं आशीर्वाद असू दे",
+          "english": "May God's blessings be upon you",
+          "romanized": "Devacha aashirvaad asu de"
+        },
+        {
+          "marathi": "शुभ मंगल",
+          "english": "Auspicious and blessed",
+          "romanized": "Shubh mangal"
+        },
+        {
+          "marathi": "अभिनंदन!",
+          "english": "Congratulations!",
+          "romanized": "Abhinandan!"
+        }
+      ],
+      "quiz": [
+        {
+          "question_id": 1,
+          "question": "It's Maharashtra Day and your family is celebrating. What phrase shows your Marathi pride?",
+          "options": ["अभिनंदन!", "शुभ मंगल", "देवाचं आशीर्वाद असू दे", "जय महाराष्ट्र"],
+          "correct_answer": "जय महाराष्ट्र",
+          "correct_romanized": "Jai Maharashtra"
+        },
+        {
+          "question_id": 2,
+          "question": "Your आजी is blessing you before an exam. What might she say?",
+          "options": ["जय महाराष्ट्र", "अभिनंदन!", "देवाचं आशीर्वाद असू दे", "शुभ मंगल"],
+          "correct_answer": "देवाचं आशीर्वाद असू दे",
+          "correct_romanized": "Devacha aashirvaad asu de"
+        },
+        {
+          "question_id": 3,
+          "question": "Your cousin just won a dance competition. What do you say to celebrate their achievement?",
+          "options": ["शुभ मंगल", "जय महाराष्ट्र", "देवाचं आशीर्वाद असू दे", "अभिनंदन!"],
+          "correct_answer": "अभिनंदन!",
+          "correct_romanized": "Abhinandan!"
+        }
+      ]
+    }
+]

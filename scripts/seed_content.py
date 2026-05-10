@@ -48,9 +48,12 @@ def load_lessons(file_path: str, level: int):
 
 
 def seed():
+    """Insert all lessons (levels 1-4). Fails if rows already exist."""
     lesson_files = [
         ("content/level1_lessons.json", 1),
         ("content/level2_lessons.json", 2),
+        ("content/level3_lessons.json", 3),
+        ("content/level4_lessons.json", 4),
     ]
 
     for file_path, level in lesson_files:
@@ -61,21 +64,17 @@ def seed():
             print(f"  - {row['title']}")
 
 
-def seed_new():
-    """Seed only new lessons (Level 1 lessons 4-5 and all Level 2)."""
-    # New Level 1 lessons (sequence 4 and 5)
-    level1_rows = load_lessons("content/level1_lessons.json", level=1)
-    new_level1 = [r for r in level1_rows if r["sequence"] >= 4]
-
-    # All Level 2 lessons
-    level2_rows = load_lessons("content/level2_lessons.json", level=2)
-
-    all_new = new_level1 + level2_rows
-    result = supabase_admin.table("lessons").insert(all_new).execute()
-    print(f"Inserted {len(result.data)} new lessons.")
-    for row in result.data:
-        print(f"  - {row['title']}")
+def reseed():
+    """Delete all existing lessons and re-insert from JSON files."""
+    print("Deleting all existing lessons...")
+    supabase_admin.table("lessons").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
+    print("Deleted. Re-seeding...")
+    seed()
 
 
 if __name__ == "__main__":
-    seed()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--reseed":
+        reseed()
+    else:
+        seed()
