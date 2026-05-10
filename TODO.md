@@ -15,3 +15,13 @@
 - [x] Phase 5: MCP server (`mcp_server.py`) exposing skills + connectors for Claude Desktop
 - [x] Phase 6: Cleanup — wired gateway into main.py, deleted old modules (routers/, mcp/, dependencies/, models/, prompts/)
 - [ ] Optional: Deploy MCP server as separate Render service with SSE transport for external MCP clients
+
+## MCP App (Interactive UI inside Claude)
+- [ ] Scaffold TypeScript MCP App server in `mcp-app/` with `@modelcontextprotocol/sdk` + `@modelcontextprotocol/ext-apps`
+- [ ] Build conversation app (`mcp-app/apps/conversation.html`) — chat UI with Mitra, TTS playback, message history
+- [ ] Build lessons app (`mcp-app/apps/lessons.html`) — lesson browser, vocabulary cards, quiz interface
+- [ ] Build progress app (`mcp-app/apps/progress.html`) — XP, streak, level dashboard with charts
+- [ ] Wire MCP App tools to existing Python connectors (either call them directly or proxy through the FastAPI gateway)
+- [ ] Bundle with Vite + vite-plugin-singlefile for sandboxed iframe delivery
+- [ ] Deploy as remote MCP server with SSE transport + cloudflared or Render
+- [ ] Register as Claude custom connector for testing
