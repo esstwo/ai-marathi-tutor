@@ -6,6 +6,7 @@ Conversation endpoints use run_skill() for LLM orchestration.
 
 import logging
 from datetime import datetime, timezone
+from functools import wraps
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
@@ -199,6 +200,7 @@ conversations_router = APIRouter(prefix="/conversations", tags=["conversations"]
 
 def _handle_llm_errors(fn):
     """Decorator to map LLM errors to HTTP status codes."""
+    @wraps(fn)
     async def wrapper(*args, **kwargs):
         try:
             return await fn(*args, **kwargs)
@@ -212,7 +214,6 @@ def _handle_llm_errors(fn):
             raise HTTPException(status_code=422, detail=str(e))
         except LLMServiceError as e:
             raise HTTPException(status_code=502, detail=str(e))
-    wrapper.__name__ = fn.__name__
     return wrapper
 
 
