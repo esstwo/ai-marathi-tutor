@@ -8,3 +8,4 @@ groq
 google-cloud-texttospeech
 fastmcp
 python-frontmatter
+pytest
