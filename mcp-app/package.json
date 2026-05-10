@@ -4,7 +4,7 @@
   "description": "MCP App — interactive Marathi tutor UI inside Claude",
   "type": "module",
   "scripts": {
-    "build:apps": "vite build",
+    "build:apps": "VITE_APP=progress vite build && VITE_APP=conversation vite build && VITE_APP=lessons vite build",
     "build:server": "tsc -p tsconfig.json",
     "build": "npm run build:apps && npm run build:server",
     "start": "node dist/server.js",
