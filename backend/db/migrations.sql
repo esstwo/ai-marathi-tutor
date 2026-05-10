@@ -55,6 +55,7 @@ create table lessons (
   sequence int not null,
   title text not null,           -- e.g. "अभिवादन — Greetings"
   theme text not null,           -- e.g. "greetings", "food", "family"
+  icon text not null default 'book-open', -- lucide icon name (kebab-case)
   vocabulary jsonb not null,     -- [{marathi, english, pronunciation}]
   grammar_note text,             -- optional grammar concept
   quiz_questions jsonb not null, -- [{question, options[], correct_index}]

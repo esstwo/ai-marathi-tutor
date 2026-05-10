@@ -1,15 +1,8 @@
 import type { Lesson } from "@/types";
-import { BookOpen, Users, UtensilsCrossed, Hash, Palette, Music } from "lucide-react";
 import { Sparkles } from "lucide-react";
+import DynamicIcon from "./DynamicIcon";
 
-const LESSON_STYLES = [
-  { icon: BookOpen, color: "peach" },
-  { icon: Users, color: "mint" },
-  { icon: UtensilsCrossed, color: "lavender" },
-  { icon: Hash, color: "sky" },
-  { icon: Palette, color: "lemon" },
-  { icon: Music, color: "coral" },
-];
+const CARD_COLORS = ["peach", "mint", "lavender", "sky", "lemon", "coral"];
 
 interface LessonCardProps {
   lesson: Lesson;
@@ -18,8 +11,7 @@ interface LessonCardProps {
 }
 
 const LessonCard = ({ lesson, index, onSelect }: LessonCardProps) => {
-  const style = LESSON_STYLES[index % LESSON_STYLES.length];
-  const Icon = style.icon;
+  const color = CARD_COLORS[index % CARD_COLORS.length];
 
   return (
     <button
@@ -27,9 +19,9 @@ const LessonCard = ({ lesson, index, onSelect }: LessonCardProps) => {
       className="group relative rounded-3xl border-2 border-border/50 bg-card p-8 text-left transition-all duration-300 hover:fun-shadow-hover hover:-translate-y-2 hover:border-primary/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div
-        className={`bg-${style.color}/30 w-[72px] h-[72px] rounded-2xl flex items-center justify-center mb-5 group-hover:animate-wiggle transition-transform`}
+        className={`bg-${color}/30 w-[72px] h-[72px] rounded-2xl flex items-center justify-center mb-5 group-hover:animate-wiggle transition-transform`}
       >
-        <Icon className="w-9 h-9 text-foreground" />
+        <DynamicIcon name={lesson.icon || "book-open"} className="w-9 h-9 text-foreground" />
       </div>
       <h3 className="font-display text-xl font-bold text-foreground mb-1">
         {lesson.title}

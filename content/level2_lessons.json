@@ -1,1062 +1,1382 @@
 [
-  {
-    "lesson_id": 1,
-    "title": {
-      "marathi": "फळे",
-      "english": "Fruits"
+    {
+        "lesson_id": 1,
+        "title": {
+            "marathi": "फळे",
+            "english": "Fruits"
+        },
+        "theme": "Yummy fruits you eat at home — learn their Marathi names!",
+        "vocabulary": [
+            {
+                "marathi": "आंबा",
+                "english": "Mango",
+                "romanized": "Aambaa"
+            },
+            {
+                "marathi": "केळे",
+                "english": "Banana",
+                "romanized": "Kele"
+            },
+            {
+                "marathi": "सफरचंद",
+                "english": "Apple",
+                "romanized": "Safarchand"
+            },
+            {
+                "marathi": "द्राक्षे",
+                "english": "Grapes",
+                "romanized": "Draakshe"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आजी cuts a sweet, juicy 'आंबा' for you in summer. What fruit is it?",
+                "options": [
+                    "Apple",
+                    "Mango",
+                    "Banana",
+                    "Grapes"
+                ],
+                "correct_answer": "Mango",
+                "correct_romanized": "Aambaa"
+            },
+            {
+                "question_id": 2,
+                "question": "You peel a 'केळे' before eating it. What fruit is this?",
+                "options": [
+                    "Banana",
+                    "Orange",
+                    "Mango",
+                    "Grapes"
+                ],
+                "correct_answer": "Banana",
+                "correct_romanized": "Kele"
+            },
+            {
+                "question_id": 3,
+                "question": "What is 'Apple' called in Marathi?",
+                "options": [
+                    "द्राक्षे",
+                    "आंबा",
+                    "सफरचंद",
+                    "केळे"
+                ],
+                "correct_answer": "सफरचंद",
+                "correct_romanized": "Safarchand"
+            }
+        ],
+        "icon": "apple"
     },
-    "theme": "Yummy fruits you eat at home — learn their Marathi names!",
-    "vocabulary": [
-      {
-        "marathi": "आंबा",
-        "english": "Mango",
-        "romanized": "Aambaa"
-      },
-      {
-        "marathi": "केळे",
-        "english": "Banana",
-        "romanized": "Kele"
-      },
-      {
-        "marathi": "सफरचंद",
-        "english": "Apple",
-        "romanized": "Safarchand"
-      },
-      {
-        "marathi": "द्राक्षे",
-        "english": "Grapes",
-        "romanized": "Draakshe"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आजी cuts a sweet, juicy 'आंबा' for you in summer. What fruit is it?",
-        "options": ["Apple", "Mango", "Banana", "Grapes"],
-        "correct_answer": "Mango",
-        "correct_romanized": "Aambaa"
-      },
-      {
-        "question_id": 2,
-        "question": "You peel a 'केळे' before eating it. What fruit is this?",
-        "options": ["Banana", "Orange", "Mango", "Grapes"],
-        "correct_answer": "Banana",
-        "correct_romanized": "Kele"
-      },
-      {
-        "question_id": 3,
-        "question": "What is 'Apple' called in Marathi?",
-        "options": ["द्राक्षे", "आंबा", "सफरचंद", "केळे"],
-        "correct_answer": "सफरचंद",
-        "correct_romanized": "Safarchand"
-      }
-    ]
-  },
-  {
-    "lesson_id": 2,
-    "title": {
-      "marathi": "भाज्या",
-      "english": "Vegetables"
+    {
+        "lesson_id": 2,
+        "title": {
+            "marathi": "भाज्या",
+            "english": "Vegetables"
+        },
+        "theme": "Vegetables आई uses when she cooks — do you know their names?",
+        "vocabulary": [
+            {
+                "marathi": "बटाटा",
+                "english": "Potato",
+                "romanized": "Bataataa"
+            },
+            {
+                "marathi": "कांदा",
+                "english": "Onion",
+                "romanized": "Kaandaa"
+            },
+            {
+                "marathi": "टोमॅटो",
+                "english": "Tomato",
+                "romanized": "Tomaato"
+            },
+            {
+                "marathi": "गाजर",
+                "english": "Carrot",
+                "romanized": "Gaajar"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई is making french fries from 'बटाटा'. What vegetable is she using?",
+                "options": [
+                    "Onion",
+                    "Carrot",
+                    "Potato",
+                    "Tomato"
+                ],
+                "correct_answer": "Potato",
+                "correct_romanized": "Bataataa"
+            },
+            {
+                "question_id": 2,
+                "question": "Cutting a 'कांदा' can make your eyes water! What is it?",
+                "options": [
+                    "Garlic",
+                    "Onion",
+                    "Potato",
+                    "Pepper"
+                ],
+                "correct_answer": "Onion",
+                "correct_romanized": "Kaandaa"
+            },
+            {
+                "question_id": 3,
+                "question": "This orange veggie is crunchy and rabbits love it. What is 'गाजर'?",
+                "options": [
+                    "Tomato",
+                    "Pumpkin",
+                    "Carrot",
+                    "Potato"
+                ],
+                "correct_answer": "Carrot",
+                "correct_romanized": "Gaajar"
+            }
+        ],
+        "icon": "carrot"
     },
-    "theme": "Vegetables आई uses when she cooks — do you know their names?",
-    "vocabulary": [
-      {
-        "marathi": "बटाटा",
-        "english": "Potato",
-        "romanized": "Bataataa"
-      },
-      {
-        "marathi": "कांदा",
-        "english": "Onion",
-        "romanized": "Kaandaa"
-      },
-      {
-        "marathi": "टोमॅटो",
-        "english": "Tomato",
-        "romanized": "Tomaato"
-      },
-      {
-        "marathi": "गाजर",
-        "english": "Carrot",
-        "romanized": "Gaajar"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई is making french fries from 'बटाटा'. What vegetable is she using?",
-        "options": ["Onion", "Carrot", "Potato", "Tomato"],
-        "correct_answer": "Potato",
-        "correct_romanized": "Bataataa"
-      },
-      {
-        "question_id": 2,
-        "question": "Cutting a 'कांदा' can make your eyes water! What is it?",
-        "options": ["Garlic", "Onion", "Potato", "Pepper"],
-        "correct_answer": "Onion",
-        "correct_romanized": "Kaandaa"
-      },
-      {
-        "question_id": 3,
-        "question": "This orange veggie is crunchy and rabbits love it. What is 'गाजर'?",
-        "options": ["Tomato", "Pumpkin", "Carrot", "Potato"],
-        "correct_answer": "Carrot",
-        "correct_romanized": "Gaajar"
-      }
-    ]
-  },
-  {
-    "lesson_id": 3,
-    "title": {
-      "marathi": "स्वयंपाकघर",
-      "english": "Kitchen Food"
+    {
+        "lesson_id": 3,
+        "title": {
+            "marathi": "स्वयंपाकघर",
+            "english": "Kitchen Food"
+        },
+        "theme": "Everyday food you find on your plate at home",
+        "vocabulary": [
+            {
+                "marathi": "भात",
+                "english": "Rice",
+                "romanized": "Bhaat"
+            },
+            {
+                "marathi": "पोळी",
+                "english": "Roti",
+                "romanized": "Polee"
+            },
+            {
+                "marathi": "डाळ",
+                "english": "Dal (Lentils)",
+                "romanized": "Daal"
+            },
+            {
+                "marathi": "दूध",
+                "english": "Milk",
+                "romanized": "Doodh"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आजी says 'भात वाढू का?' — she wants to serve you more of what?",
+                "options": [
+                    "Bread",
+                    "Rice",
+                    "Milk",
+                    "Dal"
+                ],
+                "correct_answer": "Rice",
+                "correct_romanized": "Bhaat"
+            },
+            {
+                "question_id": 2,
+                "question": "Before bed, बाबा gives you a warm glass of 'दूध'. What is it?",
+                "options": [
+                    "Juice",
+                    "Water",
+                    "Milk",
+                    "Tea"
+                ],
+                "correct_answer": "Milk",
+                "correct_romanized": "Doodh"
+            },
+            {
+                "question_id": 3,
+                "question": "What is 'Roti' called in Marathi?",
+                "options": [
+                    "भात",
+                    "पोळी",
+                    "डाळ",
+                    "दूध"
+                ],
+                "correct_answer": "पोळी",
+                "correct_romanized": "Polee"
+            }
+        ],
+        "icon": "utensils-crossed"
     },
-    "theme": "Everyday food you find on your plate at home",
-    "vocabulary": [
-      {
-        "marathi": "भात",
-        "english": "Rice",
-        "romanized": "Bhaat"
-      },
-      {
-        "marathi": "पोळी",
-        "english": "Roti",
-        "romanized": "Polee"
-      },
-      {
-        "marathi": "डाळ",
-        "english": "Dal (Lentils)",
-        "romanized": "Daal"
-      },
-      {
-        "marathi": "दूध",
-        "english": "Milk",
-        "romanized": "Doodh"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आजी says 'भात वाढू का?' — she wants to serve you more of what?",
-        "options": ["Bread", "Rice", "Milk", "Dal"],
-        "correct_answer": "Rice",
-        "correct_romanized": "Bhaat"
-      },
-      {
-        "question_id": 2,
-        "question": "Before bed, बाबा gives you a warm glass of 'दूध'. What is it?",
-        "options": ["Juice", "Water", "Milk", "Tea"],
-        "correct_answer": "Milk",
-        "correct_romanized": "Doodh"
-      },
-      {
-        "question_id": 3,
-        "question": "What is 'Roti' called in Marathi?",
-        "options": ["भात", "पोळी", "डाळ", "दूध"],
-        "correct_answer": "पोळी",
-        "correct_romanized": "Polee"
-      }
-    ]
-  },
-  {
-    "lesson_id": 4,
-    "title": {
-      "marathi": "खाऊ",
-      "english": "Snacks & Sweets"
+    {
+        "lesson_id": 4,
+        "title": {
+            "marathi": "खाऊ",
+            "english": "Snacks & Sweets"
+        },
+        "theme": "Tasty treats and snacks every kid loves!",
+        "vocabulary": [
+            {
+                "marathi": "लाडू",
+                "english": "Ladoo",
+                "romanized": "Laadoo"
+            },
+            {
+                "marathi": "चिवडा",
+                "english": "Chivda (Snack Mix)",
+                "romanized": "Chivdaa"
+            },
+            {
+                "marathi": "बिस्किट",
+                "english": "Biscuit",
+                "romanized": "Biskit"
+            },
+            {
+                "marathi": "आइस्क्रीम",
+                "english": "Ice Cream",
+                "romanized": "Aaiskream"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "During Diwali, आजी makes round, sweet 'लाडू'. What treat is this?",
+                "options": [
+                    "Cake",
+                    "Ladoo",
+                    "Biscuit",
+                    "Ice Cream"
+                ],
+                "correct_answer": "Ladoo",
+                "correct_romanized": "Laadoo"
+            },
+            {
+                "question_id": 2,
+                "question": "On a hot day you ask for 'आइस्क्रीम'. What do you want?",
+                "options": [
+                    "Cold water",
+                    "Ice Cream",
+                    "Juice",
+                    "Ladoo"
+                ],
+                "correct_answer": "Ice Cream",
+                "correct_romanized": "Aaiskream"
+            },
+            {
+                "question_id": 3,
+                "question": "What is the Marathi word for 'Biscuit'?",
+                "options": [
+                    "चिवडा",
+                    "लाडू",
+                    "आइस्क्रीम",
+                    "बिस्किट"
+                ],
+                "correct_answer": "बिस्किट",
+                "correct_romanized": "Biskit"
+            }
+        ],
+        "icon": "cookie"
     },
-    "theme": "Tasty treats and snacks every kid loves!",
-    "vocabulary": [
-      {
-        "marathi": "लाडू",
-        "english": "Ladoo",
-        "romanized": "Laadoo"
-      },
-      {
-        "marathi": "चिवडा",
-        "english": "Chivda (Snack Mix)",
-        "romanized": "Chivdaa"
-      },
-      {
-        "marathi": "बिस्किट",
-        "english": "Biscuit",
-        "romanized": "Biskit"
-      },
-      {
-        "marathi": "आइस्क्रीम",
-        "english": "Ice Cream",
-        "romanized": "Aaiskream"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "During Diwali, आजी makes round, sweet 'लाडू'. What treat is this?",
-        "options": ["Cake", "Ladoo", "Biscuit", "Ice Cream"],
-        "correct_answer": "Ladoo",
-        "correct_romanized": "Laadoo"
-      },
-      {
-        "question_id": 2,
-        "question": "On a hot day you ask for 'आइस्क्रीम'. What do you want?",
-        "options": ["Cold water", "Ice Cream", "Juice", "Ladoo"],
-        "correct_answer": "Ice Cream",
-        "correct_romanized": "Aaiskream"
-      },
-      {
-        "question_id": 3,
-        "question": "What is the Marathi word for 'Biscuit'?",
-        "options": ["चिवडा", "लाडू", "आइस्क्रीम", "बिस्किट"],
-        "correct_answer": "बिस्किट",
-        "correct_romanized": "Biskit"
-      }
-    ]
-  },
-  {
-    "lesson_id": 5,
-    "title": {
-      "marathi": "सकाळ",
-      "english": "Morning Routine"
+    {
+        "lesson_id": 5,
+        "title": {
+            "marathi": "सकाळ",
+            "english": "Morning Routine"
+        },
+        "theme": "Things you do every morning before heading out",
+        "vocabulary": [
+            {
+                "marathi": "उठणे",
+                "english": "Wake up",
+                "romanized": "Uthane"
+            },
+            {
+                "marathi": "दात घासणे",
+                "english": "Brush teeth",
+                "romanized": "Daat ghaasne"
+            },
+            {
+                "marathi": "आंघोळ करणे",
+                "english": "Take a bath",
+                "romanized": "Aanghol karne"
+            },
+            {
+                "marathi": "कपडे घालणे",
+                "english": "Get dressed",
+                "romanized": "Kapde ghaalne"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई says 'लवकर उठ!' every morning. What is she asking you to do?",
+                "options": [
+                    "Eat breakfast",
+                    "Wake up",
+                    "Brush teeth",
+                    "Get dressed"
+                ],
+                "correct_answer": "Wake up",
+                "correct_romanized": "Uthane"
+            },
+            {
+                "question_id": 2,
+                "question": "You squeeze toothpaste and do 'दात घासणे'. What are you doing?",
+                "options": [
+                    "Washing face",
+                    "Combing hair",
+                    "Brushing teeth",
+                    "Taking a bath"
+                ],
+                "correct_answer": "Brushing teeth",
+                "correct_romanized": "Daat ghaasne"
+            },
+            {
+                "question_id": 3,
+                "question": "After your bath, आई tells you 'कपडे घाल'. What should you do?",
+                "options": [
+                    "Eat food",
+                    "Get dressed",
+                    "Brush teeth",
+                    "Wake up"
+                ],
+                "correct_answer": "Get dressed",
+                "correct_romanized": "Kapde ghaalne"
+            }
+        ],
+        "icon": "sunrise"
     },
-    "theme": "Things you do every morning before heading out",
-    "vocabulary": [
-      {
-        "marathi": "उठणे",
-        "english": "Wake up",
-        "romanized": "Uthane"
-      },
-      {
-        "marathi": "दात घासणे",
-        "english": "Brush teeth",
-        "romanized": "Daat ghaasne"
-      },
-      {
-        "marathi": "आंघोळ करणे",
-        "english": "Take a bath",
-        "romanized": "Aanghol karne"
-      },
-      {
-        "marathi": "कपडे घालणे",
-        "english": "Get dressed",
-        "romanized": "Kapde ghaalne"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई says 'लवकर उठ!' every morning. What is she asking you to do?",
-        "options": ["Eat breakfast", "Wake up", "Brush teeth", "Get dressed"],
-        "correct_answer": "Wake up",
-        "correct_romanized": "Uthane"
-      },
-      {
-        "question_id": 2,
-        "question": "You squeeze toothpaste and do 'दात घासणे'. What are you doing?",
-        "options": ["Washing face", "Combing hair", "Brushing teeth", "Taking a bath"],
-        "correct_answer": "Brushing teeth",
-        "correct_romanized": "Daat ghaasne"
-      },
-      {
-        "question_id": 3,
-        "question": "After your bath, आई tells you 'कपडे घाल'. What should you do?",
-        "options": ["Eat food", "Get dressed", "Brush teeth", "Wake up"],
-        "correct_answer": "Get dressed",
-        "correct_romanized": "Kapde ghaalne"
-      }
-    ]
-  },
-  {
-    "lesson_id": 6,
-    "title": {
-      "marathi": "संध्याकाळ",
-      "english": "Evening Routine"
+    {
+        "lesson_id": 6,
+        "title": {
+            "marathi": "संध्याकाळ",
+            "english": "Evening Routine"
+        },
+        "theme": "What happens at home after school — from homework to bedtime",
+        "vocabulary": [
+            {
+                "marathi": "अभ्यास",
+                "english": "Homework / Study",
+                "romanized": "Abhyaas"
+            },
+            {
+                "marathi": "खेळणे",
+                "english": "Play",
+                "romanized": "Khelne"
+            },
+            {
+                "marathi": "जेवण",
+                "english": "Dinner",
+                "romanized": "Jevan"
+            },
+            {
+                "marathi": "झोपणे",
+                "english": "Sleep",
+                "romanized": "Zhopne"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "बाबा says 'आधी अभ्यास कर, मग खेळ.' What should you do first?",
+                "options": [
+                    "Play",
+                    "Sleep",
+                    "Homework",
+                    "Dinner"
+                ],
+                "correct_answer": "Homework",
+                "correct_romanized": "Abhyaas"
+            },
+            {
+                "question_id": 2,
+                "question": "आई calls 'जेवायला ये!' — what is she calling you to do?",
+                "options": [
+                    "Come to study",
+                    "Come to play",
+                    "Come to eat dinner",
+                    "Come to sleep"
+                ],
+                "correct_answer": "Come to eat dinner",
+                "correct_romanized": "Jevan"
+            },
+            {
+                "question_id": 3,
+                "question": "It's late and आजी says 'झोप आता'. What should you do?",
+                "options": [
+                    "Wake up",
+                    "Play more",
+                    "Sleep",
+                    "Eat"
+                ],
+                "correct_answer": "Sleep",
+                "correct_romanized": "Zhopne"
+            }
+        ],
+        "icon": "sunset"
     },
-    "theme": "What happens at home after school — from homework to bedtime",
-    "vocabulary": [
-      {
-        "marathi": "अभ्यास",
-        "english": "Homework / Study",
-        "romanized": "Abhyaas"
-      },
-      {
-        "marathi": "खेळणे",
-        "english": "Play",
-        "romanized": "Khelne"
-      },
-      {
-        "marathi": "जेवण",
-        "english": "Dinner",
-        "romanized": "Jevan"
-      },
-      {
-        "marathi": "झोपणे",
-        "english": "Sleep",
-        "romanized": "Zhopne"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "बाबा says 'आधी अभ्यास कर, मग खेळ.' What should you do first?",
-        "options": ["Play", "Sleep", "Homework", "Dinner"],
-        "correct_answer": "Homework",
-        "correct_romanized": "Abhyaas"
-      },
-      {
-        "question_id": 2,
-        "question": "आई calls 'जेवायला ये!' — what is she calling you to do?",
-        "options": ["Come to study", "Come to play", "Come to eat dinner", "Come to sleep"],
-        "correct_answer": "Come to eat dinner",
-        "correct_romanized": "Jevan"
-      },
-      {
-        "question_id": 3,
-        "question": "It's late and आजी says 'झोप आता'. What should you do?",
-        "options": ["Wake up", "Play more", "Sleep", "Eat"],
-        "correct_answer": "Sleep",
-        "correct_romanized": "Zhopne"
-      }
-    ]
-  },
-  {
-    "lesson_id": 7,
-    "title": {
-      "marathi": "कपडे",
-      "english": "Clothes"
+    {
+        "lesson_id": 7,
+        "title": {
+            "marathi": "कपडे",
+            "english": "Clothes"
+        },
+        "theme": "What are you wearing today? Learn everyday clothing words",
+        "vocabulary": [
+            {
+                "marathi": "शर्ट",
+                "english": "Shirt",
+                "romanized": "Shirt"
+            },
+            {
+                "marathi": "विजार",
+                "english": "Pants",
+                "romanized": "Vijaar"
+            },
+            {
+                "marathi": "फ्रॉक",
+                "english": "Dress",
+                "romanized": "Frock"
+            },
+            {
+                "marathi": "बूट",
+                "english": "Shoes",
+                "romanized": "Boot"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई says 'शर्ट घाल' before you go out. What should you put on?",
+                "options": [
+                    "Shoes",
+                    "Pants",
+                    "Shirt",
+                    "Hat"
+                ],
+                "correct_answer": "Shirt",
+                "correct_romanized": "Shirt"
+            },
+            {
+                "question_id": 2,
+                "question": "You put 'बूट' on your feet before going outside. What are they?",
+                "options": [
+                    "Socks",
+                    "Shoes",
+                    "Slippers",
+                    "Pants"
+                ],
+                "correct_answer": "Shoes",
+                "correct_romanized": "Boot"
+            },
+            {
+                "question_id": 3,
+                "question": "What is 'Pants' called in Marathi?",
+                "options": [
+                    "शर्ट",
+                    "फ्रॉक",
+                    "विजार",
+                    "बूट"
+                ],
+                "correct_answer": "विजार",
+                "correct_romanized": "Vijaar"
+            }
+        ],
+        "icon": "shirt"
     },
-    "theme": "What are you wearing today? Learn everyday clothing words",
-    "vocabulary": [
-      {
-        "marathi": "शर्ट",
-        "english": "Shirt",
-        "romanized": "Shirt"
-      },
-      {
-        "marathi": "विजार",
-        "english": "Pants",
-        "romanized": "Vijaar"
-      },
-      {
-        "marathi": "फ्रॉक",
-        "english": "Dress",
-        "romanized": "Frock"
-      },
-      {
-        "marathi": "बूट",
-        "english": "Shoes",
-        "romanized": "Boot"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई says 'शर्ट घाल' before you go out. What should you put on?",
-        "options": ["Shoes", "Pants", "Shirt", "Hat"],
-        "correct_answer": "Shirt",
-        "correct_romanized": "Shirt"
-      },
-      {
-        "question_id": 2,
-        "question": "You put 'बूट' on your feet before going outside. What are they?",
-        "options": ["Socks", "Shoes", "Slippers", "Pants"],
-        "correct_answer": "Shoes",
-        "correct_romanized": "Boot"
-      },
-      {
-        "question_id": 3,
-        "question": "What is 'Pants' called in Marathi?",
-        "options": ["शर्ट", "फ्रॉक", "विजार", "बूट"],
-        "correct_answer": "विजार",
-        "correct_romanized": "Vijaar"
-      }
-    ]
-  },
-  {
-    "lesson_id": 8,
-    "title": {
-      "marathi": "आणखी कपडे",
-      "english": "More Clothes"
+    {
+        "lesson_id": 8,
+        "title": {
+            "marathi": "आणखी कपडे",
+            "english": "More Clothes"
+        },
+        "theme": "More things you wear — for cold days, rainy days, and school!",
+        "vocabulary": [
+            {
+                "marathi": "मोजे",
+                "english": "Socks",
+                "romanized": "Moje"
+            },
+            {
+                "marathi": "टोपी",
+                "english": "Hat / Cap",
+                "romanized": "Topee"
+            },
+            {
+                "marathi": "जॅकेट",
+                "english": "Jacket",
+                "romanized": "Jacket"
+            },
+            {
+                "marathi": "गणवेश",
+                "english": "Uniform",
+                "romanized": "Ganvesh"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "It's cold outside! आई says 'जॅकेट घाल'. What should you wear?",
+                "options": [
+                    "Hat",
+                    "Jacket",
+                    "Socks",
+                    "Uniform"
+                ],
+                "correct_answer": "Jacket",
+                "correct_romanized": "Jacket"
+            },
+            {
+                "question_id": 2,
+                "question": "You wear 'मोजे' inside your shoes. What are they?",
+                "options": [
+                    "Laces",
+                    "Insoles",
+                    "Socks",
+                    "Slippers"
+                ],
+                "correct_answer": "Socks",
+                "correct_romanized": "Moje"
+            },
+            {
+                "question_id": 3,
+                "question": "For school, you must wear your 'गणवेश'. What is it?",
+                "options": [
+                    "Jacket",
+                    "Costume",
+                    "Uniform",
+                    "Pajamas"
+                ],
+                "correct_answer": "Uniform",
+                "correct_romanized": "Ganvesh"
+            }
+        ],
+        "icon": "shirt"
     },
-    "theme": "More things you wear — for cold days, rainy days, and school!",
-    "vocabulary": [
-      {
-        "marathi": "मोजे",
-        "english": "Socks",
-        "romanized": "Moje"
-      },
-      {
-        "marathi": "टोपी",
-        "english": "Hat / Cap",
-        "romanized": "Topee"
-      },
-      {
-        "marathi": "जॅकेट",
-        "english": "Jacket",
-        "romanized": "Jacket"
-      },
-      {
-        "marathi": "गणवेश",
-        "english": "Uniform",
-        "romanized": "Ganvesh"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "It's cold outside! आई says 'जॅकेट घाल'. What should you wear?",
-        "options": ["Hat", "Jacket", "Socks", "Uniform"],
-        "correct_answer": "Jacket",
-        "correct_romanized": "Jacket"
-      },
-      {
-        "question_id": 2,
-        "question": "You wear 'मोजे' inside your shoes. What are they?",
-        "options": ["Laces", "Insoles", "Socks", "Slippers"],
-        "correct_answer": "Socks",
-        "correct_romanized": "Moje"
-      },
-      {
-        "question_id": 3,
-        "question": "For school, you must wear your 'गणवेश'. What is it?",
-        "options": ["Jacket", "Costume", "Uniform", "Pajamas"],
-        "correct_answer": "Uniform",
-        "correct_romanized": "Ganvesh"
-      }
-    ]
-  },
-  {
-    "lesson_id": 9,
-    "title": {
-      "marathi": "स्वयंपाकघरात",
-      "english": "In the Kitchen"
+    {
+        "lesson_id": 9,
+        "title": {
+            "marathi": "स्वयंपाकघरात",
+            "english": "In the Kitchen"
+        },
+        "theme": "Things you see and use in the kitchen every day",
+        "vocabulary": [
+            {
+                "marathi": "ताट",
+                "english": "Plate",
+                "romanized": "Taat"
+            },
+            {
+                "marathi": "ग्लास",
+                "english": "Glass",
+                "romanized": "Glass"
+            },
+            {
+                "marathi": "चमचा",
+                "english": "Spoon",
+                "romanized": "Chamchaa"
+            },
+            {
+                "marathi": "गॅस / शेगडी",
+                "english": "Stove",
+                "romanized": "Gas / Shegdee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई puts food on your 'ताट'. What did she put food on?",
+                "options": [
+                    "Glass",
+                    "Spoon",
+                    "Plate",
+                    "Stove"
+                ],
+                "correct_answer": "Plate",
+                "correct_romanized": "Taat"
+            },
+            {
+                "question_id": 2,
+                "question": "You stir your soup with a 'चमचा'. What is it?",
+                "options": [
+                    "Fork",
+                    "Knife",
+                    "Plate",
+                    "Spoon"
+                ],
+                "correct_answer": "Spoon",
+                "correct_romanized": "Chamchaa"
+            },
+            {
+                "question_id": 3,
+                "question": "You ask आई for a 'ग्लास' of water. What do you need?",
+                "options": [
+                    "Plate",
+                    "Bowl",
+                    "Glass",
+                    "Spoon"
+                ],
+                "correct_answer": "Glass",
+                "correct_romanized": "Glass"
+            }
+        ],
+        "icon": "utensils"
     },
-    "theme": "Things you see and use in the kitchen every day",
-    "vocabulary": [
-      {
-        "marathi": "ताट",
-        "english": "Plate",
-        "romanized": "Taat"
-      },
-      {
-        "marathi": "ग्लास",
-        "english": "Glass",
-        "romanized": "Glass"
-      },
-      {
-        "marathi": "चमचा",
-        "english": "Spoon",
-        "romanized": "Chamchaa"
-      },
-      {
-        "marathi": "गॅस / शेगडी",
-        "english": "Stove",
-        "romanized": "Gas / Shegdee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई puts food on your 'ताट'. What did she put food on?",
-        "options": ["Glass", "Spoon", "Plate", "Stove"],
-        "correct_answer": "Plate",
-        "correct_romanized": "Taat"
-      },
-      {
-        "question_id": 2,
-        "question": "You stir your soup with a 'चमचा'. What is it?",
-        "options": ["Fork", "Knife", "Plate", "Spoon"],
-        "correct_answer": "Spoon",
-        "correct_romanized": "Chamchaa"
-      },
-      {
-        "question_id": 3,
-        "question": "You ask आई for a 'ग्लास' of water. What do you need?",
-        "options": ["Plate", "Bowl", "Glass", "Spoon"],
-        "correct_answer": "Glass",
-        "correct_romanized": "Glass"
-      }
-    ]
-  },
-  {
-    "lesson_id": 10,
-    "title": {
-      "marathi": "बेडरूममध्ये",
-      "english": "In the Bedroom"
+    {
+        "lesson_id": 10,
+        "title": {
+            "marathi": "बेडरूममध्ये",
+            "english": "In the Bedroom"
+        },
+        "theme": "Things in your bedroom where you sleep and rest",
+        "vocabulary": [
+            {
+                "marathi": "पलंग",
+                "english": "Bed",
+                "romanized": "Palang"
+            },
+            {
+                "marathi": "उशी",
+                "english": "Pillow",
+                "romanized": "Ushee"
+            },
+            {
+                "marathi": "पांघरूण",
+                "english": "Blanket",
+                "romanized": "Paanghroon"
+            },
+            {
+                "marathi": "दिवा",
+                "english": "Lamp",
+                "romanized": "Divaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You feel cold at night and pull up the 'पांघरूण'. What is it?",
+                "options": [
+                    "Pillow",
+                    "Bed sheet",
+                    "Blanket",
+                    "Curtain"
+                ],
+                "correct_answer": "Blanket",
+                "correct_romanized": "Paanghroon"
+            },
+            {
+                "question_id": 2,
+                "question": "You rest your head on an 'उशी' when you sleep. What is it?",
+                "options": [
+                    "Blanket",
+                    "Pillow",
+                    "Bed",
+                    "Lamp"
+                ],
+                "correct_answer": "Pillow",
+                "correct_romanized": "Ushee"
+            },
+            {
+                "question_id": 3,
+                "question": "What is 'Bed' called in Marathi?",
+                "options": [
+                    "उशी",
+                    "दिवा",
+                    "पलंग",
+                    "पांघरूण"
+                ],
+                "correct_answer": "पलंग",
+                "correct_romanized": "Palang"
+            }
+        ],
+        "icon": "bed"
     },
-    "theme": "Things in your bedroom where you sleep and rest",
-    "vocabulary": [
-      {
-        "marathi": "पलंग",
-        "english": "Bed",
-        "romanized": "Palang"
-      },
-      {
-        "marathi": "उशी",
-        "english": "Pillow",
-        "romanized": "Ushee"
-      },
-      {
-        "marathi": "पांघरूण",
-        "english": "Blanket",
-        "romanized": "Paanghroon"
-      },
-      {
-        "marathi": "दिवा",
-        "english": "Lamp",
-        "romanized": "Divaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You feel cold at night and pull up the 'पांघरूण'. What is it?",
-        "options": ["Pillow", "Bed sheet", "Blanket", "Curtain"],
-        "correct_answer": "Blanket",
-        "correct_romanized": "Paanghroon"
-      },
-      {
-        "question_id": 2,
-        "question": "You rest your head on an 'उशी' when you sleep. What is it?",
-        "options": ["Blanket", "Pillow", "Bed", "Lamp"],
-        "correct_answer": "Pillow",
-        "correct_romanized": "Ushee"
-      },
-      {
-        "question_id": 3,
-        "question": "What is 'Bed' called in Marathi?",
-        "options": ["उशी", "दिवा", "पलंग", "पांघरूण"],
-        "correct_answer": "पलंग",
-        "correct_romanized": "Palang"
-      }
-    ]
-  },
-  {
-    "lesson_id": 11,
-    "title": {
-      "marathi": "बाथरूममध्ये",
-      "english": "In the Bathroom"
+    {
+        "lesson_id": 11,
+        "title": {
+            "marathi": "बाथरूममध्ये",
+            "english": "In the Bathroom"
+        },
+        "theme": "Things you use every day to stay clean and fresh",
+        "vocabulary": [
+            {
+                "marathi": "साबण",
+                "english": "Soap",
+                "romanized": "Saaban"
+            },
+            {
+                "marathi": "टॉवेल",
+                "english": "Towel",
+                "romanized": "Towel"
+            },
+            {
+                "marathi": "टूथब्रश",
+                "english": "Toothbrush",
+                "romanized": "Toothbrush"
+            },
+            {
+                "marathi": "पाणी",
+                "english": "Water",
+                "romanized": "Paanee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "After washing your hands, you need 'साबण'. What is it?",
+                "options": [
+                    "Towel",
+                    "Water",
+                    "Soap",
+                    "Toothbrush"
+                ],
+                "correct_answer": "Soap",
+                "correct_romanized": "Saaban"
+            },
+            {
+                "question_id": 2,
+                "question": "After your bath, you dry off with a 'टॉवेल'. What is it?",
+                "options": [
+                    "Blanket",
+                    "Towel",
+                    "Cloth",
+                    "Soap"
+                ],
+                "correct_answer": "Towel",
+                "correct_romanized": "Towel"
+            },
+            {
+                "question_id": 3,
+                "question": "You're thirsty and ask for 'पाणी'. What do you want?",
+                "options": [
+                    "Milk",
+                    "Juice",
+                    "Water",
+                    "Soap"
+                ],
+                "correct_answer": "Water",
+                "correct_romanized": "Paanee"
+            }
+        ],
+        "icon": "bath"
     },
-    "theme": "Things you use every day to stay clean and fresh",
-    "vocabulary": [
-      {
-        "marathi": "साबण",
-        "english": "Soap",
-        "romanized": "Saaban"
-      },
-      {
-        "marathi": "टॉवेल",
-        "english": "Towel",
-        "romanized": "Towel"
-      },
-      {
-        "marathi": "टूथब्रश",
-        "english": "Toothbrush",
-        "romanized": "Toothbrush"
-      },
-      {
-        "marathi": "पाणी",
-        "english": "Water",
-        "romanized": "Paanee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "After washing your hands, you need 'साबण'. What is it?",
-        "options": ["Towel", "Water", "Soap", "Toothbrush"],
-        "correct_answer": "Soap",
-        "correct_romanized": "Saaban"
-      },
-      {
-        "question_id": 2,
-        "question": "After your bath, you dry off with a 'टॉवेल'. What is it?",
-        "options": ["Blanket", "Towel", "Cloth", "Soap"],
-        "correct_answer": "Towel",
-        "correct_romanized": "Towel"
-      },
-      {
-        "question_id": 3,
-        "question": "You're thirsty and ask for 'पाणी'. What do you want?",
-        "options": ["Milk", "Juice", "Water", "Soap"],
-        "correct_answer": "Water",
-        "correct_romanized": "Paanee"
-      }
-    ]
-  },
-  {
-    "lesson_id": 12,
-    "title": {
-      "marathi": "खेळणी",
-      "english": "Toys & Play"
+    {
+        "lesson_id": 12,
+        "title": {
+            "marathi": "खेळणी",
+            "english": "Toys & Play"
+        },
+        "theme": "Fun things you play with at home and outside",
+        "vocabulary": [
+            {
+                "marathi": "चेंडू",
+                "english": "Ball",
+                "romanized": "Chendoo"
+            },
+            {
+                "marathi": "बाहुली",
+                "english": "Doll",
+                "romanized": "Baahulee"
+            },
+            {
+                "marathi": "कोडे",
+                "english": "Puzzle",
+                "romanized": "Kode"
+            },
+            {
+                "marathi": "रंगीत पेन्सिल",
+                "english": "Crayon",
+                "romanized": "Rangeet Pencil"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You kick a 'चेंडू' in the garden. What are you playing with?",
+                "options": [
+                    "Bat",
+                    "Ball",
+                    "Doll",
+                    "Puzzle"
+                ],
+                "correct_answer": "Ball",
+                "correct_romanized": "Chendoo"
+            },
+            {
+                "question_id": 2,
+                "question": "Your little sister plays with her 'बाहुली'. What toy is it?",
+                "options": [
+                    "Teddy bear",
+                    "Ball",
+                    "Puzzle",
+                    "Doll"
+                ],
+                "correct_answer": "Doll",
+                "correct_romanized": "Baahulee"
+            },
+            {
+                "question_id": 3,
+                "question": "You color a picture using 'रंगीत पेन्सिल'. What are they?",
+                "options": [
+                    "Markers",
+                    "Crayons",
+                    "Pencils",
+                    "Pens"
+                ],
+                "correct_answer": "Crayons",
+                "correct_romanized": "Rangeet Pencil"
+            }
+        ],
+        "icon": "toy-brick"
     },
-    "theme": "Fun things you play with at home and outside",
-    "vocabulary": [
-      {
-        "marathi": "चेंडू",
-        "english": "Ball",
-        "romanized": "Chendoo"
-      },
-      {
-        "marathi": "बाहुली",
-        "english": "Doll",
-        "romanized": "Baahulee"
-      },
-      {
-        "marathi": "कोडे",
-        "english": "Puzzle",
-        "romanized": "Kode"
-      },
-      {
-        "marathi": "रंगीत पेन्सिल",
-        "english": "Crayon",
-        "romanized": "Rangeet Pencil"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You kick a 'चेंडू' in the garden. What are you playing with?",
-        "options": ["Bat", "Ball", "Doll", "Puzzle"],
-        "correct_answer": "Ball",
-        "correct_romanized": "Chendoo"
-      },
-      {
-        "question_id": 2,
-        "question": "Your little sister plays with her 'बाहुली'. What toy is it?",
-        "options": ["Teddy bear", "Ball", "Puzzle", "Doll"],
-        "correct_answer": "Doll",
-        "correct_romanized": "Baahulee"
-      },
-      {
-        "question_id": 3,
-        "question": "You color a picture using 'रंगीत पेन्सिल'. What are they?",
-        "options": ["Markers", "Crayons", "Pencils", "Pens"],
-        "correct_answer": "Crayons",
-        "correct_romanized": "Rangeet Pencil"
-      }
-    ]
-  },
-  {
-    "lesson_id": 13,
-    "title": {
-      "marathi": "मला हवं...",
-      "english": "I want..."
+    {
+        "lesson_id": 13,
+        "title": {
+            "marathi": "मला हवं...",
+            "english": "I want..."
+        },
+        "theme": "How to say what you want and need in Marathi",
+        "vocabulary": [
+            {
+                "marathi": "मला पाणी हवं",
+                "english": "I want water",
+                "romanized": "Mala paanee havaan"
+            },
+            {
+                "marathi": "मला खायला हवं",
+                "english": "I want food / I want to eat",
+                "romanized": "Mala khaaylaa havaan"
+            },
+            {
+                "marathi": "मला भूक लागली",
+                "english": "I am hungry",
+                "romanized": "Mala bhook laaglee"
+            },
+            {
+                "marathi": "मला तहान लागली",
+                "english": "I am thirsty",
+                "romanized": "Mala tahaan laaglee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Your tummy is grumbling. How do you say 'I am hungry' in Marathi?",
+                "options": [
+                    "मला तहान लागली",
+                    "मला भूक लागली",
+                    "मला पाणी हवं",
+                    "मला खायला हवं"
+                ],
+                "correct_answer": "मला भूक लागली",
+                "correct_romanized": "Mala bhook laaglee"
+            },
+            {
+                "question_id": 2,
+                "question": "You just ran around outside and need a drink. You say 'मला तहान लागली'. What does this mean?",
+                "options": [
+                    "I am hungry",
+                    "I am tired",
+                    "I am thirsty",
+                    "I want food"
+                ],
+                "correct_answer": "I am thirsty",
+                "correct_romanized": "Mala tahaan laaglee"
+            },
+            {
+                "question_id": 3,
+                "question": "You say 'मला पाणी हवं' to आई. What are you asking for?",
+                "options": [
+                    "I want milk",
+                    "I want food",
+                    "I want to play",
+                    "I want water"
+                ],
+                "correct_answer": "I want water",
+                "correct_romanized": "Mala paanee havaan"
+            }
+        ],
+        "icon": "hand"
     },
-    "theme": "How to say what you want and need in Marathi",
-    "vocabulary": [
-      {
-        "marathi": "मला पाणी हवं",
-        "english": "I want water",
-        "romanized": "Mala paanee havaan"
-      },
-      {
-        "marathi": "मला खायला हवं",
-        "english": "I want food / I want to eat",
-        "romanized": "Mala khaaylaa havaan"
-      },
-      {
-        "marathi": "मला भूक लागली",
-        "english": "I am hungry",
-        "romanized": "Mala bhook laaglee"
-      },
-      {
-        "marathi": "मला तहान लागली",
-        "english": "I am thirsty",
-        "romanized": "Mala tahaan laaglee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Your tummy is grumbling. How do you say 'I am hungry' in Marathi?",
-        "options": ["मला तहान लागली", "मला भूक लागली", "मला पाणी हवं", "मला खायला हवं"],
-        "correct_answer": "मला भूक लागली",
-        "correct_romanized": "Mala bhook laaglee"
-      },
-      {
-        "question_id": 2,
-        "question": "You just ran around outside and need a drink. You say 'मला तहान लागली'. What does this mean?",
-        "options": ["I am hungry", "I am tired", "I am thirsty", "I want food"],
-        "correct_answer": "I am thirsty",
-        "correct_romanized": "Mala tahaan laaglee"
-      },
-      {
-        "question_id": 3,
-        "question": "You say 'मला पाणी हवं' to आई. What are you asking for?",
-        "options": ["I want milk", "I want food", "I want to play", "I want water"],
-        "correct_answer": "I want water",
-        "correct_romanized": "Mala paanee havaan"
-      }
-    ]
-  },
-  {
-    "lesson_id": 14,
-    "title": {
-      "marathi": "हे आहे...",
-      "english": "This is..."
+    {
+        "lesson_id": 14,
+        "title": {
+            "marathi": "हे आहे...",
+            "english": "This is..."
+        },
+        "theme": "Describe things around you — big, small, hot, and more!",
+        "vocabulary": [
+            {
+                "marathi": "हे माझे आहे",
+                "english": "This is mine",
+                "romanized": "He maazhe aahe"
+            },
+            {
+                "marathi": "हे मोठे आहे",
+                "english": "This is big",
+                "romanized": "He mothe aahe"
+            },
+            {
+                "marathi": "हे छोटे आहे",
+                "english": "This is small",
+                "romanized": "He chhote aahe"
+            },
+            {
+                "marathi": "हे गरम आहे",
+                "english": "This is hot",
+                "romanized": "He garam aahe"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You pick up your toy and say 'हे माझे आहे'. What did you just say?",
+                "options": [
+                    "This is big",
+                    "This is yours",
+                    "This is mine",
+                    "This is small"
+                ],
+                "correct_answer": "This is mine",
+                "correct_romanized": "He maazhe aahe"
+            },
+            {
+                "question_id": 2,
+                "question": "आई warns you 'हे गरम आहे!' about your soup. What is she telling you?",
+                "options": [
+                    "This is cold",
+                    "This is spicy",
+                    "This is hot",
+                    "This is ready"
+                ],
+                "correct_answer": "This is hot",
+                "correct_romanized": "He garam aahe"
+            },
+            {
+                "question_id": 3,
+                "question": "You see a tiny ant and say 'हे छोटे आहे'. What does 'छोटे' mean?",
+                "options": [
+                    "Big",
+                    "Fast",
+                    "Tiny / Small",
+                    "Cute"
+                ],
+                "correct_answer": "Tiny / Small",
+                "correct_romanized": "He chhote aahe"
+            }
+        ],
+        "icon": "message-circle"
     },
-    "theme": "Describe things around you — big, small, hot, and more!",
-    "vocabulary": [
-      {
-        "marathi": "हे माझे आहे",
-        "english": "This is mine",
-        "romanized": "He maazhe aahe"
-      },
-      {
-        "marathi": "हे मोठे आहे",
-        "english": "This is big",
-        "romanized": "He mothe aahe"
-      },
-      {
-        "marathi": "हे छोटे आहे",
-        "english": "This is small",
-        "romanized": "He chhote aahe"
-      },
-      {
-        "marathi": "हे गरम आहे",
-        "english": "This is hot",
-        "romanized": "He garam aahe"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You pick up your toy and say 'हे माझे आहे'. What did you just say?",
-        "options": ["This is big", "This is yours", "This is mine", "This is small"],
-        "correct_answer": "This is mine",
-        "correct_romanized": "He maazhe aahe"
-      },
-      {
-        "question_id": 2,
-        "question": "आई warns you 'हे गरम आहे!' about your soup. What is she telling you?",
-        "options": ["This is cold", "This is spicy", "This is hot", "This is ready"],
-        "correct_answer": "This is hot",
-        "correct_romanized": "He garam aahe"
-      },
-      {
-        "question_id": 3,
-        "question": "You see a tiny ant and say 'हे छोटे आहे'. What does 'छोटे' mean?",
-        "options": ["Big", "Fast", "Tiny / Small", "Cute"],
-        "correct_answer": "Tiny / Small",
-        "correct_romanized": "He chhote aahe"
-      }
-    ]
-  },
-  {
-    "lesson_id": 15,
-    "title": {
-      "marathi": "कृपया",
-      "english": "Please & Thank You"
+    {
+        "lesson_id": 15,
+        "title": {
+            "marathi": "कृपया",
+            "english": "Please & Thank You"
+        },
+        "theme": "Polite words that make everyone smile — say please and thank you!",
+        "vocabulary": [
+            {
+                "marathi": "कृपया द्या",
+                "english": "Please give me",
+                "romanized": "Krupayaa dyaa"
+            },
+            {
+                "marathi": "धन्यवाद",
+                "english": "Thank you",
+                "romanized": "Dhanyavaad"
+            },
+            {
+                "marathi": "आपले स्वागत आहे",
+                "english": "You're welcome",
+                "romanized": "Aaple swaagat aahe"
+            },
+            {
+                "marathi": "माफ करा",
+                "english": "Excuse me / Sorry",
+                "romanized": "Maaf karaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आजी gives you a ladoo and you say 'धन्यवाद'. What did you say?",
+                "options": [
+                    "Please",
+                    "Sorry",
+                    "Thank you",
+                    "Excuse me"
+                ],
+                "correct_answer": "Thank you",
+                "correct_romanized": "Dhanyavaad"
+            },
+            {
+                "question_id": 2,
+                "question": "You accidentally bump into someone and say 'माफ करा'. What does it mean?",
+                "options": [
+                    "Thank you",
+                    "Hello",
+                    "Excuse me / Sorry",
+                    "Please"
+                ],
+                "correct_answer": "Excuse me / Sorry",
+                "correct_romanized": "Maaf karaa"
+            },
+            {
+                "question_id": 3,
+                "question": "You want more rice politely. Which phrase should you use?",
+                "options": [
+                    "धन्यवाद",
+                    "माफ करा",
+                    "कृपया द्या",
+                    "आपले स्वागत आहे"
+                ],
+                "correct_answer": "कृपया द्या",
+                "correct_romanized": "Krupayaa dyaa"
+            }
+        ],
+        "icon": "heart"
     },
-    "theme": "Polite words that make everyone smile — say please and thank you!",
-    "vocabulary": [
-      {
-        "marathi": "कृपया द्या",
-        "english": "Please give me",
-        "romanized": "Krupayaa dyaa"
-      },
-      {
-        "marathi": "धन्यवाद",
-        "english": "Thank you",
-        "romanized": "Dhanyavaad"
-      },
-      {
-        "marathi": "आपले स्वागत आहे",
-        "english": "You're welcome",
-        "romanized": "Aaple swaagat aahe"
-      },
-      {
-        "marathi": "माफ करा",
-        "english": "Excuse me / Sorry",
-        "romanized": "Maaf karaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आजी gives you a ladoo and you say 'धन्यवाद'. What did you say?",
-        "options": ["Please", "Sorry", "Thank you", "Excuse me"],
-        "correct_answer": "Thank you",
-        "correct_romanized": "Dhanyavaad"
-      },
-      {
-        "question_id": 2,
-        "question": "You accidentally bump into someone and say 'माफ करा'. What does it mean?",
-        "options": ["Thank you", "Hello", "Excuse me / Sorry", "Please"],
-        "correct_answer": "Excuse me / Sorry",
-        "correct_romanized": "Maaf karaa"
-      },
-      {
-        "question_id": 3,
-        "question": "You want more rice politely. Which phrase should you use?",
-        "options": ["धन्यवाद", "माफ करा", "कृपया द्या", "आपले स्वागत आहे"],
-        "correct_answer": "कृपया द्या",
-        "correct_romanized": "Krupayaa dyaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 16,
-    "title": {
-      "marathi": "जेवणाच्या टेबलावर",
-      "english": "At the Table"
+    {
+        "lesson_id": 16,
+        "title": {
+            "marathi": "जेवणाच्या टेबलावर",
+            "english": "At the Table"
+        },
+        "theme": "Words you hear and use while eating with your family",
+        "vocabulary": [
+            {
+                "marathi": "आणखी खा",
+                "english": "Eat more",
+                "romanized": "Aankhee khaa"
+            },
+            {
+                "marathi": "पुरे",
+                "english": "Enough",
+                "romanized": "Pure"
+            },
+            {
+                "marathi": "छान / चविष्ट",
+                "english": "Delicious",
+                "romanized": "Chhaan / Chavisht"
+            },
+            {
+                "marathi": "पोट भरले",
+                "english": "I'm full",
+                "romanized": "Pot bharle"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आजी keeps saying 'आणखी खा! आणखी खा!' What does she want you to do?",
+                "options": [
+                    "Eat less",
+                    "Eat more",
+                    "Drink water",
+                    "Sit down"
+                ],
+                "correct_answer": "Eat more",
+                "correct_romanized": "Aankhee khaa"
+            },
+            {
+                "question_id": 2,
+                "question": "You rub your tummy and say 'पोट भरले'. What are you telling आई?",
+                "options": [
+                    "I'm hungry",
+                    "I'm full",
+                    "It's delicious",
+                    "I want more"
+                ],
+                "correct_answer": "I'm full",
+                "correct_romanized": "Pot bharle"
+            },
+            {
+                "question_id": 3,
+                "question": "The food is so tasty! You say 'छान आहे!' What does 'छान' mean?",
+                "options": [
+                    "Enough",
+                    "Hot",
+                    "Delicious / Great",
+                    "More"
+                ],
+                "correct_answer": "Delicious / Great",
+                "correct_romanized": "Chhaan / Chavisht"
+            }
+        ],
+        "icon": "utensils-crossed"
     },
-    "theme": "Words you hear and use while eating with your family",
-    "vocabulary": [
-      {
-        "marathi": "आणखी खा",
-        "english": "Eat more",
-        "romanized": "Aankhee khaa"
-      },
-      {
-        "marathi": "पुरे",
-        "english": "Enough",
-        "romanized": "Pure"
-      },
-      {
-        "marathi": "छान / चविष्ट",
-        "english": "Delicious",
-        "romanized": "Chhaan / Chavisht"
-      },
-      {
-        "marathi": "पोट भरले",
-        "english": "I'm full",
-        "romanized": "Pot bharle"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आजी keeps saying 'आणखी खा! आणखी खा!' What does she want you to do?",
-        "options": ["Eat less", "Eat more", "Drink water", "Sit down"],
-        "correct_answer": "Eat more",
-        "correct_romanized": "Aankhee khaa"
-      },
-      {
-        "question_id": 2,
-        "question": "You rub your tummy and say 'पोट भरले'. What are you telling आई?",
-        "options": ["I'm hungry", "I'm full", "It's delicious", "I want more"],
-        "correct_answer": "I'm full",
-        "correct_romanized": "Pot bharle"
-      },
-      {
-        "question_id": 3,
-        "question": "The food is so tasty! You say 'छान आहे!' What does 'छान' mean?",
-        "options": ["Enough", "Hot", "Delicious / Great", "More"],
-        "correct_answer": "Delicious / Great",
-        "correct_romanized": "Chhaan / Chavisht"
-      }
-    ]
-  },
-  {
-    "lesson_id": 17,
-    "title": {
-      "marathi": "तयार हो",
-      "english": "Getting Ready"
+    {
+        "lesson_id": 17,
+        "title": {
+            "marathi": "तयार हो",
+            "english": "Getting Ready"
+        },
+        "theme": "Words आई and बाबा say when it's time to get going",
+        "vocabulary": [
+            {
+                "marathi": "लवकर कर",
+                "english": "Hurry up",
+                "romanized": "Lavkar kar"
+            },
+            {
+                "marathi": "थांब",
+                "english": "Wait",
+                "romanized": "Thaamba"
+            },
+            {
+                "marathi": "चल",
+                "english": "Let's go",
+                "romanized": "Chal"
+            },
+            {
+                "marathi": "इकडे ये",
+                "english": "Come here",
+                "romanized": "Ikde ye"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You're running late and बाबा says 'लवकर कर!' What does he mean?",
+                "options": [
+                    "Slow down",
+                    "Come here",
+                    "Hurry up",
+                    "Wait"
+                ],
+                "correct_answer": "Hurry up",
+                "correct_romanized": "Lavkar kar"
+            },
+            {
+                "question_id": 2,
+                "question": "आई is calling you — 'इकडे ये!' What is she saying?",
+                "options": [
+                    "Go away",
+                    "Sit down",
+                    "Come here",
+                    "Let's go"
+                ],
+                "correct_answer": "Come here",
+                "correct_romanized": "Ikde ye"
+            },
+            {
+                "question_id": 3,
+                "question": "Everyone's ready and बाबा says 'चल!' What does it mean?",
+                "options": [
+                    "Wait",
+                    "Stop",
+                    "Let's go",
+                    "Hurry up"
+                ],
+                "correct_answer": "Let's go",
+                "correct_romanized": "Chal"
+            }
+        ],
+        "icon": "clock"
     },
-    "theme": "Words आई and बाबा say when it's time to get going",
-    "vocabulary": [
-      {
-        "marathi": "लवकर कर",
-        "english": "Hurry up",
-        "romanized": "Lavkar kar"
-      },
-      {
-        "marathi": "थांब",
-        "english": "Wait",
-        "romanized": "Thaamba"
-      },
-      {
-        "marathi": "चल",
-        "english": "Let's go",
-        "romanized": "Chal"
-      },
-      {
-        "marathi": "इकडे ये",
-        "english": "Come here",
-        "romanized": "Ikde ye"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You're running late and बाबा says 'लवकर कर!' What does he mean?",
-        "options": ["Slow down", "Come here", "Hurry up", "Wait"],
-        "correct_answer": "Hurry up",
-        "correct_romanized": "Lavkar kar"
-      },
-      {
-        "question_id": 2,
-        "question": "आई is calling you — 'इकडे ये!' What is she saying?",
-        "options": ["Go away", "Sit down", "Come here", "Let's go"],
-        "correct_answer": "Come here",
-        "correct_romanized": "Ikde ye"
-      },
-      {
-        "question_id": 3,
-        "question": "Everyone's ready and बाबा says 'चल!' What does it mean?",
-        "options": ["Wait", "Stop", "Let's go", "Hurry up"],
-        "correct_answer": "Let's go",
-        "correct_romanized": "Chal"
-      }
-    ]
-  },
-  {
-    "lesson_id": 18,
-    "title": {
-      "marathi": "मदत",
-      "english": "Help at Home"
+    {
+        "lesson_id": 18,
+        "title": {
+            "marathi": "मदत",
+            "english": "Help at Home"
+        },
+        "theme": "Simple things आई and बाबा ask you to help with",
+        "vocabulary": [
+            {
+                "marathi": "आवर",
+                "english": "Clean up / Tidy up",
+                "romanized": "Aavar"
+            },
+            {
+                "marathi": "ठेव",
+                "english": "Put away / Keep",
+                "romanized": "Thev"
+            },
+            {
+                "marathi": "हे घेऊन ये",
+                "english": "Carry this / Bring this",
+                "romanized": "He gheoon ye"
+            },
+            {
+                "marathi": "उघड / बंद कर",
+                "english": "Open / Close",
+                "romanized": "Ughad / Band kar"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Your room is messy and आई says 'आवर!' What should you do?",
+                "options": [
+                    "Carry things",
+                    "Open the door",
+                    "Clean up",
+                    "Sit down"
+                ],
+                "correct_answer": "Clean up",
+                "correct_romanized": "Aavar"
+            },
+            {
+                "question_id": 2,
+                "question": "बाबा says 'दार बंद कर'. What does 'बंद कर' mean?",
+                "options": [
+                    "Open",
+                    "Close",
+                    "Lock",
+                    "Break"
+                ],
+                "correct_answer": "Close",
+                "correct_romanized": "Band kar"
+            },
+            {
+                "question_id": 3,
+                "question": "आई says 'खेळणी ठेव'. What does she want you to do with your toys?",
+                "options": [
+                    "Throw them",
+                    "Break them",
+                    "Put them away",
+                    "Bring them"
+                ],
+                "correct_answer": "Put them away",
+                "correct_romanized": "Thev"
+            }
+        ],
+        "icon": "hand-helping"
     },
-    "theme": "Simple things आई and बाबा ask you to help with",
-    "vocabulary": [
-      {
-        "marathi": "आवर",
-        "english": "Clean up / Tidy up",
-        "romanized": "Aavar"
-      },
-      {
-        "marathi": "ठेव",
-        "english": "Put away / Keep",
-        "romanized": "Thev"
-      },
-      {
-        "marathi": "हे घेऊन ये",
-        "english": "Carry this / Bring this",
-        "romanized": "He gheoon ye"
-      },
-      {
-        "marathi": "उघड / बंद कर",
-        "english": "Open / Close",
-        "romanized": "Ughad / Band kar"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Your room is messy and आई says 'आवर!' What should you do?",
-        "options": ["Carry things", "Open the door", "Clean up", "Sit down"],
-        "correct_answer": "Clean up",
-        "correct_romanized": "Aavar"
-      },
-      {
-        "question_id": 2,
-        "question": "बाबा says 'दार बंद कर'. What does 'बंद कर' mean?",
-        "options": ["Open", "Close", "Lock", "Break"],
-        "correct_answer": "Close",
-        "correct_romanized": "Band kar"
-      },
-      {
-        "question_id": 3,
-        "question": "आई says 'खेळणी ठेव'. What does she want you to do with your toys?",
-        "options": ["Throw them", "Break them", "Put them away", "Bring them"],
-        "correct_answer": "Put them away",
-        "correct_romanized": "Thev"
-      }
-    ]
-  },
-  {
-    "lesson_id": 19,
-    "title": {
-      "marathi": "वेळ",
-      "english": "Time Words"
+    {
+        "lesson_id": 19,
+        "title": {
+            "marathi": "वेळ",
+            "english": "Time Words"
+        },
+        "theme": "When did it happen? Learn words for today, tomorrow, and more",
+        "vocabulary": [
+            {
+                "marathi": "आज",
+                "english": "Today",
+                "romanized": "Aaj"
+            },
+            {
+                "marathi": "उद्या",
+                "english": "Tomorrow",
+                "romanized": "Udyaa"
+            },
+            {
+                "marathi": "काल",
+                "english": "Yesterday",
+                "romanized": "Kaal"
+            },
+            {
+                "marathi": "आता",
+                "english": "Now",
+                "romanized": "Aataa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई says 'आज आपण बाहेर जाऊया'. When are you going out?",
+                "options": [
+                    "Tomorrow",
+                    "Yesterday",
+                    "Today",
+                    "Later"
+                ],
+                "correct_answer": "Today",
+                "correct_romanized": "Aaj"
+            },
+            {
+                "question_id": 2,
+                "question": "बाबा says 'उद्या शाळेला सुट्टी आहे'. When is the holiday?",
+                "options": [
+                    "Today",
+                    "Tomorrow",
+                    "Yesterday",
+                    "Now"
+                ],
+                "correct_answer": "Tomorrow",
+                "correct_romanized": "Udyaa"
+            },
+            {
+                "question_id": 3,
+                "question": "आई tells you 'आता अभ्यास कर!' When does she want you to study?",
+                "options": [
+                    "Tomorrow",
+                    "Later",
+                    "Yesterday",
+                    "Now"
+                ],
+                "correct_answer": "Now",
+                "correct_romanized": "Aataa"
+            }
+        ],
+        "icon": "clock"
     },
-    "theme": "When did it happen? Learn words for today, tomorrow, and more",
-    "vocabulary": [
-      {
-        "marathi": "आज",
-        "english": "Today",
-        "romanized": "Aaj"
-      },
-      {
-        "marathi": "उद्या",
-        "english": "Tomorrow",
-        "romanized": "Udyaa"
-      },
-      {
-        "marathi": "काल",
-        "english": "Yesterday",
-        "romanized": "Kaal"
-      },
-      {
-        "marathi": "आता",
-        "english": "Now",
-        "romanized": "Aataa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई says 'आज आपण बाहेर जाऊया'. When are you going out?",
-        "options": ["Tomorrow", "Yesterday", "Today", "Later"],
-        "correct_answer": "Today",
-        "correct_romanized": "Aaj"
-      },
-      {
-        "question_id": 2,
-        "question": "बाबा says 'उद्या शाळेला सुट्टी आहे'. When is the holiday?",
-        "options": ["Today", "Tomorrow", "Yesterday", "Now"],
-        "correct_answer": "Tomorrow",
-        "correct_romanized": "Udyaa"
-      },
-      {
-        "question_id": 3,
-        "question": "आई tells you 'आता अभ्यास कर!' When does she want you to study?",
-        "options": ["Tomorrow", "Later", "Yesterday", "Now"],
-        "correct_answer": "Now",
-        "correct_romanized": "Aataa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 20,
-    "title": {
-      "marathi": "माझ्या वस्तू",
-      "english": "My Things"
-    },
-    "theme": "Things you carry with you every day — your bag, books, and more",
-    "vocabulary": [
-      {
-        "marathi": "दप्तर",
-        "english": "Bag / School bag",
-        "romanized": "Daptar"
-      },
-      {
-        "marathi": "पुस्तक",
-        "english": "Book",
-        "romanized": "Pustak"
-      },
-      {
-        "marathi": "पेन्सिल",
-        "english": "Pencil",
-        "romanized": "Pencil"
-      },
-      {
-        "marathi": "पाण्याची बाटली",
-        "english": "Water bottle",
-        "romanized": "Paanyaachee baatlee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Before school, आई says 'दप्तर भरलेस का?' What is she asking about?",
-        "options": ["Lunch box", "Water bottle", "School bag", "Uniform"],
-        "correct_answer": "School bag",
-        "correct_romanized": "Daptar"
-      },
-      {
-        "question_id": 2,
-        "question": "You write in class with a 'पेन्सिल'. What is it?",
-        "options": ["Pen", "Pencil", "Crayon", "Marker"],
-        "correct_answer": "Pencil",
-        "correct_romanized": "Pencil"
-      },
-      {
-        "question_id": 3,
-        "question": "It's a hot day and you need your 'पाण्याची बाटली'. What do you need?",
-        "options": ["Lunch box", "Juice box", "Water bottle", "Thermos"],
-        "correct_answer": "Water bottle",
-        "correct_romanized": "Paanyaachee baatlee"
-      }
-    ]
-  }
+    {
+        "lesson_id": 20,
+        "title": {
+            "marathi": "माझ्या वस्तू",
+            "english": "My Things"
+        },
+        "theme": "Things you carry with you every day — your bag, books, and more",
+        "vocabulary": [
+            {
+                "marathi": "दप्तर",
+                "english": "Bag / School bag",
+                "romanized": "Daptar"
+            },
+            {
+                "marathi": "पुस्तक",
+                "english": "Book",
+                "romanized": "Pustak"
+            },
+            {
+                "marathi": "पेन्सिल",
+                "english": "Pencil",
+                "romanized": "Pencil"
+            },
+            {
+                "marathi": "पाण्याची बाटली",
+                "english": "Water bottle",
+                "romanized": "Paanyaachee baatlee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Before school, आई says 'दप्तर भरलेस का?' What is she asking about?",
+                "options": [
+                    "Lunch box",
+                    "Water bottle",
+                    "School bag",
+                    "Uniform"
+                ],
+                "correct_answer": "School bag",
+                "correct_romanized": "Daptar"
+            },
+            {
+                "question_id": 2,
+                "question": "You write in class with a 'पेन्सिल'. What is it?",
+                "options": [
+                    "Pen",
+                    "Pencil",
+                    "Crayon",
+                    "Marker"
+                ],
+                "correct_answer": "Pencil",
+                "correct_romanized": "Pencil"
+            },
+            {
+                "question_id": 3,
+                "question": "It's a hot day and you need your 'पाण्याची बाटली'. What do you need?",
+                "options": [
+                    "Lunch box",
+                    "Juice box",
+                    "Water bottle",
+                    "Thermos"
+                ],
+                "correct_answer": "Water bottle",
+                "correct_romanized": "Paanyaachee baatlee"
+            }
+        ],
+        "icon": "backpack"
+    }
 ]

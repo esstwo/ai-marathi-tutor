@@ -1,1062 +1,1382 @@
 [
-  {
-    "lesson_id": 1,
-    "title": {
-      "marathi": "नमस्कार",
-      "english": "Greetings"
+    {
+        "lesson_id": 1,
+        "title": {
+            "marathi": "नमस्कार",
+            "english": "Greetings"
+        },
+        "theme": "Everyday greetings used at home and with friends",
+        "vocabulary": [
+            {
+                "marathi": "नमस्कार",
+                "english": "Hello / Greetings",
+                "romanized": "Namaskaar"
+            },
+            {
+                "marathi": "कसं आहेस?",
+                "english": "How are you?",
+                "romanized": "Kasa aahes?"
+            },
+            {
+                "marathi": "बाय",
+                "english": "Goodbye",
+                "romanized": "Bye"
+            },
+            {
+                "marathi": "धन्यवाद",
+                "english": "Thank you",
+                "romanized": "Dhanyavaad"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You walk into आजी's house. What do you say first?",
+                "options": [
+                    "धन्यवाद",
+                    "नमस्कार",
+                    "बाय",
+                    "झोप"
+                ],
+                "correct_answer": "नमस्कार",
+                "correct_romanized": "Namaskaar"
+            },
+            {
+                "question_id": 2,
+                "question": "Your friend asks 'कसं आहेस?' — what are they asking?",
+                "options": [
+                    "What is your name?",
+                    "Where are you going?",
+                    "How are you?",
+                    "Do you want food?"
+                ],
+                "correct_answer": "How are you?",
+                "correct_romanized": "Kasa aahes?"
+            },
+            {
+                "question_id": 3,
+                "question": "आई gave you a cookie! What do you say?",
+                "options": [
+                    "बाय",
+                    "नमस्कार",
+                    "धन्यवाद",
+                    "कसं आहेस?"
+                ],
+                "correct_answer": "धन्यवाद",
+                "correct_romanized": "Dhanyavaad"
+            }
+        ],
+        "icon": "hand-metal"
     },
-    "theme": "Everyday greetings used at home and with friends",
-    "vocabulary": [
-      {
-        "marathi": "नमस्कार",
-        "english": "Hello / Greetings",
-        "romanized": "Namaskaar"
-      },
-      {
-        "marathi": "कसं आहेस?",
-        "english": "How are you?",
-        "romanized": "Kasa aahes?"
-      },
-      {
-        "marathi": "बाय",
-        "english": "Goodbye",
-        "romanized": "Bye"
-      },
-      {
-        "marathi": "धन्यवाद",
-        "english": "Thank you",
-        "romanized": "Dhanyavaad"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You walk into आजी's house. What do you say first?",
-        "options": ["धन्यवाद", "नमस्कार", "बाय", "झोप"],
-        "correct_answer": "नमस्कार",
-        "correct_romanized": "Namaskaar"
-      },
-      {
-        "question_id": 2,
-        "question": "Your friend asks 'कसं आहेस?' — what are they asking?",
-        "options": ["What is your name?", "Where are you going?", "How are you?", "Do you want food?"],
-        "correct_answer": "How are you?",
-        "correct_romanized": "Kasa aahes?"
-      },
-      {
-        "question_id": 3,
-        "question": "आई gave you a cookie! What do you say?",
-        "options": ["बाय", "नमस्कार", "धन्यवाद", "कसं आहेस?"],
-        "correct_answer": "धन्यवाद",
-        "correct_romanized": "Dhanyavaad"
-      }
-    ]
-  },
-  {
-    "lesson_id": 2,
-    "title": {
-      "marathi": "कुटुंब",
-      "english": "Family Members"
+    {
+        "lesson_id": 2,
+        "title": {
+            "marathi": "कुटुंब",
+            "english": "Family Members"
+        },
+        "theme": "Names for the family members you see every day at home",
+        "vocabulary": [
+            {
+                "marathi": "आई",
+                "english": "Mom / Mother",
+                "romanized": "Aai"
+            },
+            {
+                "marathi": "बाबा",
+                "english": "Dad / Father",
+                "romanized": "Baabaa"
+            },
+            {
+                "marathi": "आजी",
+                "english": "Grandma (paternal/maternal)",
+                "romanized": "Aaji"
+            },
+            {
+                "marathi": "आजोबा",
+                "english": "Grandpa (paternal/maternal)",
+                "romanized": "Aajobaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Who cooks your favorite food at home? She's your आई! What does आई mean?",
+                "options": [
+                    "Grandma",
+                    "Sister",
+                    "Mom",
+                    "Aunt"
+                ],
+                "correct_answer": "Mom",
+                "correct_romanized": "Aai"
+            },
+            {
+                "question_id": 2,
+                "question": "You want to call your grandfather. What do you say?",
+                "options": [
+                    "बाबा",
+                    "आजी",
+                    "आजोबा",
+                    "आई"
+                ],
+                "correct_answer": "आजोबा",
+                "correct_romanized": "Aajobaa"
+            },
+            {
+                "question_id": 3,
+                "question": "बाबा is taking you to the park. Who is बाबा?",
+                "options": [
+                    "Mom",
+                    "Grandma",
+                    "Uncle",
+                    "Dad"
+                ],
+                "correct_answer": "Dad",
+                "correct_romanized": "Baabaa"
+            }
+        ],
+        "icon": "users"
     },
-    "theme": "Names for the family members you see every day at home",
-    "vocabulary": [
-      {
-        "marathi": "आई",
-        "english": "Mom / Mother",
-        "romanized": "Aai"
-      },
-      {
-        "marathi": "बाबा",
-        "english": "Dad / Father",
-        "romanized": "Baabaa"
-      },
-      {
-        "marathi": "आजी",
-        "english": "Grandma (paternal/maternal)",
-        "romanized": "Aaji"
-      },
-      {
-        "marathi": "आजोबा",
-        "english": "Grandpa (paternal/maternal)",
-        "romanized": "Aajobaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Who cooks your favorite food at home? She's your आई! What does आई mean?",
-        "options": ["Grandma", "Sister", "Mom", "Aunt"],
-        "correct_answer": "Mom",
-        "correct_romanized": "Aai"
-      },
-      {
-        "question_id": 2,
-        "question": "You want to call your grandfather. What do you say?",
-        "options": ["बाबा", "आजी", "आजोबा", "आई"],
-        "correct_answer": "आजोबा",
-        "correct_romanized": "Aajobaa"
-      },
-      {
-        "question_id": 3,
-        "question": "बाबा is taking you to the park. Who is बाबा?",
-        "options": ["Mom", "Grandma", "Uncle", "Dad"],
-        "correct_answer": "Dad",
-        "correct_romanized": "Baabaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 3,
-    "title": {
-      "marathi": "कुटुंब भाग २",
-      "english": "More Family"
+    {
+        "lesson_id": 3,
+        "title": {
+            "marathi": "कुटुंब भाग २",
+            "english": "More Family"
+        },
+        "theme": "More family members — siblings, uncles, and aunts!",
+        "vocabulary": [
+            {
+                "marathi": "भाऊ",
+                "english": "Brother",
+                "romanized": "Bhaau"
+            },
+            {
+                "marathi": "बहीण",
+                "english": "Sister",
+                "romanized": "Baheen"
+            },
+            {
+                "marathi": "काका",
+                "english": "Uncle (father's brother)",
+                "romanized": "Kaakaa"
+            },
+            {
+                "marathi": "काकू",
+                "english": "Aunt (uncle's wife)",
+                "romanized": "Kaakoo"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Your बहीण is playing with you. Who is she?",
+                "options": [
+                    "Mom",
+                    "Aunt",
+                    "Grandma",
+                    "Sister"
+                ],
+                "correct_answer": "Sister",
+                "correct_romanized": "Baheen"
+            },
+            {
+                "question_id": 2,
+                "question": "बाबा's brother comes to visit. What do you call him?",
+                "options": [
+                    "भाऊ",
+                    "आजोबा",
+                    "काका",
+                    "बाबा"
+                ],
+                "correct_answer": "काका",
+                "correct_romanized": "Kaakaa"
+            },
+            {
+                "question_id": 3,
+                "question": "How do you say 'Brother' in Marathi?",
+                "options": [
+                    "बहीण",
+                    "काका",
+                    "भाऊ",
+                    "काकू"
+                ],
+                "correct_answer": "भाऊ",
+                "correct_romanized": "Bhaau"
+            }
+        ],
+        "icon": "users-round"
     },
-    "theme": "More family members — siblings, uncles, and aunts!",
-    "vocabulary": [
-      {
-        "marathi": "भाऊ",
-        "english": "Brother",
-        "romanized": "Bhaau"
-      },
-      {
-        "marathi": "बहीण",
-        "english": "Sister",
-        "romanized": "Baheen"
-      },
-      {
-        "marathi": "काका",
-        "english": "Uncle (father's brother)",
-        "romanized": "Kaakaa"
-      },
-      {
-        "marathi": "काकू",
-        "english": "Aunt (uncle's wife)",
-        "romanized": "Kaakoo"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Your बहीण is playing with you. Who is she?",
-        "options": ["Mom", "Aunt", "Grandma", "Sister"],
-        "correct_answer": "Sister",
-        "correct_romanized": "Baheen"
-      },
-      {
-        "question_id": 2,
-        "question": "बाबा's brother comes to visit. What do you call him?",
-        "options": ["भाऊ", "आजोबा", "काका", "बाबा"],
-        "correct_answer": "काका",
-        "correct_romanized": "Kaakaa"
-      },
-      {
-        "question_id": 3,
-        "question": "How do you say 'Brother' in Marathi?",
-        "options": ["बहीण", "काका", "भाऊ", "काकू"],
-        "correct_answer": "भाऊ",
-        "correct_romanized": "Bhaau"
-      }
-    ]
-  },
-  {
-    "lesson_id": 4,
-    "title": {
-      "marathi": "रंग",
-      "english": "Colors"
+    {
+        "lesson_id": 4,
+        "title": {
+            "marathi": "रंग",
+            "english": "Colors"
+        },
+        "theme": "Learn the colors you see in the sky, in your garden, and on your plate!",
+        "vocabulary": [
+            {
+                "marathi": "लाल",
+                "english": "Red",
+                "romanized": "Laal"
+            },
+            {
+                "marathi": "निळा",
+                "english": "Blue",
+                "romanized": "Neelaa"
+            },
+            {
+                "marathi": "पिवळा",
+                "english": "Yellow",
+                "romanized": "Pivlaa"
+            },
+            {
+                "marathi": "हिरवा",
+                "english": "Green",
+                "romanized": "Hirvaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "The sky is a beautiful निळा today. What color is that?",
+                "options": [
+                    "Red",
+                    "Green",
+                    "Blue",
+                    "Yellow"
+                ],
+                "correct_answer": "Blue",
+                "correct_romanized": "Neelaa"
+            },
+            {
+                "question_id": 2,
+                "question": "A ripe mango is this color. What is 'Yellow' in Marathi?",
+                "options": [
+                    "लाल",
+                    "हिरवा",
+                    "निळा",
+                    "पिवळा"
+                ],
+                "correct_answer": "पिवळा",
+                "correct_romanized": "Pivlaa"
+            },
+            {
+                "question_id": 3,
+                "question": "Trees and grass are this color. What is 'Green' in Marathi?",
+                "options": [
+                    "हिरवा",
+                    "निळा",
+                    "लाल",
+                    "पिवळा"
+                ],
+                "correct_answer": "हिरवा",
+                "correct_romanized": "Hirvaa"
+            }
+        ],
+        "icon": "palette"
     },
-    "theme": "Learn the colors you see in the sky, in your garden, and on your plate!",
-    "vocabulary": [
-      {
-        "marathi": "लाल",
-        "english": "Red",
-        "romanized": "Laal"
-      },
-      {
-        "marathi": "निळा",
-        "english": "Blue",
-        "romanized": "Neelaa"
-      },
-      {
-        "marathi": "पिवळा",
-        "english": "Yellow",
-        "romanized": "Pivlaa"
-      },
-      {
-        "marathi": "हिरवा",
-        "english": "Green",
-        "romanized": "Hirvaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "The sky is a beautiful निळा today. What color is that?",
-        "options": ["Red", "Green", "Blue", "Yellow"],
-        "correct_answer": "Blue",
-        "correct_romanized": "Neelaa"
-      },
-      {
-        "question_id": 2,
-        "question": "A ripe mango is this color. What is 'Yellow' in Marathi?",
-        "options": ["लाल", "हिरवा", "निळा", "पिवळा"],
-        "correct_answer": "पिवळा",
-        "correct_romanized": "Pivlaa"
-      },
-      {
-        "question_id": 3,
-        "question": "Trees and grass are this color. What is 'Green' in Marathi?",
-        "options": ["हिरवा", "निळा", "लाल", "पिवळा"],
-        "correct_answer": "हिरवा",
-        "correct_romanized": "Hirvaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 5,
-    "title": {
-      "marathi": "आणखी रंग",
-      "english": "More Colors"
+    {
+        "lesson_id": 5,
+        "title": {
+            "marathi": "आणखी रंग",
+            "english": "More Colors"
+        },
+        "theme": "Even more colors — from sunsets to your favorite crayons!",
+        "vocabulary": [
+            {
+                "marathi": "नारिंगी",
+                "english": "Orange",
+                "romanized": "Naaringi"
+            },
+            {
+                "marathi": "गुलाबी",
+                "english": "Pink",
+                "romanized": "Gulaabi"
+            },
+            {
+                "marathi": "पांढरा",
+                "english": "White",
+                "romanized": "Paandhraa"
+            },
+            {
+                "marathi": "काळा",
+                "english": "Black",
+                "romanized": "Kaalaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Clouds are fluffy and पांढरा. What color is that?",
+                "options": [
+                    "Black",
+                    "Pink",
+                    "Orange",
+                    "White"
+                ],
+                "correct_answer": "White",
+                "correct_romanized": "Paandhraa"
+            },
+            {
+                "question_id": 2,
+                "question": "A rose is गुलाबी. What color is गुलाबी?",
+                "options": [
+                    "Orange",
+                    "Pink",
+                    "White",
+                    "Black"
+                ],
+                "correct_answer": "Pink",
+                "correct_romanized": "Gulaabi"
+            },
+            {
+                "question_id": 3,
+                "question": "The night sky is this color. How do you say 'Black' in Marathi?",
+                "options": [
+                    "पांढरा",
+                    "नारिंगी",
+                    "काळा",
+                    "गुलाबी"
+                ],
+                "correct_answer": "काळा",
+                "correct_romanized": "Kaalaa"
+            }
+        ],
+        "icon": "paintbrush"
     },
-    "theme": "Even more colors — from sunsets to your favorite crayons!",
-    "vocabulary": [
-      {
-        "marathi": "नारिंगी",
-        "english": "Orange",
-        "romanized": "Naaringi"
-      },
-      {
-        "marathi": "गुलाबी",
-        "english": "Pink",
-        "romanized": "Gulaabi"
-      },
-      {
-        "marathi": "पांढरा",
-        "english": "White",
-        "romanized": "Paandhraa"
-      },
-      {
-        "marathi": "काळा",
-        "english": "Black",
-        "romanized": "Kaalaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "Clouds are fluffy and पांढरा. What color is that?",
-        "options": ["Black", "Pink", "Orange", "White"],
-        "correct_answer": "White",
-        "correct_romanized": "Paandhraa"
-      },
-      {
-        "question_id": 2,
-        "question": "A rose is गुलाबी. What color is गुलाबी?",
-        "options": ["Orange", "Pink", "White", "Black"],
-        "correct_answer": "Pink",
-        "correct_romanized": "Gulaabi"
-      },
-      {
-        "question_id": 3,
-        "question": "The night sky is this color. How do you say 'Black' in Marathi?",
-        "options": ["पांढरा", "नारिंगी", "काळा", "गुलाबी"],
-        "correct_answer": "काळा",
-        "correct_romanized": "Kaalaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 6,
-    "title": {
-      "marathi": "संख्या १-४",
-      "english": "Numbers 1-4"
+    {
+        "lesson_id": 6,
+        "title": {
+            "marathi": "संख्या १-४",
+            "english": "Numbers 1-4"
+        },
+        "theme": "Start counting in Marathi — from one to four!",
+        "vocabulary": [
+            {
+                "marathi": "एक",
+                "english": "One",
+                "romanized": "Ek"
+            },
+            {
+                "marathi": "दोन",
+                "english": "Two",
+                "romanized": "Don"
+            },
+            {
+                "marathi": "तीन",
+                "english": "Three",
+                "romanized": "Teen"
+            },
+            {
+                "marathi": "चार",
+                "english": "Four",
+                "romanized": "Chaar"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You have दोन eyes. How many is that?",
+                "options": [
+                    "One",
+                    "Three",
+                    "Two",
+                    "Four"
+                ],
+                "correct_answer": "Two",
+                "correct_romanized": "Don"
+            },
+            {
+                "question_id": 2,
+                "question": "A car has चार wheels. What number is चार?",
+                "options": [
+                    "One",
+                    "Three",
+                    "Two",
+                    "Four"
+                ],
+                "correct_answer": "Four",
+                "correct_romanized": "Chaar"
+            },
+            {
+                "question_id": 3,
+                "question": "You have तीन apples. How many is that?",
+                "options": [
+                    "Five",
+                    "Two",
+                    "Three",
+                    "Four"
+                ],
+                "correct_answer": "Three",
+                "correct_romanized": "Teen"
+            }
+        ],
+        "icon": "hash"
     },
-    "theme": "Start counting in Marathi — from one to four!",
-    "vocabulary": [
-      {
-        "marathi": "एक",
-        "english": "One",
-        "romanized": "Ek"
-      },
-      {
-        "marathi": "दोन",
-        "english": "Two",
-        "romanized": "Don"
-      },
-      {
-        "marathi": "तीन",
-        "english": "Three",
-        "romanized": "Teen"
-      },
-      {
-        "marathi": "चार",
-        "english": "Four",
-        "romanized": "Chaar"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You have दोन eyes. How many is that?",
-        "options": ["One", "Three", "Two", "Four"],
-        "correct_answer": "Two",
-        "correct_romanized": "Don"
-      },
-      {
-        "question_id": 2,
-        "question": "A car has चार wheels. What number is चार?",
-        "options": ["One", "Three", "Two", "Four"],
-        "correct_answer": "Four",
-        "correct_romanized": "Chaar"
-      },
-      {
-        "question_id": 3,
-        "question": "You have तीन apples. How many is that?",
-        "options": ["Five", "Two", "Three", "Four"],
-        "correct_answer": "Three",
-        "correct_romanized": "Teen"
-      }
-    ]
-  },
-  {
-    "lesson_id": 7,
-    "title": {
-      "marathi": "संख्या ५-८",
-      "english": "Numbers 5-8"
+    {
+        "lesson_id": 7,
+        "title": {
+            "marathi": "संख्या ५-८",
+            "english": "Numbers 5-8"
+        },
+        "theme": "Keep counting — five to eight!",
+        "vocabulary": [
+            {
+                "marathi": "पाच",
+                "english": "Five",
+                "romanized": "Paach"
+            },
+            {
+                "marathi": "सहा",
+                "english": "Six",
+                "romanized": "Sahaa"
+            },
+            {
+                "marathi": "सात",
+                "english": "Seven",
+                "romanized": "Saat"
+            },
+            {
+                "marathi": "आठ",
+                "english": "Eight",
+                "romanized": "Aath"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You have पाच fingers on one hand. How many is that?",
+                "options": [
+                    "Six",
+                    "Five",
+                    "Eight",
+                    "Seven"
+                ],
+                "correct_answer": "Five",
+                "correct_romanized": "Paach"
+            },
+            {
+                "question_id": 2,
+                "question": "A week has सात days. What number is सात?",
+                "options": [
+                    "Five",
+                    "Eight",
+                    "Six",
+                    "Seven"
+                ],
+                "correct_answer": "Seven",
+                "correct_romanized": "Saat"
+            },
+            {
+                "question_id": 3,
+                "question": "An octopus has आठ arms. How many is आठ?",
+                "options": [
+                    "Six",
+                    "Seven",
+                    "Five",
+                    "Eight"
+                ],
+                "correct_answer": "Eight",
+                "correct_romanized": "Aath"
+            }
+        ],
+        "icon": "hash"
     },
-    "theme": "Keep counting — five to eight!",
-    "vocabulary": [
-      {
-        "marathi": "पाच",
-        "english": "Five",
-        "romanized": "Paach"
-      },
-      {
-        "marathi": "सहा",
-        "english": "Six",
-        "romanized": "Sahaa"
-      },
-      {
-        "marathi": "सात",
-        "english": "Seven",
-        "romanized": "Saat"
-      },
-      {
-        "marathi": "आठ",
-        "english": "Eight",
-        "romanized": "Aath"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You have पाच fingers on one hand. How many is that?",
-        "options": ["Six", "Five", "Eight", "Seven"],
-        "correct_answer": "Five",
-        "correct_romanized": "Paach"
-      },
-      {
-        "question_id": 2,
-        "question": "A week has सात days. What number is सात?",
-        "options": ["Five", "Eight", "Six", "Seven"],
-        "correct_answer": "Seven",
-        "correct_romanized": "Saat"
-      },
-      {
-        "question_id": 3,
-        "question": "An octopus has आठ arms. How many is आठ?",
-        "options": ["Six", "Seven", "Five", "Eight"],
-        "correct_answer": "Eight",
-        "correct_romanized": "Aath"
-      }
-    ]
-  },
-  {
-    "lesson_id": 8,
-    "title": {
-      "marathi": "संख्या ९-१२",
-      "english": "Numbers 9-12"
+    {
+        "lesson_id": 8,
+        "title": {
+            "marathi": "संख्या ९-१२",
+            "english": "Numbers 9-12"
+        },
+        "theme": "Almost to a dozen — nine through twelve!",
+        "vocabulary": [
+            {
+                "marathi": "नऊ",
+                "english": "Nine",
+                "romanized": "Nau"
+            },
+            {
+                "marathi": "दहा",
+                "english": "Ten",
+                "romanized": "Dahaa"
+            },
+            {
+                "marathi": "अकरा",
+                "english": "Eleven",
+                "romanized": "Akaraa"
+            },
+            {
+                "marathi": "बारा",
+                "english": "Twelve",
+                "romanized": "Baaraa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You have दहा toes. How many is that?",
+                "options": [
+                    "Nine",
+                    "Eleven",
+                    "Ten",
+                    "Twelve"
+                ],
+                "correct_answer": "Ten",
+                "correct_romanized": "Dahaa"
+            },
+            {
+                "question_id": 2,
+                "question": "A dozen eggs is बारा eggs. What number is बारा?",
+                "options": [
+                    "Nine",
+                    "Ten",
+                    "Eleven",
+                    "Twelve"
+                ],
+                "correct_answer": "Twelve",
+                "correct_romanized": "Baaraa"
+            },
+            {
+                "question_id": 3,
+                "question": "How do you say 'Nine' in Marathi?",
+                "options": [
+                    "अकरा",
+                    "दहा",
+                    "नऊ",
+                    "बारा"
+                ],
+                "correct_answer": "नऊ",
+                "correct_romanized": "Nau"
+            }
+        ],
+        "icon": "hash"
     },
-    "theme": "Almost to a dozen — nine through twelve!",
-    "vocabulary": [
-      {
-        "marathi": "नऊ",
-        "english": "Nine",
-        "romanized": "Nau"
-      },
-      {
-        "marathi": "दहा",
-        "english": "Ten",
-        "romanized": "Dahaa"
-      },
-      {
-        "marathi": "अकरा",
-        "english": "Eleven",
-        "romanized": "Akaraa"
-      },
-      {
-        "marathi": "बारा",
-        "english": "Twelve",
-        "romanized": "Baaraa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You have दहा toes. How many is that?",
-        "options": ["Nine", "Eleven", "Ten", "Twelve"],
-        "correct_answer": "Ten",
-        "correct_romanized": "Dahaa"
-      },
-      {
-        "question_id": 2,
-        "question": "A dozen eggs is बारा eggs. What number is बारा?",
-        "options": ["Nine", "Ten", "Eleven", "Twelve"],
-        "correct_answer": "Twelve",
-        "correct_romanized": "Baaraa"
-      },
-      {
-        "question_id": 3,
-        "question": "How do you say 'Nine' in Marathi?",
-        "options": ["अकरा", "दहा", "नऊ", "बारा"],
-        "correct_answer": "नऊ",
-        "correct_romanized": "Nau"
-      }
-    ]
-  },
-  {
-    "lesson_id": 9,
-    "title": {
-      "marathi": "संख्या १३-१६",
-      "english": "Numbers 13-16"
+    {
+        "lesson_id": 9,
+        "title": {
+            "marathi": "संख्या १३-१६",
+            "english": "Numbers 13-16"
+        },
+        "theme": "Bigger numbers — thirteen to sixteen!",
+        "vocabulary": [
+            {
+                "marathi": "तेरा",
+                "english": "Thirteen",
+                "romanized": "Teraa"
+            },
+            {
+                "marathi": "चौदा",
+                "english": "Fourteen",
+                "romanized": "Chaudaa"
+            },
+            {
+                "marathi": "पंधरा",
+                "english": "Fifteen",
+                "romanized": "Pandhraa"
+            },
+            {
+                "marathi": "सोळा",
+                "english": "Sixteen",
+                "romanized": "Solaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You collected पंधरा stickers! How many is that?",
+                "options": [
+                    "Thirteen",
+                    "Sixteen",
+                    "Fourteen",
+                    "Fifteen"
+                ],
+                "correct_answer": "Fifteen",
+                "correct_romanized": "Pandhraa"
+            },
+            {
+                "question_id": 2,
+                "question": "How do you say 'Fourteen' in Marathi?",
+                "options": [
+                    "तेरा",
+                    "सोळा",
+                    "चौदा",
+                    "पंधरा"
+                ],
+                "correct_answer": "चौदा",
+                "correct_romanized": "Chaudaa"
+            },
+            {
+                "question_id": 3,
+                "question": "What number is सोळा?",
+                "options": [
+                    "Thirteen",
+                    "Fifteen",
+                    "Fourteen",
+                    "Sixteen"
+                ],
+                "correct_answer": "Sixteen",
+                "correct_romanized": "Solaa"
+            }
+        ],
+        "icon": "hash"
     },
-    "theme": "Bigger numbers — thirteen to sixteen!",
-    "vocabulary": [
-      {
-        "marathi": "तेरा",
-        "english": "Thirteen",
-        "romanized": "Teraa"
-      },
-      {
-        "marathi": "चौदा",
-        "english": "Fourteen",
-        "romanized": "Chaudaa"
-      },
-      {
-        "marathi": "पंधरा",
-        "english": "Fifteen",
-        "romanized": "Pandhraa"
-      },
-      {
-        "marathi": "सोळा",
-        "english": "Sixteen",
-        "romanized": "Solaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You collected पंधरा stickers! How many is that?",
-        "options": ["Thirteen", "Sixteen", "Fourteen", "Fifteen"],
-        "correct_answer": "Fifteen",
-        "correct_romanized": "Pandhraa"
-      },
-      {
-        "question_id": 2,
-        "question": "How do you say 'Fourteen' in Marathi?",
-        "options": ["तेरा", "सोळा", "चौदा", "पंधरा"],
-        "correct_answer": "चौदा",
-        "correct_romanized": "Chaudaa"
-      },
-      {
-        "question_id": 3,
-        "question": "What number is सोळा?",
-        "options": ["Thirteen", "Fifteen", "Fourteen", "Sixteen"],
-        "correct_answer": "Sixteen",
-        "correct_romanized": "Solaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 10,
-    "title": {
-      "marathi": "संख्या १७-२०",
-      "english": "Numbers 17-20"
+    {
+        "lesson_id": 10,
+        "title": {
+            "marathi": "संख्या १७-२०",
+            "english": "Numbers 17-20"
+        },
+        "theme": "Finish counting to twenty — you can do it!",
+        "vocabulary": [
+            {
+                "marathi": "सतरा",
+                "english": "Seventeen",
+                "romanized": "Sataraa"
+            },
+            {
+                "marathi": "अठरा",
+                "english": "Eighteen",
+                "romanized": "Atharaa"
+            },
+            {
+                "marathi": "एकोणीस",
+                "english": "Nineteen",
+                "romanized": "Ekonees"
+            },
+            {
+                "marathi": "वीस",
+                "english": "Twenty",
+                "romanized": "Vees"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You counted वीस stars in the sky! How many did you count?",
+                "options": [
+                    "Seventeen",
+                    "Nineteen",
+                    "Eighteen",
+                    "Twenty"
+                ],
+                "correct_answer": "Twenty",
+                "correct_romanized": "Vees"
+            },
+            {
+                "question_id": 2,
+                "question": "How do you say 'Eighteen' in Marathi?",
+                "options": [
+                    "सतरा",
+                    "एकोणीस",
+                    "अठरा",
+                    "वीस"
+                ],
+                "correct_answer": "अठरा",
+                "correct_romanized": "Atharaa"
+            },
+            {
+                "question_id": 3,
+                "question": "What number comes just before वीस (twenty)?",
+                "options": [
+                    "सतरा",
+                    "अठरा",
+                    "एकोणीस",
+                    "वीस"
+                ],
+                "correct_answer": "एकोणीस",
+                "correct_romanized": "Ekonees"
+            }
+        ],
+        "icon": "hash"
     },
-    "theme": "Finish counting to twenty — you can do it!",
-    "vocabulary": [
-      {
-        "marathi": "सतरा",
-        "english": "Seventeen",
-        "romanized": "Sataraa"
-      },
-      {
-        "marathi": "अठरा",
-        "english": "Eighteen",
-        "romanized": "Atharaa"
-      },
-      {
-        "marathi": "एकोणीस",
-        "english": "Nineteen",
-        "romanized": "Ekonees"
-      },
-      {
-        "marathi": "वीस",
-        "english": "Twenty",
-        "romanized": "Vees"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You counted वीस stars in the sky! How many did you count?",
-        "options": ["Seventeen", "Nineteen", "Eighteen", "Twenty"],
-        "correct_answer": "Twenty",
-        "correct_romanized": "Vees"
-      },
-      {
-        "question_id": 2,
-        "question": "How do you say 'Eighteen' in Marathi?",
-        "options": ["सतरा", "एकोणीस", "अठरा", "वीस"],
-        "correct_answer": "अठरा",
-        "correct_romanized": "Atharaa"
-      },
-      {
-        "question_id": 3,
-        "question": "What number comes just before वीस (twenty)?",
-        "options": ["सतरा", "अठरा", "एकोणीस", "वीस"],
-        "correct_answer": "एकोणीस",
-        "correct_romanized": "Ekonees"
-      }
-    ]
-  },
-  {
-    "lesson_id": 11,
-    "title": {
-      "marathi": "प्राणी",
-      "english": "Farm Animals"
+    {
+        "lesson_id": 11,
+        "title": {
+            "marathi": "प्राणी",
+            "english": "Farm Animals"
+        },
+        "theme": "Animals you might see on a farm or in your neighborhood",
+        "vocabulary": [
+            {
+                "marathi": "गाय",
+                "english": "Cow",
+                "romanized": "Gaay"
+            },
+            {
+                "marathi": "कुत्रा",
+                "english": "Dog",
+                "romanized": "Kutraa"
+            },
+            {
+                "marathi": "मांजर",
+                "english": "Cat",
+                "romanized": "Maanjar"
+            },
+            {
+                "marathi": "कोंबडी",
+                "english": "Hen / Chicken",
+                "romanized": "Kombdi"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "This animal says 'bow wow' and loves to play fetch. What is 'Dog' in Marathi?",
+                "options": [
+                    "गाय",
+                    "मांजर",
+                    "कुत्रा",
+                    "कोंबडी"
+                ],
+                "correct_answer": "कुत्रा",
+                "correct_romanized": "Kutraa"
+            },
+            {
+                "question_id": 2,
+                "question": "A गाय gives us milk. What animal is a गाय?",
+                "options": [
+                    "Dog",
+                    "Hen",
+                    "Cat",
+                    "Cow"
+                ],
+                "correct_answer": "Cow",
+                "correct_romanized": "Gaay"
+            },
+            {
+                "question_id": 3,
+                "question": "This animal says 'meow' and loves to nap. What is it in Marathi?",
+                "options": [
+                    "कुत्रा",
+                    "मांजर",
+                    "कोंबडी",
+                    "गाय"
+                ],
+                "correct_answer": "मांजर",
+                "correct_romanized": "Maanjar"
+            }
+        ],
+        "icon": "dog"
     },
-    "theme": "Animals you might see on a farm or in your neighborhood",
-    "vocabulary": [
-      {
-        "marathi": "गाय",
-        "english": "Cow",
-        "romanized": "Gaay"
-      },
-      {
-        "marathi": "कुत्रा",
-        "english": "Dog",
-        "romanized": "Kutraa"
-      },
-      {
-        "marathi": "मांजर",
-        "english": "Cat",
-        "romanized": "Maanjar"
-      },
-      {
-        "marathi": "कोंबडी",
-        "english": "Hen / Chicken",
-        "romanized": "Kombdi"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "This animal says 'bow wow' and loves to play fetch. What is 'Dog' in Marathi?",
-        "options": ["गाय", "मांजर", "कुत्रा", "कोंबडी"],
-        "correct_answer": "कुत्रा",
-        "correct_romanized": "Kutraa"
-      },
-      {
-        "question_id": 2,
-        "question": "A गाय gives us milk. What animal is a गाय?",
-        "options": ["Dog", "Hen", "Cat", "Cow"],
-        "correct_answer": "Cow",
-        "correct_romanized": "Gaay"
-      },
-      {
-        "question_id": 3,
-        "question": "This animal says 'meow' and loves to nap. What is it in Marathi?",
-        "options": ["कुत्रा", "मांजर", "कोंबडी", "गाय"],
-        "correct_answer": "मांजर",
-        "correct_romanized": "Maanjar"
-      }
-    ]
-  },
-  {
-    "lesson_id": 12,
-    "title": {
-      "marathi": "जंगली प्राणी",
-      "english": "Wild Animals"
+    {
+        "lesson_id": 12,
+        "title": {
+            "marathi": "जंगली प्राणी",
+            "english": "Wild Animals"
+        },
+        "theme": "Big and brave animals from the jungle and the zoo!",
+        "vocabulary": [
+            {
+                "marathi": "सिंह",
+                "english": "Lion",
+                "romanized": "Sinh"
+            },
+            {
+                "marathi": "हत्ती",
+                "english": "Elephant",
+                "romanized": "Hattee"
+            },
+            {
+                "marathi": "माकड",
+                "english": "Monkey",
+                "romanized": "Maakad"
+            },
+            {
+                "marathi": "वाघ",
+                "english": "Tiger",
+                "romanized": "Vaagh"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "This huge animal has a long trunk and big ears. What is 'Elephant' in Marathi?",
+                "options": [
+                    "सिंह",
+                    "वाघ",
+                    "हत्ती",
+                    "माकड"
+                ],
+                "correct_answer": "हत्ती",
+                "correct_romanized": "Hattee"
+            },
+            {
+                "question_id": 2,
+                "question": "The वाघ has orange and black stripes. What animal is a वाघ?",
+                "options": [
+                    "Lion",
+                    "Monkey",
+                    "Elephant",
+                    "Tiger"
+                ],
+                "correct_answer": "Tiger",
+                "correct_romanized": "Vaagh"
+            },
+            {
+                "question_id": 3,
+                "question": "This animal loves bananas and swings from trees! What is 'Monkey' in Marathi?",
+                "options": [
+                    "हत्ती",
+                    "माकड",
+                    "सिंह",
+                    "वाघ"
+                ],
+                "correct_answer": "माकड",
+                "correct_romanized": "Maakad"
+            }
+        ],
+        "icon": "cat"
     },
-    "theme": "Big and brave animals from the jungle and the zoo!",
-    "vocabulary": [
-      {
-        "marathi": "सिंह",
-        "english": "Lion",
-        "romanized": "Sinh"
-      },
-      {
-        "marathi": "हत्ती",
-        "english": "Elephant",
-        "romanized": "Hattee"
-      },
-      {
-        "marathi": "माकड",
-        "english": "Monkey",
-        "romanized": "Maakad"
-      },
-      {
-        "marathi": "वाघ",
-        "english": "Tiger",
-        "romanized": "Vaagh"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "This huge animal has a long trunk and big ears. What is 'Elephant' in Marathi?",
-        "options": ["सिंह", "वाघ", "हत्ती", "माकड"],
-        "correct_answer": "हत्ती",
-        "correct_romanized": "Hattee"
-      },
-      {
-        "question_id": 2,
-        "question": "The वाघ has orange and black stripes. What animal is a वाघ?",
-        "options": ["Lion", "Monkey", "Elephant", "Tiger"],
-        "correct_answer": "Tiger",
-        "correct_romanized": "Vaagh"
-      },
-      {
-        "question_id": 3,
-        "question": "This animal loves bananas and swings from trees! What is 'Monkey' in Marathi?",
-        "options": ["हत्ती", "माकड", "सिंह", "वाघ"],
-        "correct_answer": "माकड",
-        "correct_romanized": "Maakad"
-      }
-    ]
-  },
-  {
-    "lesson_id": 13,
-    "title": {
-      "marathi": "पक्षी आणि किडे",
-      "english": "Birds & Bugs"
+    {
+        "lesson_id": 13,
+        "title": {
+            "marathi": "पक्षी आणि किडे",
+            "english": "Birds & Bugs"
+        },
+        "theme": "Creatures that fly and crawl — in your garden and in the sky!",
+        "vocabulary": [
+            {
+                "marathi": "कावळा",
+                "english": "Crow",
+                "romanized": "Kaavlaa"
+            },
+            {
+                "marathi": "पोपट",
+                "english": "Parrot",
+                "romanized": "Popat"
+            },
+            {
+                "marathi": "फुलपाखरू",
+                "english": "Butterfly",
+                "romanized": "Phulpaakhroo"
+            },
+            {
+                "marathi": "मुंगी",
+                "english": "Ant",
+                "romanized": "Mungee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "This pretty insect has colorful wings and visits flowers. What is 'Butterfly' in Marathi?",
+                "options": [
+                    "कावळा",
+                    "मुंगी",
+                    "फुलपाखरू",
+                    "पोपट"
+                ],
+                "correct_answer": "फुलपाखरू",
+                "correct_romanized": "Phulpaakhroo"
+            },
+            {
+                "question_id": 2,
+                "question": "A पोपट is green and can talk! What bird is a पोपट?",
+                "options": [
+                    "Crow",
+                    "Ant",
+                    "Butterfly",
+                    "Parrot"
+                ],
+                "correct_answer": "Parrot",
+                "correct_romanized": "Popat"
+            },
+            {
+                "question_id": 3,
+                "question": "This tiny creature carries food in a long line. What is 'Ant' in Marathi?",
+                "options": [
+                    "फुलपाखरू",
+                    "कावळा",
+                    "पोपट",
+                    "मुंगी"
+                ],
+                "correct_answer": "मुंगी",
+                "correct_romanized": "Mungee"
+            }
+        ],
+        "icon": "bird"
     },
-    "theme": "Creatures that fly and crawl — in your garden and in the sky!",
-    "vocabulary": [
-      {
-        "marathi": "कावळा",
-        "english": "Crow",
-        "romanized": "Kaavlaa"
-      },
-      {
-        "marathi": "पोपट",
-        "english": "Parrot",
-        "romanized": "Popat"
-      },
-      {
-        "marathi": "फुलपाखरू",
-        "english": "Butterfly",
-        "romanized": "Phulpaakhroo"
-      },
-      {
-        "marathi": "मुंगी",
-        "english": "Ant",
-        "romanized": "Mungee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "This pretty insect has colorful wings and visits flowers. What is 'Butterfly' in Marathi?",
-        "options": ["कावळा", "मुंगी", "फुलपाखरू", "पोपट"],
-        "correct_answer": "फुलपाखरू",
-        "correct_romanized": "Phulpaakhroo"
-      },
-      {
-        "question_id": 2,
-        "question": "A पोपट is green and can talk! What bird is a पोपट?",
-        "options": ["Crow", "Ant", "Butterfly", "Parrot"],
-        "correct_answer": "Parrot",
-        "correct_romanized": "Popat"
-      },
-      {
-        "question_id": 3,
-        "question": "This tiny creature carries food in a long line. What is 'Ant' in Marathi?",
-        "options": ["फुलपाखरू", "कावळा", "पोपट", "मुंगी"],
-        "correct_answer": "मुंगी",
-        "correct_romanized": "Mungee"
-      }
-    ]
-  },
-  {
-    "lesson_id": 14,
-    "title": {
-      "marathi": "होय आणि नाही",
-      "english": "Yes & No"
+    {
+        "lesson_id": 14,
+        "title": {
+            "marathi": "होय आणि नाही",
+            "english": "Yes & No"
+        },
+        "theme": "Simple words to agree, disagree, and be polite every day",
+        "vocabulary": [
+            {
+                "marathi": "होय",
+                "english": "Yes",
+                "romanized": "Hoy"
+            },
+            {
+                "marathi": "नाही",
+                "english": "No",
+                "romanized": "Naahi"
+            },
+            {
+                "marathi": "बरं",
+                "english": "Okay / Alright",
+                "romanized": "Bara"
+            },
+            {
+                "marathi": "माफ करा",
+                "english": "Sorry",
+                "romanized": "Maaf karaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई asks 'Do you want ice cream?' and you want it! What do you say?",
+                "options": [
+                    "नाही",
+                    "माफ करा",
+                    "होय",
+                    "बरं"
+                ],
+                "correct_answer": "होय",
+                "correct_romanized": "Hoy"
+            },
+            {
+                "question_id": 2,
+                "question": "You accidentally bumped into someone. What do you say?",
+                "options": [
+                    "होय",
+                    "नाही",
+                    "बरं",
+                    "माफ करा"
+                ],
+                "correct_answer": "माफ करा",
+                "correct_romanized": "Maaf karaa"
+            },
+            {
+                "question_id": 3,
+                "question": "बाबा says 'Do you want more homework?' and you don't! What do you say?",
+                "options": [
+                    "होय",
+                    "बरं",
+                    "नाही",
+                    "माफ करा"
+                ],
+                "correct_answer": "नाही",
+                "correct_romanized": "Naahi"
+            }
+        ],
+        "icon": "check"
     },
-    "theme": "Simple words to agree, disagree, and be polite every day",
-    "vocabulary": [
-      {
-        "marathi": "होय",
-        "english": "Yes",
-        "romanized": "Hoy"
-      },
-      {
-        "marathi": "नाही",
-        "english": "No",
-        "romanized": "Naahi"
-      },
-      {
-        "marathi": "बरं",
-        "english": "Okay / Alright",
-        "romanized": "Bara"
-      },
-      {
-        "marathi": "माफ करा",
-        "english": "Sorry",
-        "romanized": "Maaf karaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई asks 'Do you want ice cream?' and you want it! What do you say?",
-        "options": ["नाही", "माफ करा", "होय", "बरं"],
-        "correct_answer": "होय",
-        "correct_romanized": "Hoy"
-      },
-      {
-        "question_id": 2,
-        "question": "You accidentally bumped into someone. What do you say?",
-        "options": ["होय", "नाही", "बरं", "माफ करा"],
-        "correct_answer": "माफ करा",
-        "correct_romanized": "Maaf karaa"
-      },
-      {
-        "question_id": 3,
-        "question": "बाबा says 'Do you want more homework?' and you don't! What do you say?",
-        "options": ["होय", "बरं", "नाही", "माफ करा"],
-        "correct_answer": "नाही",
-        "correct_romanized": "Naahi"
-      }
-    ]
-  },
-  {
-    "lesson_id": 15,
-    "title": {
-      "marathi": "भावना",
-      "english": "Feelings"
+    {
+        "lesson_id": 15,
+        "title": {
+            "marathi": "भावना",
+            "english": "Feelings"
+        },
+        "theme": "Express how you feel — happy, sad, scared, or angry!",
+        "vocabulary": [
+            {
+                "marathi": "आनंदी",
+                "english": "Happy",
+                "romanized": "Aanandi"
+            },
+            {
+                "marathi": "दुःखी",
+                "english": "Sad",
+                "romanized": "Duhkhi"
+            },
+            {
+                "marathi": "घाबरलेला",
+                "english": "Scared",
+                "romanized": "Ghaabarlela"
+            },
+            {
+                "marathi": "रागावलेला",
+                "english": "Angry",
+                "romanized": "Raagaavlela"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You got a birthday gift and you're smiling! How do you feel?",
+                "options": [
+                    "दुःखी",
+                    "घाबरलेला",
+                    "रागावलेला",
+                    "आनंदी"
+                ],
+                "correct_answer": "आनंदी",
+                "correct_romanized": "Aanandi"
+            },
+            {
+                "question_id": 2,
+                "question": "Your toy broke and you feel दुःखी. What does that mean?",
+                "options": [
+                    "Happy",
+                    "Angry",
+                    "Sad",
+                    "Scared"
+                ],
+                "correct_answer": "Sad",
+                "correct_romanized": "Duhkhi"
+            },
+            {
+                "question_id": 3,
+                "question": "You heard a loud thunder and feel घाबरलेला. What does that mean?",
+                "options": [
+                    "Happy",
+                    "Sad",
+                    "Angry",
+                    "Scared"
+                ],
+                "correct_answer": "Scared",
+                "correct_romanized": "Ghaabarlela"
+            }
+        ],
+        "icon": "smile"
     },
-    "theme": "Express how you feel — happy, sad, scared, or angry!",
-    "vocabulary": [
-      {
-        "marathi": "आनंदी",
-        "english": "Happy",
-        "romanized": "Aanandi"
-      },
-      {
-        "marathi": "दुःखी",
-        "english": "Sad",
-        "romanized": "Duhkhi"
-      },
-      {
-        "marathi": "घाबरलेला",
-        "english": "Scared",
-        "romanized": "Ghaabarlela"
-      },
-      {
-        "marathi": "रागावलेला",
-        "english": "Angry",
-        "romanized": "Raagaavlela"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You got a birthday gift and you're smiling! How do you feel?",
-        "options": ["दुःखी", "घाबरलेला", "रागावलेला", "आनंदी"],
-        "correct_answer": "आनंदी",
-        "correct_romanized": "Aanandi"
-      },
-      {
-        "question_id": 2,
-        "question": "Your toy broke and you feel दुःखी. What does that mean?",
-        "options": ["Happy", "Angry", "Sad", "Scared"],
-        "correct_answer": "Sad",
-        "correct_romanized": "Duhkhi"
-      },
-      {
-        "question_id": 3,
-        "question": "You heard a loud thunder and feel घाबरलेला. What does that mean?",
-        "options": ["Happy", "Sad", "Angry", "Scared"],
-        "correct_answer": "Scared",
-        "correct_romanized": "Ghaabarlela"
-      }
-    ]
-  },
-  {
-    "lesson_id": 16,
-    "title": {
-      "marathi": "माझं शरीर",
-      "english": "My Body"
+    {
+        "lesson_id": 16,
+        "title": {
+            "marathi": "माझं शरीर",
+            "english": "My Body"
+        },
+        "theme": "Learn the Marathi words for parts of your body!",
+        "vocabulary": [
+            {
+                "marathi": "हात",
+                "english": "Hand",
+                "romanized": "Haat"
+            },
+            {
+                "marathi": "पाय",
+                "english": "Leg / Foot",
+                "romanized": "Paay"
+            },
+            {
+                "marathi": "डोकं",
+                "english": "Head",
+                "romanized": "Doka"
+            },
+            {
+                "marathi": "डोळा",
+                "english": "Eye",
+                "romanized": "Dolaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You wave with your हात. What body part is हात?",
+                "options": [
+                    "Leg",
+                    "Eye",
+                    "Hand",
+                    "Head"
+                ],
+                "correct_answer": "Hand",
+                "correct_romanized": "Haat"
+            },
+            {
+                "question_id": 2,
+                "question": "You use your डोळा to see things. What body part is that?",
+                "options": [
+                    "Hand",
+                    "Head",
+                    "Leg",
+                    "Eye"
+                ],
+                "correct_answer": "Eye",
+                "correct_romanized": "Dolaa"
+            },
+            {
+                "question_id": 3,
+                "question": "You kick a ball with your पाय. What is पाय?",
+                "options": [
+                    "Head",
+                    "Hand",
+                    "Eye",
+                    "Leg"
+                ],
+                "correct_answer": "Leg",
+                "correct_romanized": "Paay"
+            }
+        ],
+        "icon": "person-standing"
     },
-    "theme": "Learn the Marathi words for parts of your body!",
-    "vocabulary": [
-      {
-        "marathi": "हात",
-        "english": "Hand",
-        "romanized": "Haat"
-      },
-      {
-        "marathi": "पाय",
-        "english": "Leg / Foot",
-        "romanized": "Paay"
-      },
-      {
-        "marathi": "डोकं",
-        "english": "Head",
-        "romanized": "Doka"
-      },
-      {
-        "marathi": "डोळा",
-        "english": "Eye",
-        "romanized": "Dolaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You wave with your हात. What body part is हात?",
-        "options": ["Leg", "Eye", "Hand", "Head"],
-        "correct_answer": "Hand",
-        "correct_romanized": "Haat"
-      },
-      {
-        "question_id": 2,
-        "question": "You use your डोळा to see things. What body part is that?",
-        "options": ["Hand", "Head", "Leg", "Eye"],
-        "correct_answer": "Eye",
-        "correct_romanized": "Dolaa"
-      },
-      {
-        "question_id": 3,
-        "question": "You kick a ball with your पाय. What is पाय?",
-        "options": ["Head", "Hand", "Eye", "Leg"],
-        "correct_answer": "Leg",
-        "correct_romanized": "Paay"
-      }
-    ]
-  },
-  {
-    "lesson_id": 17,
-    "title": {
-      "marathi": "शरीर भाग २",
-      "english": "More Body Parts"
+    {
+        "lesson_id": 17,
+        "title": {
+            "marathi": "शरीर भाग २",
+            "english": "More Body Parts"
+        },
+        "theme": "More body parts — from your nose to your tummy!",
+        "vocabulary": [
+            {
+                "marathi": "नाक",
+                "english": "Nose",
+                "romanized": "Naak"
+            },
+            {
+                "marathi": "कान",
+                "english": "Ear",
+                "romanized": "Kaan"
+            },
+            {
+                "marathi": "तोंड",
+                "english": "Mouth",
+                "romanized": "Tond"
+            },
+            {
+                "marathi": "पोट",
+                "english": "Stomach / Tummy",
+                "romanized": "Pot"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You smell yummy food with your नाक. What body part is नाक?",
+                "options": [
+                    "Ear",
+                    "Mouth",
+                    "Nose",
+                    "Stomach"
+                ],
+                "correct_answer": "Nose",
+                "correct_romanized": "Naak"
+            },
+            {
+                "question_id": 2,
+                "question": "You're hungry and your पोट is growling! What is पोट?",
+                "options": [
+                    "Nose",
+                    "Ear",
+                    "Mouth",
+                    "Stomach"
+                ],
+                "correct_answer": "Stomach",
+                "correct_romanized": "Pot"
+            },
+            {
+                "question_id": 3,
+                "question": "You listen to music with your कान. What body part is that?",
+                "options": [
+                    "Mouth",
+                    "Ear",
+                    "Nose",
+                    "Stomach"
+                ],
+                "correct_answer": "Ear",
+                "correct_romanized": "Kaan"
+            }
+        ],
+        "icon": "person-standing"
     },
-    "theme": "More body parts — from your nose to your tummy!",
-    "vocabulary": [
-      {
-        "marathi": "नाक",
-        "english": "Nose",
-        "romanized": "Naak"
-      },
-      {
-        "marathi": "कान",
-        "english": "Ear",
-        "romanized": "Kaan"
-      },
-      {
-        "marathi": "तोंड",
-        "english": "Mouth",
-        "romanized": "Tond"
-      },
-      {
-        "marathi": "पोट",
-        "english": "Stomach / Tummy",
-        "romanized": "Pot"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You smell yummy food with your नाक. What body part is नाक?",
-        "options": ["Ear", "Mouth", "Nose", "Stomach"],
-        "correct_answer": "Nose",
-        "correct_romanized": "Naak"
-      },
-      {
-        "question_id": 2,
-        "question": "You're hungry and your पोट is growling! What is पोट?",
-        "options": ["Nose", "Ear", "Mouth", "Stomach"],
-        "correct_answer": "Stomach",
-        "correct_romanized": "Pot"
-      },
-      {
-        "question_id": 3,
-        "question": "You listen to music with your कान. What body part is that?",
-        "options": ["Mouth", "Ear", "Nose", "Stomach"],
-        "correct_answer": "Ear",
-        "correct_romanized": "Kaan"
-      }
-    ]
-  },
-  {
-    "lesson_id": 18,
-    "title": {
-      "marathi": "क्रियापदे",
-      "english": "Simple Actions"
+    {
+        "lesson_id": 18,
+        "title": {
+            "marathi": "क्रियापदे",
+            "english": "Simple Actions"
+        },
+        "theme": "Things you do every day — come, go, eat, and drink!",
+        "vocabulary": [
+            {
+                "marathi": "ये",
+                "english": "Come",
+                "romanized": "Ye"
+            },
+            {
+                "marathi": "जा",
+                "english": "Go",
+                "romanized": "Jaa"
+            },
+            {
+                "marathi": "खा",
+                "english": "Eat",
+                "romanized": "Khaa"
+            },
+            {
+                "marathi": "पी",
+                "english": "Drink",
+                "romanized": "Pee"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "आई says 'दूध पी!' — what is she asking you to do?",
+                "options": [
+                    "Eat",
+                    "Come",
+                    "Go",
+                    "Drink"
+                ],
+                "correct_answer": "Drink",
+                "correct_romanized": "Pee"
+            },
+            {
+                "question_id": 2,
+                "question": "बाबा says 'इकडे ये!' — he wants you to...",
+                "options": [
+                    "Go away",
+                    "Come here",
+                    "Eat food",
+                    "Drink water"
+                ],
+                "correct_answer": "Come here",
+                "correct_romanized": "Ye"
+            },
+            {
+                "question_id": 3,
+                "question": "आजी says 'जेवण खा!' — she wants you to...",
+                "options": [
+                    "Drink milk",
+                    "Go outside",
+                    "Eat food",
+                    "Come inside"
+                ],
+                "correct_answer": "Eat food",
+                "correct_romanized": "Khaa"
+            }
+        ],
+        "icon": "footprints"
     },
-    "theme": "Things you do every day — come, go, eat, and drink!",
-    "vocabulary": [
-      {
-        "marathi": "ये",
-        "english": "Come",
-        "romanized": "Ye"
-      },
-      {
-        "marathi": "जा",
-        "english": "Go",
-        "romanized": "Jaa"
-      },
-      {
-        "marathi": "खा",
-        "english": "Eat",
-        "romanized": "Khaa"
-      },
-      {
-        "marathi": "पी",
-        "english": "Drink",
-        "romanized": "Pee"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "आई says 'दूध पी!' — what is she asking you to do?",
-        "options": ["Eat", "Come", "Go", "Drink"],
-        "correct_answer": "Drink",
-        "correct_romanized": "Pee"
-      },
-      {
-        "question_id": 2,
-        "question": "बाबा says 'इकडे ये!' — he wants you to...",
-        "options": ["Go away", "Come here", "Eat food", "Drink water"],
-        "correct_answer": "Come here",
-        "correct_romanized": "Ye"
-      },
-      {
-        "question_id": 3,
-        "question": "आजी says 'जेवण खा!' — she wants you to...",
-        "options": ["Drink milk", "Go outside", "Eat food", "Come inside"],
-        "correct_answer": "Eat food",
-        "correct_romanized": "Khaa"
-      }
-    ]
-  },
-  {
-    "lesson_id": 19,
-    "title": {
-      "marathi": "आणखी क्रियापदे",
-      "english": "More Actions"
+    {
+        "lesson_id": 19,
+        "title": {
+            "marathi": "आणखी क्रियापदे",
+            "english": "More Actions"
+        },
+        "theme": "More things you do — sleep, run, sit, and stand!",
+        "vocabulary": [
+            {
+                "marathi": "झोप",
+                "english": "Sleep",
+                "romanized": "Zhop"
+            },
+            {
+                "marathi": "पळ",
+                "english": "Run",
+                "romanized": "Pal"
+            },
+            {
+                "marathi": "बस",
+                "english": "Sit",
+                "romanized": "Bas"
+            },
+            {
+                "marathi": "उभा राहा",
+                "english": "Stand",
+                "romanized": "Ubhaa raahaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "It's bedtime and आई says 'झोप!' What does she want you to do?",
+                "options": [
+                    "Run",
+                    "Sit",
+                    "Stand",
+                    "Sleep"
+                ],
+                "correct_answer": "Sleep",
+                "correct_romanized": "Zhop"
+            },
+            {
+                "question_id": 2,
+                "question": "The teacher says 'बस!' in class. What should you do?",
+                "options": [
+                    "Run",
+                    "Sleep",
+                    "Sit",
+                    "Stand"
+                ],
+                "correct_answer": "Sit",
+                "correct_romanized": "Bas"
+            },
+            {
+                "question_id": 3,
+                "question": "You're racing your friend! What action is पळ?",
+                "options": [
+                    "Sleep",
+                    "Sit",
+                    "Stand",
+                    "Run"
+                ],
+                "correct_answer": "Run",
+                "correct_romanized": "Pal"
+            }
+        ],
+        "icon": "footprints"
     },
-    "theme": "More things you do — sleep, run, sit, and stand!",
-    "vocabulary": [
-      {
-        "marathi": "झोप",
-        "english": "Sleep",
-        "romanized": "Zhop"
-      },
-      {
-        "marathi": "पळ",
-        "english": "Run",
-        "romanized": "Pal"
-      },
-      {
-        "marathi": "बस",
-        "english": "Sit",
-        "romanized": "Bas"
-      },
-      {
-        "marathi": "उभा राहा",
-        "english": "Stand",
-        "romanized": "Ubhaa raahaa"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "It's bedtime and आई says 'झोप!' What does she want you to do?",
-        "options": ["Run", "Sit", "Stand", "Sleep"],
-        "correct_answer": "Sleep",
-        "correct_romanized": "Zhop"
-      },
-      {
-        "question_id": 2,
-        "question": "The teacher says 'बस!' in class. What should you do?",
-        "options": ["Run", "Sleep", "Sit", "Stand"],
-        "correct_answer": "Sit",
-        "correct_romanized": "Bas"
-      },
-      {
-        "question_id": 3,
-        "question": "You're racing your friend! What action is पळ?",
-        "options": ["Sleep", "Sit", "Stand", "Run"],
-        "correct_answer": "Run",
-        "correct_romanized": "Pal"
-      }
-    ]
-  },
-  {
-    "lesson_id": 20,
-    "title": {
-      "marathi": "सभ्य शब्द",
-      "english": "Polite Words"
-    },
-    "theme": "Magic words that make everyone smile — be polite in Marathi!",
-    "vocabulary": [
-      {
-        "marathi": "कृपया",
-        "english": "Please",
-        "romanized": "Krupayaa"
-      },
-      {
-        "marathi": "एक मिनिट",
-        "english": "Excuse me / One moment",
-        "romanized": "Ek minit"
-      },
-      {
-        "marathi": "स्वागत आहे",
-        "english": "Welcome",
-        "romanized": "Svaagat aahe"
-      },
-      {
-        "marathi": "शाबास",
-        "english": "Well done / Bravo",
-        "romanized": "Shaabas"
-      }
-    ],
-    "quiz": [
-      {
-        "question_id": 1,
-        "question": "You want another roti. What polite word should you add to your request?",
-        "options": ["शाबास", "एक मिनिट", "स्वागत आहे", "कृपया"],
-        "correct_answer": "कृपया",
-        "correct_romanized": "Krupayaa"
-      },
-      {
-        "question_id": 2,
-        "question": "You scored a goal and बाबा shouts 'शाबास!' What does he mean?",
-        "options": ["Please", "Excuse me", "Well done", "Welcome"],
-        "correct_answer": "Well done",
-        "correct_romanized": "Shaabas"
-      },
-      {
-        "question_id": 3,
-        "question": "A guest arrives at your home. What do you say to them?",
-        "options": ["कृपया", "शाबास", "एक मिनिट", "स्वागत आहे"],
-        "correct_answer": "स्वागत आहे",
-        "correct_romanized": "Svaagat aahe"
-      }
-    ]
-  }
+    {
+        "lesson_id": 20,
+        "title": {
+            "marathi": "सभ्य शब्द",
+            "english": "Polite Words"
+        },
+        "theme": "Magic words that make everyone smile — be polite in Marathi!",
+        "vocabulary": [
+            {
+                "marathi": "कृपया",
+                "english": "Please",
+                "romanized": "Krupayaa"
+            },
+            {
+                "marathi": "एक मिनिट",
+                "english": "Excuse me / One moment",
+                "romanized": "Ek minit"
+            },
+            {
+                "marathi": "स्वागत आहे",
+                "english": "Welcome",
+                "romanized": "Svaagat aahe"
+            },
+            {
+                "marathi": "शाबास",
+                "english": "Well done / Bravo",
+                "romanized": "Shaabas"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You want another roti. What polite word should you add to your request?",
+                "options": [
+                    "शाबास",
+                    "एक मिनिट",
+                    "स्वागत आहे",
+                    "कृपया"
+                ],
+                "correct_answer": "कृपया",
+                "correct_romanized": "Krupayaa"
+            },
+            {
+                "question_id": 2,
+                "question": "You scored a goal and बाबा shouts 'शाबास!' What does he mean?",
+                "options": [
+                    "Please",
+                    "Excuse me",
+                    "Well done",
+                    "Welcome"
+                ],
+                "correct_answer": "Well done",
+                "correct_romanized": "Shaabas"
+            },
+            {
+                "question_id": 3,
+                "question": "A guest arrives at your home. What do you say to them?",
+                "options": [
+                    "कृपया",
+                    "शाबास",
+                    "एक मिनिट",
+                    "स्वागत आहे"
+                ],
+                "correct_answer": "स्वागत आहे",
+                "correct_romanized": "Svaagat aahe"
+            }
+        ],
+        "icon": "heart-handshake"
+    }
 ]

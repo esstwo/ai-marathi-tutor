@@ -40,6 +40,7 @@ def load_lessons(file_path: str, level: int):
             "sequence": lesson["lesson_id"],
             "title": title,
             "theme": lesson["theme"],
+            "icon": lesson.get("icon", "book-open"),
             "vocabulary": vocabulary,
             "quiz_questions": quiz_questions,
         })

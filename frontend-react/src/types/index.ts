@@ -37,6 +37,7 @@ export interface Lesson {
   sequence: number;
   title: string;
   theme: string;
+  icon: string;
   vocabulary: VocabWord[];
   quiz_questions: QuizQuestion[];
 }

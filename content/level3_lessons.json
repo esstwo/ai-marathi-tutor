@@ -1,1062 +1,1382 @@
 [
     {
-      "lesson_id": 1,
-      "title": {
-        "marathi": "शाळेत",
-        "english": "At School"
-      },
-      "theme": "Things you see and people you meet at school every day",
-      "vocabulary": [
-        {
-          "marathi": "शाळा",
-          "english": "School",
-          "romanized": "Shaalaa"
+        "lesson_id": 1,
+        "title": {
+            "marathi": "शाळेत",
+            "english": "At School"
         },
-        {
-          "marathi": "शिक्षक",
-          "english": "Teacher",
-          "romanized": "Shikshak"
-        },
-        {
-          "marathi": "पुस्तक",
-          "english": "Book",
-          "romanized": "Pustak"
-        },
-        {
-          "marathi": "पेन्सिल",
-          "english": "Pencil",
-          "romanized": "Pensil"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "What does 'शिक्षक' mean?",
-          "options": ["Student", "Teacher", "Principal", "Friend"],
-          "correct_answer": "Teacher",
-          "correct_romanized": "Shikshak"
-        },
-        {
-          "question_id": 2,
-          "question": "You write with a 'पेन्सिल'. What is that?",
-          "options": ["Eraser", "Crayon", "Pencil", "Marker"],
-          "correct_answer": "Pencil",
-          "correct_romanized": "Pensil"
-        },
-        {
-          "question_id": 3,
-          "question": "Where do kids go to learn? It's called 'शाळा'!",
-          "options": ["Park", "Market", "School", "Hospital"],
-          "correct_answer": "School",
-          "correct_romanized": "Shaalaa"
-        }
-      ]
+        "theme": "Things you see and people you meet at school every day",
+        "vocabulary": [
+            {
+                "marathi": "शाळा",
+                "english": "School",
+                "romanized": "Shaalaa"
+            },
+            {
+                "marathi": "शिक्षक",
+                "english": "Teacher",
+                "romanized": "Shikshak"
+            },
+            {
+                "marathi": "पुस्तक",
+                "english": "Book",
+                "romanized": "Pustak"
+            },
+            {
+                "marathi": "पेन्सिल",
+                "english": "Pencil",
+                "romanized": "Pensil"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "What does 'शिक्षक' mean?",
+                "options": [
+                    "Student",
+                    "Teacher",
+                    "Principal",
+                    "Friend"
+                ],
+                "correct_answer": "Teacher",
+                "correct_romanized": "Shikshak"
+            },
+            {
+                "question_id": 2,
+                "question": "You write with a 'पेन्सिल'. What is that?",
+                "options": [
+                    "Eraser",
+                    "Crayon",
+                    "Pencil",
+                    "Marker"
+                ],
+                "correct_answer": "Pencil",
+                "correct_romanized": "Pensil"
+            },
+            {
+                "question_id": 3,
+                "question": "Where do kids go to learn? It's called 'शाळा'!",
+                "options": [
+                    "Park",
+                    "Market",
+                    "School",
+                    "Hospital"
+                ],
+                "correct_answer": "School",
+                "correct_romanized": "Shaalaa"
+            }
+        ],
+        "icon": "school"
     },
     {
-      "lesson_id": 2,
-      "title": {
-        "marathi": "विषय",
-        "english": "School Subjects"
-      },
-      "theme": "The fun subjects you study at school",
-      "vocabulary": [
-        {
-          "marathi": "गणित",
-          "english": "Math",
-          "romanized": "Ganit"
+        "lesson_id": 2,
+        "title": {
+            "marathi": "विषय",
+            "english": "School Subjects"
         },
-        {
-          "marathi": "विज्ञान",
-          "english": "Science",
-          "romanized": "Vidnyaan"
-        },
-        {
-          "marathi": "मराठी",
-          "english": "Marathi",
-          "romanized": "Marathi"
-        },
-        {
-          "marathi": "इंग्रजी",
-          "english": "English",
-          "romanized": "Ingraji"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You add and subtract numbers in 'गणित'. What subject is that?",
-          "options": ["Art", "Math", "Music", "Science"],
-          "correct_answer": "Math",
-          "correct_romanized": "Ganit"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'विज्ञान' mean?",
-          "options": ["History", "Geography", "Science", "Sports"],
-          "correct_answer": "Science",
-          "correct_romanized": "Vidnyaan"
-        },
-        {
-          "question_id": 3,
-          "question": "What language are you learning right now? It's called 'मराठी'!",
-          "options": ["Hindi", "Marathi", "Tamil", "Bengali"],
-          "correct_answer": "Marathi",
-          "correct_romanized": "Marathi"
-        }
-      ]
+        "theme": "The fun subjects you study at school",
+        "vocabulary": [
+            {
+                "marathi": "गणित",
+                "english": "Math",
+                "romanized": "Ganit"
+            },
+            {
+                "marathi": "विज्ञान",
+                "english": "Science",
+                "romanized": "Vidnyaan"
+            },
+            {
+                "marathi": "मराठी",
+                "english": "Marathi",
+                "romanized": "Marathi"
+            },
+            {
+                "marathi": "इंग्रजी",
+                "english": "English",
+                "romanized": "Ingraji"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You add and subtract numbers in 'गणित'. What subject is that?",
+                "options": [
+                    "Art",
+                    "Math",
+                    "Music",
+                    "Science"
+                ],
+                "correct_answer": "Math",
+                "correct_romanized": "Ganit"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'विज्ञान' mean?",
+                "options": [
+                    "History",
+                    "Geography",
+                    "Science",
+                    "Sports"
+                ],
+                "correct_answer": "Science",
+                "correct_romanized": "Vidnyaan"
+            },
+            {
+                "question_id": 3,
+                "question": "What language are you learning right now? It's called 'मराठी'!",
+                "options": [
+                    "Hindi",
+                    "Marathi",
+                    "Tamil",
+                    "Bengali"
+                ],
+                "correct_answer": "Marathi",
+                "correct_romanized": "Marathi"
+            }
+        ],
+        "icon": "book-open"
     },
     {
-      "lesson_id": 3,
-      "title": {
-        "marathi": "बाजारात",
-        "english": "At the Market"
-      },
-      "theme": "Words you need when you go shopping at the market",
-      "vocabulary": [
-        {
-          "marathi": "दुकान",
-          "english": "Shop",
-          "romanized": "Dukaan"
+        "lesson_id": 3,
+        "title": {
+            "marathi": "बाजारात",
+            "english": "At the Market"
         },
-        {
-          "marathi": "पैसे",
-          "english": "Money",
-          "romanized": "Paise"
-        },
-        {
-          "marathi": "किंमत",
-          "english": "Price",
-          "romanized": "Kimmat"
-        },
-        {
-          "marathi": "पिशवी",
-          "english": "Bag",
-          "romanized": "Pishvi"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You carry your groceries in a 'पिशवी'. What is it?",
-          "options": ["Box", "Bag", "Basket", "Cart"],
-          "correct_answer": "Bag",
-          "correct_romanized": "Pishvi"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'दुकान' mean?",
-          "options": ["Market", "Shop", "Mall", "Street"],
-          "correct_answer": "Shop",
-          "correct_romanized": "Dukaan"
-        },
-        {
-          "question_id": 3,
-          "question": "You use 'पैसे' to buy things. What are they?",
-          "options": ["Coins", "Cards", "Money", "Tickets"],
-          "correct_answer": "Money",
-          "correct_romanized": "Paise"
-        }
-      ]
+        "theme": "Words you need when you go shopping at the market",
+        "vocabulary": [
+            {
+                "marathi": "दुकान",
+                "english": "Shop",
+                "romanized": "Dukaan"
+            },
+            {
+                "marathi": "पैसे",
+                "english": "Money",
+                "romanized": "Paise"
+            },
+            {
+                "marathi": "किंमत",
+                "english": "Price",
+                "romanized": "Kimmat"
+            },
+            {
+                "marathi": "पिशवी",
+                "english": "Bag",
+                "romanized": "Pishvi"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You carry your groceries in a 'पिशवी'. What is it?",
+                "options": [
+                    "Box",
+                    "Bag",
+                    "Basket",
+                    "Cart"
+                ],
+                "correct_answer": "Bag",
+                "correct_romanized": "Pishvi"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'दुकान' mean?",
+                "options": [
+                    "Market",
+                    "Shop",
+                    "Mall",
+                    "Street"
+                ],
+                "correct_answer": "Shop",
+                "correct_romanized": "Dukaan"
+            },
+            {
+                "question_id": 3,
+                "question": "You use 'पैसे' to buy things. What are they?",
+                "options": [
+                    "Coins",
+                    "Cards",
+                    "Money",
+                    "Tickets"
+                ],
+                "correct_answer": "Money",
+                "correct_romanized": "Paise"
+            }
+        ],
+        "icon": "store"
     },
     {
-      "lesson_id": 4,
-      "title": {
-        "marathi": "खरेदी",
-        "english": "Buying Things"
-      },
-      "theme": "Useful words for when you want to buy something",
-      "vocabulary": [
-        {
-          "marathi": "किती",
-          "english": "How much",
-          "romanized": "Kiti"
+        "lesson_id": 4,
+        "title": {
+            "marathi": "खरेदी",
+            "english": "Buying Things"
         },
-        {
-          "marathi": "महाग",
-          "english": "Expensive",
-          "romanized": "Mahaag"
-        },
-        {
-          "marathi": "स्वस्त",
-          "english": "Cheap",
-          "romanized": "Svast"
-        },
-        {
-          "marathi": "सुट्टे",
-          "english": "Change",
-          "romanized": "Sutte"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "If something costs too many rupees, it is 'महाग'. What does that mean?",
-          "options": ["Cheap", "Free", "Expensive", "Heavy"],
-          "correct_answer": "Expensive",
-          "correct_romanized": "Mahaag"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'स्वस्त' mean?",
-          "options": ["Expensive", "Cheap", "Pretty", "Broken"],
-          "correct_answer": "Cheap",
-          "correct_romanized": "Svast"
-        },
-        {
-          "question_id": 3,
-          "question": "You ask 'किती?' at the shop. What are you asking?",
-          "options": ["What is this?", "Where is it?", "How much?", "Who sells it?"],
-          "correct_answer": "How much?",
-          "correct_romanized": "Kiti"
-        }
-      ]
+        "theme": "Useful words for when you want to buy something",
+        "vocabulary": [
+            {
+                "marathi": "किती",
+                "english": "How much",
+                "romanized": "Kiti"
+            },
+            {
+                "marathi": "महाग",
+                "english": "Expensive",
+                "romanized": "Mahaag"
+            },
+            {
+                "marathi": "स्वस्त",
+                "english": "Cheap",
+                "romanized": "Svast"
+            },
+            {
+                "marathi": "सुट्टे",
+                "english": "Change",
+                "romanized": "Sutte"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "If something costs too many rupees, it is 'महाग'. What does that mean?",
+                "options": [
+                    "Cheap",
+                    "Free",
+                    "Expensive",
+                    "Heavy"
+                ],
+                "correct_answer": "Expensive",
+                "correct_romanized": "Mahaag"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'स्वस्त' mean?",
+                "options": [
+                    "Expensive",
+                    "Cheap",
+                    "Pretty",
+                    "Broken"
+                ],
+                "correct_answer": "Cheap",
+                "correct_romanized": "Svast"
+            },
+            {
+                "question_id": 3,
+                "question": "You ask 'किती?' at the shop. What are you asking?",
+                "options": [
+                    "What is this?",
+                    "Where is it?",
+                    "How much?",
+                    "Who sells it?"
+                ],
+                "correct_answer": "How much?",
+                "correct_romanized": "Kiti"
+            }
+        ],
+        "icon": "shopping-cart"
     },
     {
-      "lesson_id": 5,
-      "title": {
-        "marathi": "बागेत",
-        "english": "At the Park"
-      },
-      "theme": "Beautiful things you see when you visit the park or garden",
-      "vocabulary": [
-        {
-          "marathi": "झाड",
-          "english": "Tree",
-          "romanized": "Zhaad"
+        "lesson_id": 5,
+        "title": {
+            "marathi": "बागेत",
+            "english": "At the Park"
         },
-        {
-          "marathi": "फूल",
-          "english": "Flower",
-          "romanized": "Phool"
-        },
-        {
-          "marathi": "गवत",
-          "english": "Grass",
-          "romanized": "Gavat"
-        },
-        {
-          "marathi": "झोपाळा",
-          "english": "Swing",
-          "romanized": "Zhopaalaa"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You love to sit on a 'झोपाळा' at the park. What is it?",
-          "options": ["Slide", "Swing", "Bench", "Seesaw"],
-          "correct_answer": "Swing",
-          "correct_romanized": "Zhopaalaa"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'फूल' mean?",
-          "options": ["Leaf", "Fruit", "Flower", "Seed"],
-          "correct_answer": "Flower",
-          "correct_romanized": "Phool"
-        },
-        {
-          "question_id": 3,
-          "question": "A tall 'झाड' gives shade in the park. What is it?",
-          "options": ["Tree", "Building", "Hill", "Wall"],
-          "correct_answer": "Tree",
-          "correct_romanized": "Zhaad"
-        }
-      ]
+        "theme": "Beautiful things you see when you visit the park or garden",
+        "vocabulary": [
+            {
+                "marathi": "झाड",
+                "english": "Tree",
+                "romanized": "Zhaad"
+            },
+            {
+                "marathi": "फूल",
+                "english": "Flower",
+                "romanized": "Phool"
+            },
+            {
+                "marathi": "गवत",
+                "english": "Grass",
+                "romanized": "Gavat"
+            },
+            {
+                "marathi": "झोपाळा",
+                "english": "Swing",
+                "romanized": "Zhopaalaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You love to sit on a 'झोपाळा' at the park. What is it?",
+                "options": [
+                    "Slide",
+                    "Swing",
+                    "Bench",
+                    "Seesaw"
+                ],
+                "correct_answer": "Swing",
+                "correct_romanized": "Zhopaalaa"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'फूल' mean?",
+                "options": [
+                    "Leaf",
+                    "Fruit",
+                    "Flower",
+                    "Seed"
+                ],
+                "correct_answer": "Flower",
+                "correct_romanized": "Phool"
+            },
+            {
+                "question_id": 3,
+                "question": "A tall 'झाड' gives shade in the park. What is it?",
+                "options": [
+                    "Tree",
+                    "Building",
+                    "Hill",
+                    "Wall"
+                ],
+                "correct_answer": "Tree",
+                "correct_romanized": "Zhaad"
+            }
+        ],
+        "icon": "trees"
     },
     {
-      "lesson_id": 6,
-      "title": {
-        "marathi": "खेळाचं मैदान",
-        "english": "Playground Fun"
-      },
-      "theme": "Action words for all the fun things you do at the playground",
-      "vocabulary": [
-        {
-          "marathi": "पळणे",
-          "english": "Run",
-          "romanized": "Palne"
+        "lesson_id": 6,
+        "title": {
+            "marathi": "खेळाचं मैदान",
+            "english": "Playground Fun"
         },
-        {
-          "marathi": "उडी मारणे",
-          "english": "Jump",
-          "romanized": "Udi Maarne"
-        },
-        {
-          "marathi": "फेकणे",
-          "english": "Throw",
-          "romanized": "Phekne"
-        },
-        {
-          "marathi": "पकडणे",
-          "english": "Catch",
-          "romanized": "Pakadne"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You 'पळणे' fast in a race. What does it mean?",
-          "options": ["Walk", "Run", "Skip", "Crawl"],
-          "correct_answer": "Run",
-          "correct_romanized": "Palne"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'उडी मारणे' mean?",
-          "options": ["Sit", "Stand", "Jump", "Sleep"],
-          "correct_answer": "Jump",
-          "correct_romanized": "Udi Maarne"
-        },
-        {
-          "question_id": 3,
-          "question": "Your friend throws a ball and you do 'पकडणे'. What did you do?",
-          "options": ["Throw", "Kick", "Drop", "Catch"],
-          "correct_answer": "Catch",
-          "correct_romanized": "Pakadne"
-        }
-      ]
+        "theme": "Action words for all the fun things you do at the playground",
+        "vocabulary": [
+            {
+                "marathi": "पळणे",
+                "english": "Run",
+                "romanized": "Palne"
+            },
+            {
+                "marathi": "उडी मारणे",
+                "english": "Jump",
+                "romanized": "Udi Maarne"
+            },
+            {
+                "marathi": "फेकणे",
+                "english": "Throw",
+                "romanized": "Phekne"
+            },
+            {
+                "marathi": "पकडणे",
+                "english": "Catch",
+                "romanized": "Pakadne"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You 'पळणे' fast in a race. What does it mean?",
+                "options": [
+                    "Walk",
+                    "Run",
+                    "Skip",
+                    "Crawl"
+                ],
+                "correct_answer": "Run",
+                "correct_romanized": "Palne"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'उडी मारणे' mean?",
+                "options": [
+                    "Sit",
+                    "Stand",
+                    "Jump",
+                    "Sleep"
+                ],
+                "correct_answer": "Jump",
+                "correct_romanized": "Udi Maarne"
+            },
+            {
+                "question_id": 3,
+                "question": "Your friend throws a ball and you do 'पकडणे'. What did you do?",
+                "options": [
+                    "Throw",
+                    "Kick",
+                    "Drop",
+                    "Catch"
+                ],
+                "correct_answer": "Catch",
+                "correct_romanized": "Pakadne"
+            }
+        ],
+        "icon": "baby"
     },
     {
-      "lesson_id": 7,
-      "title": {
-        "marathi": "हवामान",
-        "english": "Weather"
-      },
-      "theme": "Words to talk about what the weather is like today",
-      "vocabulary": [
-        {
-          "marathi": "सूर्य",
-          "english": "Sun",
-          "romanized": "Soorya"
+        "lesson_id": 7,
+        "title": {
+            "marathi": "हवामान",
+            "english": "Weather"
         },
-        {
-          "marathi": "पाऊस",
-          "english": "Rain",
-          "romanized": "Paaus"
-        },
-        {
-          "marathi": "वारा",
-          "english": "Wind",
-          "romanized": "Vaaraa"
-        },
-        {
-          "marathi": "ढग",
-          "english": "Cloud",
-          "romanized": "Dhag"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "When 'पाऊस' falls, you need an umbrella! What is it?",
-          "options": ["Snow", "Rain", "Hail", "Fog"],
-          "correct_answer": "Rain",
-          "correct_romanized": "Paaus"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'वारा' mean?",
-          "options": ["Sun", "Cloud", "Wind", "Storm"],
-          "correct_answer": "Wind",
-          "correct_romanized": "Vaaraa"
-        },
-        {
-          "question_id": 3,
-          "question": "The bright 'सूर्य' shines in the sky. What is it?",
-          "options": ["Moon", "Star", "Sun", "Rainbow"],
-          "correct_answer": "Sun",
-          "correct_romanized": "Soorya"
-        }
-      ]
+        "theme": "Words to talk about what the weather is like today",
+        "vocabulary": [
+            {
+                "marathi": "सूर्य",
+                "english": "Sun",
+                "romanized": "Soorya"
+            },
+            {
+                "marathi": "पाऊस",
+                "english": "Rain",
+                "romanized": "Paaus"
+            },
+            {
+                "marathi": "वारा",
+                "english": "Wind",
+                "romanized": "Vaaraa"
+            },
+            {
+                "marathi": "ढग",
+                "english": "Cloud",
+                "romanized": "Dhag"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "When 'पाऊस' falls, you need an umbrella! What is it?",
+                "options": [
+                    "Snow",
+                    "Rain",
+                    "Hail",
+                    "Fog"
+                ],
+                "correct_answer": "Rain",
+                "correct_romanized": "Paaus"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'वारा' mean?",
+                "options": [
+                    "Sun",
+                    "Cloud",
+                    "Wind",
+                    "Storm"
+                ],
+                "correct_answer": "Wind",
+                "correct_romanized": "Vaaraa"
+            },
+            {
+                "question_id": 3,
+                "question": "The bright 'सूर्य' shines in the sky. What is it?",
+                "options": [
+                    "Moon",
+                    "Star",
+                    "Sun",
+                    "Rainbow"
+                ],
+                "correct_answer": "Sun",
+                "correct_romanized": "Soorya"
+            }
+        ],
+        "icon": "cloud-sun"
     },
     {
-      "lesson_id": 8,
-      "title": {
-        "marathi": "ऋतू",
-        "english": "Seasons"
-      },
-      "theme": "The different seasons and how they feel throughout the year",
-      "vocabulary": [
-        {
-          "marathi": "उन्हाळा",
-          "english": "Summer",
-          "romanized": "Unhaalaa"
+        "lesson_id": 8,
+        "title": {
+            "marathi": "ऋतू",
+            "english": "Seasons"
         },
-        {
-          "marathi": "हिवाळा",
-          "english": "Winter",
-          "romanized": "Hivaalaa"
-        },
-        {
-          "marathi": "पावसाळा",
-          "english": "Rainy season",
-          "romanized": "Paavsaalaa"
-        },
-        {
-          "marathi": "थंडी",
-          "english": "Cold",
-          "romanized": "Thandi"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "When it's very hot outside, it is 'उन्हाळा'. What season is that?",
-          "options": ["Winter", "Spring", "Summer", "Autumn"],
-          "correct_answer": "Summer",
-          "correct_romanized": "Unhaalaa"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'पावसाळा' mean?",
-          "options": ["Dry season", "Rainy season", "Winter", "Summer"],
-          "correct_answer": "Rainy season",
-          "correct_romanized": "Paavsaalaa"
-        },
-        {
-          "question_id": 3,
-          "question": "You shiver because of 'थंडी'. What does it mean?",
-          "options": ["Heat", "Cold", "Wind", "Rain"],
-          "correct_answer": "Cold",
-          "correct_romanized": "Thandi"
-        }
-      ]
+        "theme": "The different seasons and how they feel throughout the year",
+        "vocabulary": [
+            {
+                "marathi": "उन्हाळा",
+                "english": "Summer",
+                "romanized": "Unhaalaa"
+            },
+            {
+                "marathi": "हिवाळा",
+                "english": "Winter",
+                "romanized": "Hivaalaa"
+            },
+            {
+                "marathi": "पावसाळा",
+                "english": "Rainy season",
+                "romanized": "Paavsaalaa"
+            },
+            {
+                "marathi": "थंडी",
+                "english": "Cold",
+                "romanized": "Thandi"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "When it's very hot outside, it is 'उन्हाळा'. What season is that?",
+                "options": [
+                    "Winter",
+                    "Spring",
+                    "Summer",
+                    "Autumn"
+                ],
+                "correct_answer": "Summer",
+                "correct_romanized": "Unhaalaa"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'पावसाळा' mean?",
+                "options": [
+                    "Dry season",
+                    "Rainy season",
+                    "Winter",
+                    "Summer"
+                ],
+                "correct_answer": "Rainy season",
+                "correct_romanized": "Paavsaalaa"
+            },
+            {
+                "question_id": 3,
+                "question": "You shiver because of 'थंडी'. What does it mean?",
+                "options": [
+                    "Heat",
+                    "Cold",
+                    "Wind",
+                    "Rain"
+                ],
+                "correct_answer": "Cold",
+                "correct_romanized": "Thandi"
+            }
+        ],
+        "icon": "sun"
     },
     {
-      "lesson_id": 9,
-      "title": {
-        "marathi": "दिवाळी",
-        "english": "Diwali"
-      },
-      "theme": "Words for the festival of lights that everyone loves",
-      "vocabulary": [
-        {
-          "marathi": "दिवा",
-          "english": "Lamp",
-          "romanized": "Divaa"
+        "lesson_id": 9,
+        "title": {
+            "marathi": "दिवाळी",
+            "english": "Diwali"
         },
-        {
-          "marathi": "रांगोळी",
-          "english": "Rangoli",
-          "romanized": "Rangoli"
-        },
-        {
-          "marathi": "मिठाई",
-          "english": "Sweets",
-          "romanized": "Mithaai"
-        },
-        {
-          "marathi": "फटाके",
-          "english": "Firecrackers",
-          "romanized": "Phataake"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "During Diwali you light a 'दिवा'. What is it?",
-          "options": ["Candle", "Lamp", "Torch", "Lantern"],
-          "correct_answer": "Lamp",
-          "correct_romanized": "Divaa"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'रांगोळी' mean?",
-          "options": ["Painting", "Rangoli", "Poster", "Sticker"],
-          "correct_answer": "Rangoli",
-          "correct_romanized": "Rangoli"
-        },
-        {
-          "question_id": 3,
-          "question": "Kids love eating 'मिठाई' during festivals. What are they?",
-          "options": ["Chips", "Fruits", "Sweets", "Sandwiches"],
-          "correct_answer": "Sweets",
-          "correct_romanized": "Mithaai"
-        }
-      ]
+        "theme": "Words for the festival of lights that everyone loves",
+        "vocabulary": [
+            {
+                "marathi": "दिवा",
+                "english": "Lamp",
+                "romanized": "Divaa"
+            },
+            {
+                "marathi": "रांगोळी",
+                "english": "Rangoli",
+                "romanized": "Rangoli"
+            },
+            {
+                "marathi": "मिठाई",
+                "english": "Sweets",
+                "romanized": "Mithaai"
+            },
+            {
+                "marathi": "फटाके",
+                "english": "Firecrackers",
+                "romanized": "Phataake"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "During Diwali you light a 'दिवा'. What is it?",
+                "options": [
+                    "Candle",
+                    "Lamp",
+                    "Torch",
+                    "Lantern"
+                ],
+                "correct_answer": "Lamp",
+                "correct_romanized": "Divaa"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'रांगोळी' mean?",
+                "options": [
+                    "Painting",
+                    "Rangoli",
+                    "Poster",
+                    "Sticker"
+                ],
+                "correct_answer": "Rangoli",
+                "correct_romanized": "Rangoli"
+            },
+            {
+                "question_id": 3,
+                "question": "Kids love eating 'मिठाई' during festivals. What are they?",
+                "options": [
+                    "Chips",
+                    "Fruits",
+                    "Sweets",
+                    "Sandwiches"
+                ],
+                "correct_answer": "Sweets",
+                "correct_romanized": "Mithaai"
+            }
+        ],
+        "icon": "flame"
     },
     {
-      "lesson_id": 10,
-      "title": {
-        "marathi": "गणेश चतुर्थी",
-        "english": "Ganesh Chaturthi"
-      },
-      "theme": "Celebrate Ganesh Chaturthi with these special festival words",
-      "vocabulary": [
-        {
-          "marathi": "गणेश",
-          "english": "Ganesh",
-          "romanized": "Ganesh"
+        "lesson_id": 10,
+        "title": {
+            "marathi": "गणेश चतुर्थी",
+            "english": "Ganesh Chaturthi"
         },
-        {
-          "marathi": "मूर्ती",
-          "english": "Idol",
-          "romanized": "Moorti"
-        },
-        {
-          "marathi": "मोदक",
-          "english": "Modak",
-          "romanized": "Modak"
-        },
-        {
-          "marathi": "मिरवणूक",
-          "english": "Procession",
-          "romanized": "Miravanook"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "A 'मूर्ती' of Ganesh is brought home. What is a 'मूर्ती'?",
-          "options": ["Photo", "Idol", "Painting", "Book"],
-          "correct_answer": "Idol",
-          "correct_romanized": "Moorti"
-        },
-        {
-          "question_id": 2,
-          "question": "What is 'मोदक'?",
-          "options": ["A song", "A dance", "A sweet dumpling", "A flower"],
-          "correct_answer": "A sweet dumpling",
-          "correct_romanized": "Modak"
-        },
-        {
-          "question_id": 3,
-          "question": "People walk in a 'मिरवणूक' with music and dancing. What is it?",
-          "options": ["Race", "Procession", "Concert", "Parade"],
-          "correct_answer": "Procession",
-          "correct_romanized": "Miravanook"
-        }
-      ]
+        "theme": "Celebrate Ganesh Chaturthi with these special festival words",
+        "vocabulary": [
+            {
+                "marathi": "गणेश",
+                "english": "Ganesh",
+                "romanized": "Ganesh"
+            },
+            {
+                "marathi": "मूर्ती",
+                "english": "Idol",
+                "romanized": "Moorti"
+            },
+            {
+                "marathi": "मोदक",
+                "english": "Modak",
+                "romanized": "Modak"
+            },
+            {
+                "marathi": "मिरवणूक",
+                "english": "Procession",
+                "romanized": "Miravanook"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "A 'मूर्ती' of Ganesh is brought home. What is a 'मूर्ती'?",
+                "options": [
+                    "Photo",
+                    "Idol",
+                    "Painting",
+                    "Book"
+                ],
+                "correct_answer": "Idol",
+                "correct_romanized": "Moorti"
+            },
+            {
+                "question_id": 2,
+                "question": "What is 'मोदक'?",
+                "options": [
+                    "A song",
+                    "A dance",
+                    "A sweet dumpling",
+                    "A flower"
+                ],
+                "correct_answer": "A sweet dumpling",
+                "correct_romanized": "Modak"
+            },
+            {
+                "question_id": 3,
+                "question": "People walk in a 'मिरवणूक' with music and dancing. What is it?",
+                "options": [
+                    "Race",
+                    "Procession",
+                    "Concert",
+                    "Parade"
+                ],
+                "correct_answer": "Procession",
+                "correct_romanized": "Miravanook"
+            }
+        ],
+        "icon": "crown"
     },
     {
-      "lesson_id": 11,
-      "title": {
-        "marathi": "सण",
-        "english": "Holi & More"
-      },
-      "theme": "Fun words for celebrating festivals with family and friends",
-      "vocabulary": [
-        {
-          "marathi": "सण",
-          "english": "Festival",
-          "romanized": "San"
+        "lesson_id": 11,
+        "title": {
+            "marathi": "सण",
+            "english": "Holi & More"
         },
-        {
-          "marathi": "रंग",
-          "english": "Color",
-          "romanized": "Rang"
-        },
-        {
-          "marathi": "नाच",
-          "english": "Dance",
-          "romanized": "Naach"
-        },
-        {
-          "marathi": "मजा",
-          "english": "Fun",
-          "romanized": "Majaa"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "During Holi you play with 'रंग'. What does it mean?",
-          "options": ["Water", "Color", "Sand", "Paint"],
-          "correct_answer": "Color",
-          "correct_romanized": "Rang"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'नाच' mean?",
-          "options": ["Sing", "Dance", "Clap", "Shout"],
-          "correct_answer": "Dance",
-          "correct_romanized": "Naach"
-        },
-        {
-          "question_id": 3,
-          "question": "You had so much 'मजा' at the party! What does it mean?",
-          "options": ["Food", "Sleep", "Fun", "Work"],
-          "correct_answer": "Fun",
-          "correct_romanized": "Majaa"
-        }
-      ]
+        "theme": "Fun words for celebrating festivals with family and friends",
+        "vocabulary": [
+            {
+                "marathi": "सण",
+                "english": "Festival",
+                "romanized": "San"
+            },
+            {
+                "marathi": "रंग",
+                "english": "Color",
+                "romanized": "Rang"
+            },
+            {
+                "marathi": "नाच",
+                "english": "Dance",
+                "romanized": "Naach"
+            },
+            {
+                "marathi": "मजा",
+                "english": "Fun",
+                "romanized": "Majaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "During Holi you play with 'रंग'. What does it mean?",
+                "options": [
+                    "Water",
+                    "Color",
+                    "Sand",
+                    "Paint"
+                ],
+                "correct_answer": "Color",
+                "correct_romanized": "Rang"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'नाच' mean?",
+                "options": [
+                    "Sing",
+                    "Dance",
+                    "Clap",
+                    "Shout"
+                ],
+                "correct_answer": "Dance",
+                "correct_romanized": "Naach"
+            },
+            {
+                "question_id": 3,
+                "question": "You had so much 'मजा' at the party! What does it mean?",
+                "options": [
+                    "Food",
+                    "Sleep",
+                    "Fun",
+                    "Work"
+                ],
+                "correct_answer": "Fun",
+                "correct_romanized": "Majaa"
+            }
+        ],
+        "icon": "sparkles"
     },
     {
-      "lesson_id": 12,
-      "title": {
-        "marathi": "दिशा",
-        "english": "Directions"
-      },
-      "theme": "Learn how to give and follow directions in Marathi",
-      "vocabulary": [
-        {
-          "marathi": "डावीकडे",
-          "english": "Left",
-          "romanized": "Daavikade"
+        "lesson_id": 12,
+        "title": {
+            "marathi": "दिशा",
+            "english": "Directions"
         },
-        {
-          "marathi": "उजवीकडे",
-          "english": "Right",
-          "romanized": "Ujavikade"
-        },
-        {
-          "marathi": "सरळ",
-          "english": "Straight",
-          "romanized": "Saral"
-        },
-        {
-          "marathi": "वळण",
-          "english": "Turn",
-          "romanized": "Valan"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "Someone says 'सरळ जा!' What should you do?",
-          "options": ["Turn left", "Turn right", "Go straight", "Go back"],
-          "correct_answer": "Go straight",
-          "correct_romanized": "Saral"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'डावीकडे' mean?",
-          "options": ["Right", "Left", "Up", "Down"],
-          "correct_answer": "Left",
-          "correct_romanized": "Daavikade"
-        },
-        {
-          "question_id": 3,
-          "question": "You take a 'वळण' at the corner. What did you do?",
-          "options": ["Stop", "Turn", "Jump", "Run"],
-          "correct_answer": "Turn",
-          "correct_romanized": "Valan"
-        }
-      ]
+        "theme": "Learn how to give and follow directions in Marathi",
+        "vocabulary": [
+            {
+                "marathi": "डावीकडे",
+                "english": "Left",
+                "romanized": "Daavikade"
+            },
+            {
+                "marathi": "उजवीकडे",
+                "english": "Right",
+                "romanized": "Ujavikade"
+            },
+            {
+                "marathi": "सरळ",
+                "english": "Straight",
+                "romanized": "Saral"
+            },
+            {
+                "marathi": "वळण",
+                "english": "Turn",
+                "romanized": "Valan"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Someone says 'सरळ जा!' What should you do?",
+                "options": [
+                    "Turn left",
+                    "Turn right",
+                    "Go straight",
+                    "Go back"
+                ],
+                "correct_answer": "Go straight",
+                "correct_romanized": "Saral"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'डावीकडे' mean?",
+                "options": [
+                    "Right",
+                    "Left",
+                    "Up",
+                    "Down"
+                ],
+                "correct_answer": "Left",
+                "correct_romanized": "Daavikade"
+            },
+            {
+                "question_id": 3,
+                "question": "You take a 'वळण' at the corner. What did you do?",
+                "options": [
+                    "Stop",
+                    "Turn",
+                    "Jump",
+                    "Run"
+                ],
+                "correct_answer": "Turn",
+                "correct_romanized": "Valan"
+            }
+        ],
+        "icon": "compass"
     },
     {
-      "lesson_id": 13,
-      "title": {
-        "marathi": "वाहतूक",
-        "english": "Transport"
-      },
-      "theme": "Different vehicles and ways to get around town",
-      "vocabulary": [
-        {
-          "marathi": "गाडी",
-          "english": "Car",
-          "romanized": "Gaadi"
+        "lesson_id": 13,
+        "title": {
+            "marathi": "वाहतूक",
+            "english": "Transport"
         },
-        {
-          "marathi": "बस",
-          "english": "Bus",
-          "romanized": "Bus"
-        },
-        {
-          "marathi": "ऑटो",
-          "english": "Auto",
-          "romanized": "Auto"
-        },
-        {
-          "marathi": "सायकल",
-          "english": "Bicycle",
-          "romanized": "Saaykal"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You ride a 'सायकल' with two wheels. What is it?",
-          "options": ["Scooter", "Bicycle", "Tricycle", "Car"],
-          "correct_answer": "Bicycle",
-          "correct_romanized": "Saaykal"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'गाडी' mean?",
-          "options": ["Plane", "Train", "Car", "Boat"],
-          "correct_answer": "Car",
-          "correct_romanized": "Gaadi"
-        },
-        {
-          "question_id": 3,
-          "question": "Many people ride together in a 'बस'. What is it?",
-          "options": ["Taxi", "Bus", "Van", "Truck"],
-          "correct_answer": "Bus",
-          "correct_romanized": "Bus"
-        }
-      ]
+        "theme": "Different vehicles and ways to get around town",
+        "vocabulary": [
+            {
+                "marathi": "गाडी",
+                "english": "Car",
+                "romanized": "Gaadi"
+            },
+            {
+                "marathi": "बस",
+                "english": "Bus",
+                "romanized": "Bus"
+            },
+            {
+                "marathi": "ऑटो",
+                "english": "Auto",
+                "romanized": "Auto"
+            },
+            {
+                "marathi": "सायकल",
+                "english": "Bicycle",
+                "romanized": "Saaykal"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You ride a 'सायकल' with two wheels. What is it?",
+                "options": [
+                    "Scooter",
+                    "Bicycle",
+                    "Tricycle",
+                    "Car"
+                ],
+                "correct_answer": "Bicycle",
+                "correct_romanized": "Saaykal"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'गाडी' mean?",
+                "options": [
+                    "Plane",
+                    "Train",
+                    "Car",
+                    "Boat"
+                ],
+                "correct_answer": "Car",
+                "correct_romanized": "Gaadi"
+            },
+            {
+                "question_id": 3,
+                "question": "Many people ride together in a 'बस'. What is it?",
+                "options": [
+                    "Taxi",
+                    "Bus",
+                    "Van",
+                    "Truck"
+                ],
+                "correct_answer": "Bus",
+                "correct_romanized": "Bus"
+            }
+        ],
+        "icon": "bus"
     },
     {
-      "lesson_id": 14,
-      "title": {
-        "marathi": "ठिकाणे",
-        "english": "Places"
-      },
-      "theme": "Important places you visit in your neighborhood",
-      "vocabulary": [
-        {
-          "marathi": "घर",
-          "english": "House",
-          "romanized": "Ghar"
+        "lesson_id": 14,
+        "title": {
+            "marathi": "ठिकाणे",
+            "english": "Places"
         },
-        {
-          "marathi": "मंदिर",
-          "english": "Temple",
-          "romanized": "Mandir"
-        },
-        {
-          "marathi": "दवाखाना",
-          "english": "Hospital",
-          "romanized": "Davakhaanaa"
-        },
-        {
-          "marathi": "दुकान",
-          "english": "Shop",
-          "romanized": "Dukaan"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You go to 'मंदिर' to pray. What is it?",
-          "options": ["School", "Temple", "Library", "Park"],
-          "correct_answer": "Temple",
-          "correct_romanized": "Mandir"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'दवाखाना' mean?",
-          "options": ["Hotel", "Hospital", "Restaurant", "Office"],
-          "correct_answer": "Hospital",
-          "correct_romanized": "Davakhaanaa"
-        },
-        {
-          "question_id": 3,
-          "question": "Your family lives in a 'घर'. What is it?",
-          "options": ["House", "Tent", "Hotel", "School"],
-          "correct_answer": "House",
-          "correct_romanized": "Ghar"
-        }
-      ]
+        "theme": "Important places you visit in your neighborhood",
+        "vocabulary": [
+            {
+                "marathi": "घर",
+                "english": "House",
+                "romanized": "Ghar"
+            },
+            {
+                "marathi": "मंदिर",
+                "english": "Temple",
+                "romanized": "Mandir"
+            },
+            {
+                "marathi": "दवाखाना",
+                "english": "Hospital",
+                "romanized": "Davakhaanaa"
+            },
+            {
+                "marathi": "दुकान",
+                "english": "Shop",
+                "romanized": "Dukaan"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You go to 'मंदिर' to pray. What is it?",
+                "options": [
+                    "School",
+                    "Temple",
+                    "Library",
+                    "Park"
+                ],
+                "correct_answer": "Temple",
+                "correct_romanized": "Mandir"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'दवाखाना' mean?",
+                "options": [
+                    "Hotel",
+                    "Hospital",
+                    "Restaurant",
+                    "Office"
+                ],
+                "correct_answer": "Hospital",
+                "correct_romanized": "Davakhaanaa"
+            },
+            {
+                "question_id": 3,
+                "question": "Your family lives in a 'घर'. What is it?",
+                "options": [
+                    "House",
+                    "Tent",
+                    "Hotel",
+                    "School"
+                ],
+                "correct_answer": "House",
+                "correct_romanized": "Ghar"
+            }
+        ],
+        "icon": "building"
     },
     {
-      "lesson_id": 15,
-      "title": {
-        "marathi": "कुठे आहे?",
-        "english": "Where is...?"
-      },
-      "theme": "Ask and answer where things are using question words",
-      "vocabulary": [
-        {
-          "marathi": "कुठे",
-          "english": "Where",
-          "romanized": "Kuthe"
+        "lesson_id": 15,
+        "title": {
+            "marathi": "कुठे आहे?",
+            "english": "Where is...?"
         },
-        {
-          "marathi": "इथे",
-          "english": "Here",
-          "romanized": "Ithe"
-        },
-        {
-          "marathi": "तिथे",
-          "english": "There",
-          "romanized": "Tithe"
-        },
-        {
-          "marathi": "जवळ",
-          "english": "Near",
-          "romanized": "Javal"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You ask 'कुठे आहे?' What are you asking?",
-          "options": ["What is it?", "Where is it?", "Who is it?", "When is it?"],
-          "correct_answer": "Where is it?",
-          "correct_romanized": "Kuthe"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'इथे' mean?",
-          "options": ["There", "Here", "Far", "Near"],
-          "correct_answer": "Here",
-          "correct_romanized": "Ithe"
-        },
-        {
-          "question_id": 3,
-          "question": "The park is 'जवळ' your house. What does 'जवळ' mean?",
-          "options": ["Far from", "Behind", "Near", "Inside"],
-          "correct_answer": "Near",
-          "correct_romanized": "Javal"
-        }
-      ]
+        "theme": "Ask and answer where things are using question words",
+        "vocabulary": [
+            {
+                "marathi": "कुठे",
+                "english": "Where",
+                "romanized": "Kuthe"
+            },
+            {
+                "marathi": "इथे",
+                "english": "Here",
+                "romanized": "Ithe"
+            },
+            {
+                "marathi": "तिथे",
+                "english": "There",
+                "romanized": "Tithe"
+            },
+            {
+                "marathi": "जवळ",
+                "english": "Near",
+                "romanized": "Javal"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You ask 'कुठे आहे?' What are you asking?",
+                "options": [
+                    "What is it?",
+                    "Where is it?",
+                    "Who is it?",
+                    "When is it?"
+                ],
+                "correct_answer": "Where is it?",
+                "correct_romanized": "Kuthe"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'इथे' mean?",
+                "options": [
+                    "There",
+                    "Here",
+                    "Far",
+                    "Near"
+                ],
+                "correct_answer": "Here",
+                "correct_romanized": "Ithe"
+            },
+            {
+                "question_id": 3,
+                "question": "The park is 'जवळ' your house. What does 'जवळ' mean?",
+                "options": [
+                    "Far from",
+                    "Behind",
+                    "Near",
+                    "Inside"
+                ],
+                "correct_answer": "Near",
+                "correct_romanized": "Javal"
+            }
+        ],
+        "icon": "map-pin"
     },
     {
-      "lesson_id": 16,
-      "title": {
-        "marathi": "हे काय आहे?",
-        "english": "What is this?"
-      },
-      "theme": "Learn to ask questions using what, who, why, and how",
-      "vocabulary": [
-        {
-          "marathi": "काय",
-          "english": "What",
-          "romanized": "Kaay"
+        "lesson_id": 16,
+        "title": {
+            "marathi": "हे काय आहे?",
+            "english": "What is this?"
         },
-        {
-          "marathi": "कोण",
-          "english": "Who",
-          "romanized": "Kon"
-        },
-        {
-          "marathi": "का",
-          "english": "Why",
-          "romanized": "Kaa"
-        },
-        {
-          "marathi": "कसे",
-          "english": "How",
-          "romanized": "Kase"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You point at something and ask 'हे काय आहे?' What word means 'what'?",
-          "options": ["कोण", "काय", "का", "कसे"],
-          "correct_answer": "काय",
-          "correct_romanized": "Kaay"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'कोण' mean?",
-          "options": ["What", "Where", "Who", "When"],
-          "correct_answer": "Who",
-          "correct_romanized": "Kon"
-        },
-        {
-          "question_id": 3,
-          "question": "You want to know the reason, so you ask 'का?' What does it mean?",
-          "options": ["How", "When", "What", "Why"],
-          "correct_answer": "Why",
-          "correct_romanized": "Kaa"
-        }
-      ]
+        "theme": "Learn to ask questions using what, who, why, and how",
+        "vocabulary": [
+            {
+                "marathi": "काय",
+                "english": "What",
+                "romanized": "Kaay"
+            },
+            {
+                "marathi": "कोण",
+                "english": "Who",
+                "romanized": "Kon"
+            },
+            {
+                "marathi": "का",
+                "english": "Why",
+                "romanized": "Kaa"
+            },
+            {
+                "marathi": "कसे",
+                "english": "How",
+                "romanized": "Kase"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You point at something and ask 'हे काय आहे?' What word means 'what'?",
+                "options": [
+                    "कोण",
+                    "काय",
+                    "का",
+                    "कसे"
+                ],
+                "correct_answer": "काय",
+                "correct_romanized": "Kaay"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'कोण' mean?",
+                "options": [
+                    "What",
+                    "Where",
+                    "Who",
+                    "When"
+                ],
+                "correct_answer": "Who",
+                "correct_romanized": "Kon"
+            },
+            {
+                "question_id": 3,
+                "question": "You want to know the reason, so you ask 'का?' What does it mean?",
+                "options": [
+                    "How",
+                    "When",
+                    "What",
+                    "Why"
+                ],
+                "correct_answer": "Why",
+                "correct_romanized": "Kaa"
+            }
+        ],
+        "icon": "circle-help"
     },
     {
-      "lesson_id": 17,
-      "title": {
-        "marathi": "काल काय केलं?",
-        "english": "Past Actions"
-      },
-      "theme": "Talk about things you did yesterday using past tense",
-      "vocabulary": [
-        {
-          "marathi": "मी गेलो",
-          "english": "I went",
-          "romanized": "Mi Gelo"
+        "lesson_id": 17,
+        "title": {
+            "marathi": "काल काय केलं?",
+            "english": "Past Actions"
         },
-        {
-          "marathi": "मी खाल्लं",
-          "english": "I ate",
-          "romanized": "Mi Khallam"
-        },
-        {
-          "marathi": "मी खेळलो",
-          "english": "I played",
-          "romanized": "Mi Khelalo"
-        },
-        {
-          "marathi": "मी पाहिलं",
-          "english": "I saw",
-          "romanized": "Mi Paahilam"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "Yesterday you went to the park. How do you say 'I went' in Marathi?",
-          "options": ["मी खाल्लं", "मी गेलो", "मी खेळलो", "मी पाहिलं"],
-          "correct_answer": "मी गेलो",
-          "correct_romanized": "Mi Gelo"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'मी खाल्लं' mean?",
-          "options": ["I played", "I went", "I ate", "I slept"],
-          "correct_answer": "I ate",
-          "correct_romanized": "Mi Khallam"
-        },
-        {
-          "question_id": 3,
-          "question": "You played cricket yesterday. That is 'मी खेळलो'. What does it mean?",
-          "options": ["I ran", "I played", "I won", "I lost"],
-          "correct_answer": "I played",
-          "correct_romanized": "Mi Khelalo"
-        }
-      ]
+        "theme": "Talk about things you did yesterday using past tense",
+        "vocabulary": [
+            {
+                "marathi": "मी गेलो",
+                "english": "I went",
+                "romanized": "Mi Gelo"
+            },
+            {
+                "marathi": "मी खाल्लं",
+                "english": "I ate",
+                "romanized": "Mi Khallam"
+            },
+            {
+                "marathi": "मी खेळलो",
+                "english": "I played",
+                "romanized": "Mi Khelalo"
+            },
+            {
+                "marathi": "मी पाहिलं",
+                "english": "I saw",
+                "romanized": "Mi Paahilam"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Yesterday you went to the park. How do you say 'I went' in Marathi?",
+                "options": [
+                    "मी खाल्लं",
+                    "मी गेलो",
+                    "मी खेळलो",
+                    "मी पाहिलं"
+                ],
+                "correct_answer": "मी गेलो",
+                "correct_romanized": "Mi Gelo"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'मी खाल्लं' mean?",
+                "options": [
+                    "I played",
+                    "I went",
+                    "I ate",
+                    "I slept"
+                ],
+                "correct_answer": "I ate",
+                "correct_romanized": "Mi Khallam"
+            },
+            {
+                "question_id": 3,
+                "question": "You played cricket yesterday. That is 'मी खेळलो'. What does it mean?",
+                "options": [
+                    "I ran",
+                    "I played",
+                    "I won",
+                    "I lost"
+                ],
+                "correct_answer": "I played",
+                "correct_romanized": "Mi Khelalo"
+            }
+        ],
+        "icon": "calendar"
     },
     {
-      "lesson_id": 18,
-      "title": {
-        "marathi": "वर्णन",
-        "english": "Describing Things"
-      },
-      "theme": "Words to describe how things look, feel, or move",
-      "vocabulary": [
-        {
-          "marathi": "मोठा",
-          "english": "Big",
-          "romanized": "Motha"
+        "lesson_id": 18,
+        "title": {
+            "marathi": "वर्णन",
+            "english": "Describing Things"
         },
-        {
-          "marathi": "लहान",
-          "english": "Small",
-          "romanized": "Lahaan"
-        },
-        {
-          "marathi": "सुंदर",
-          "english": "Beautiful",
-          "romanized": "Sundar"
-        },
-        {
-          "marathi": "वेगवान",
-          "english": "Fast",
-          "romanized": "Vegvaan"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "An elephant is 'मोठा'. What does that mean?",
-          "options": ["Small", "Big", "Tall", "Heavy"],
-          "correct_answer": "Big",
-          "correct_romanized": "Motha"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'सुंदर' mean?",
-          "options": ["Ugly", "Funny", "Beautiful", "Scary"],
-          "correct_answer": "Beautiful",
-          "correct_romanized": "Sundar"
-        },
-        {
-          "question_id": 3,
-          "question": "A baby kitten is 'लहान'. What does it mean?",
-          "options": ["Big", "Fast", "Cute", "Small"],
-          "correct_answer": "Small",
-          "correct_romanized": "Lahaan"
-        }
-      ]
+        "theme": "Words to describe how things look, feel, or move",
+        "vocabulary": [
+            {
+                "marathi": "मोठा",
+                "english": "Big",
+                "romanized": "Motha"
+            },
+            {
+                "marathi": "लहान",
+                "english": "Small",
+                "romanized": "Lahaan"
+            },
+            {
+                "marathi": "सुंदर",
+                "english": "Beautiful",
+                "romanized": "Sundar"
+            },
+            {
+                "marathi": "वेगवान",
+                "english": "Fast",
+                "romanized": "Vegvaan"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "An elephant is 'मोठा'. What does that mean?",
+                "options": [
+                    "Small",
+                    "Big",
+                    "Tall",
+                    "Heavy"
+                ],
+                "correct_answer": "Big",
+                "correct_romanized": "Motha"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'सुंदर' mean?",
+                "options": [
+                    "Ugly",
+                    "Funny",
+                    "Beautiful",
+                    "Scary"
+                ],
+                "correct_answer": "Beautiful",
+                "correct_romanized": "Sundar"
+            },
+            {
+                "question_id": 3,
+                "question": "A baby kitten is 'लहान'. What does it mean?",
+                "options": [
+                    "Big",
+                    "Fast",
+                    "Cute",
+                    "Small"
+                ],
+                "correct_answer": "Small",
+                "correct_romanized": "Lahaan"
+            }
+        ],
+        "icon": "pen"
     },
     {
-      "lesson_id": 19,
-      "title": {
-        "marathi": "आणखी वर्णन",
-        "english": "More Descriptions"
-      },
-      "theme": "Even more words to describe things around you",
-      "vocabulary": [
-        {
-          "marathi": "नवीन",
-          "english": "New",
-          "romanized": "Naveen"
+        "lesson_id": 19,
+        "title": {
+            "marathi": "आणखी वर्णन",
+            "english": "More Descriptions"
         },
-        {
-          "marathi": "जुना",
-          "english": "Old",
-          "romanized": "Junaa"
-        },
-        {
-          "marathi": "स्वच्छ",
-          "english": "Clean",
-          "romanized": "Svachchha"
-        },
-        {
-          "marathi": "घाणेरडा",
-          "english": "Dirty",
-          "romanized": "Ghaanerdaa"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "You got a 'नवीन' toy! What kind of toy is it?",
-          "options": ["Broken", "Old", "New", "Big"],
-          "correct_answer": "New",
-          "correct_romanized": "Naveen"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'स्वच्छ' mean?",
-          "options": ["Dirty", "Clean", "Wet", "Dry"],
-          "correct_answer": "Clean",
-          "correct_romanized": "Svachchha"
-        },
-        {
-          "question_id": 3,
-          "question": "Your old teddy bear is 'जुना'. What does 'जुना' mean?",
-          "options": ["New", "Lost", "Old", "Soft"],
-          "correct_answer": "Old",
-          "correct_romanized": "Junaa"
-        }
-      ]
+        "theme": "Even more words to describe things around you",
+        "vocabulary": [
+            {
+                "marathi": "नवीन",
+                "english": "New",
+                "romanized": "Naveen"
+            },
+            {
+                "marathi": "जुना",
+                "english": "Old",
+                "romanized": "Junaa"
+            },
+            {
+                "marathi": "स्वच्छ",
+                "english": "Clean",
+                "romanized": "Svachchha"
+            },
+            {
+                "marathi": "घाणेरडा",
+                "english": "Dirty",
+                "romanized": "Ghaanerdaa"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "You got a 'नवीन' toy! What kind of toy is it?",
+                "options": [
+                    "Broken",
+                    "Old",
+                    "New",
+                    "Big"
+                ],
+                "correct_answer": "New",
+                "correct_romanized": "Naveen"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'स्वच्छ' mean?",
+                "options": [
+                    "Dirty",
+                    "Clean",
+                    "Wet",
+                    "Dry"
+                ],
+                "correct_answer": "Clean",
+                "correct_romanized": "Svachchha"
+            },
+            {
+                "question_id": 3,
+                "question": "Your old teddy bear is 'जुना'. What does 'जुना' mean?",
+                "options": [
+                    "New",
+                    "Lost",
+                    "Old",
+                    "Soft"
+                ],
+                "correct_answer": "Old",
+                "correct_romanized": "Junaa"
+            }
+        ],
+        "icon": "pen"
     },
     {
-      "lesson_id": 20,
-      "title": {
-        "marathi": "गोष्ट",
-        "english": "Story Words"
-      },
-      "theme": "Special words for telling and listening to stories",
-      "vocabulary": [
-        {
-          "marathi": "एकदा",
-          "english": "Once upon a time",
-          "romanized": "Ekdaa"
+        "lesson_id": 20,
+        "title": {
+            "marathi": "गोष्ट",
+            "english": "Story Words"
         },
-        {
-          "marathi": "मग",
-          "english": "Then",
-          "romanized": "Mag"
-        },
-        {
-          "marathi": "त्यानंतर",
-          "english": "After that",
-          "romanized": "Tyaanantar"
-        },
-        {
-          "marathi": "शेवट",
-          "english": "The end",
-          "romanized": "Shevat"
-        }
-      ],
-      "quiz": [
-        {
-          "question_id": 1,
-          "question": "Every story starts with 'एकदा'. What does it mean?",
-          "options": ["The end", "Once upon a time", "Long ago", "Tomorrow"],
-          "correct_answer": "Once upon a time",
-          "correct_romanized": "Ekdaa"
-        },
-        {
-          "question_id": 2,
-          "question": "What does 'शेवट' mean?",
-          "options": ["The beginning", "The middle", "The end", "The title"],
-          "correct_answer": "The end",
-          "correct_romanized": "Shevat"
-        },
-        {
-          "question_id": 3,
-          "question": "Something happened, and 'मग' something else happened. What does 'मग' mean?",
-          "options": ["Before", "Then", "Never", "Always"],
-          "correct_answer": "Then",
-          "correct_romanized": "Mag"
-        }
-      ]
+        "theme": "Special words for telling and listening to stories",
+        "vocabulary": [
+            {
+                "marathi": "एकदा",
+                "english": "Once upon a time",
+                "romanized": "Ekdaa"
+            },
+            {
+                "marathi": "मग",
+                "english": "Then",
+                "romanized": "Mag"
+            },
+            {
+                "marathi": "त्यानंतर",
+                "english": "After that",
+                "romanized": "Tyaanantar"
+            },
+            {
+                "marathi": "शेवट",
+                "english": "The end",
+                "romanized": "Shevat"
+            }
+        ],
+        "quiz": [
+            {
+                "question_id": 1,
+                "question": "Every story starts with 'एकदा'. What does it mean?",
+                "options": [
+                    "The end",
+                    "Once upon a time",
+                    "Long ago",
+                    "Tomorrow"
+                ],
+                "correct_answer": "Once upon a time",
+                "correct_romanized": "Ekdaa"
+            },
+            {
+                "question_id": 2,
+                "question": "What does 'शेवट' mean?",
+                "options": [
+                    "The beginning",
+                    "The middle",
+                    "The end",
+                    "The title"
+                ],
+                "correct_answer": "The end",
+                "correct_romanized": "Shevat"
+            },
+            {
+                "question_id": 3,
+                "question": "Something happened, and 'मग' something else happened. What does 'मग' mean?",
+                "options": [
+                    "Before",
+                    "Then",
+                    "Never",
+                    "Always"
+                ],
+                "correct_answer": "Then",
+                "correct_romanized": "Mag"
+            }
+        ],
+        "icon": "book"
     }
 ]
