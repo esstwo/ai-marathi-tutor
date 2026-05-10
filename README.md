@@ -43,26 +43,32 @@ backend/
   gateway/                         # Thin HTTP layer
     api.py                         # All REST endpoints (single file)
     auth.py                        # Token validation + child ownership
+    guardrails.py                  # Input/output validation, session limits, cost protection
     progress_utils.py              # Deterministic XP/streak calculations
   services/
     tts.py                         # Google Cloud TTS wrapper with caching
   db/
     supabase_client.py             # Supabase client init
     migrations.sql                 # Database schema
+  tests/
+    test_guardrails.py             # 112 eval tests for all guardrail categories
 mcp_server.py                      # Standalone MCP server for Claude Desktop
 mcp-app/
-  server.ts                          # MCP App server — interactive UIs inside Claude
-  api-client.ts                      # API client proxying to FastAPI with service key
-  types.ts                           # Shared TypeScript types
-  apps/                              # HTML entry points (bundled to single-file by Vite)
-    conversation.html                # Chat with Mitra
-    lessons.html                     # Lesson browser + quiz
-    progress.html                    # XP dashboard + level roadmap
-  src/                               # App logic (TypeScript)
-  styles/shared.css                  # Kid-friendly design system
+  server.ts                        # MCP App server — interactive UIs inside Claude
+  api-client.ts                    # API client proxying to FastAPI with service key
+  types.ts                         # Shared TypeScript types
+  apps/                            # HTML entry points (bundled to single-file by Vite)
+    conversation.html              # Chat with Mitra
+    lessons.html                   # Lesson browser + quiz
+    progress.html                  # XP dashboard + level roadmap
+  src/                             # App logic (TypeScript)
+    conversation-app.ts            # Chat logic (message feed, TTS, end-chat)
+    lessons-app.ts                 # Lesson flow (browse → learn → quiz → results)
+    progress-app.ts                # Dashboard rendering
+  styles/shared.css                # Kid-friendly design system
 frontend-react/
   src/
-    components/                    # Navbar, LessonCard, LessonView, ProtectedRoute, shadcn/ui
+    components/                    # Navbar, LessonCard, DynamicIcon, LessonView, ProtectedRoute, shadcn/ui
     contexts/                      # AuthContext (token + refresh token management)
     services/                      # Axios API client with Bearer token + 401 refresh interceptor
     types/                         # TypeScript interfaces matching backend schemas
@@ -76,10 +82,12 @@ frontend-react/
       Progress.tsx                 # Child progress + level roadmap
       ParentProgress.tsx           # Parent aggregated dashboard
 content/
-  level1_lessons.json              # Level 1 lesson data (vocabulary + quizzes)
-  level2_lessons.json              # Level 2 lesson data
+  level1_lessons.json              # Level 1: Foundations (20 lessons)
+  level2_lessons.json              # Level 2: Home Life (20 lessons)
+  level3_lessons.json              # Level 3: Out & About (20 lessons)
+  level4_lessons.json              # Level 4: Conversations (20 lessons)
 scripts/
-  seed_content.py                  # Seed lessons into Supabase
+  seed_content.py                  # Seed lessons into Supabase (--reseed to replace all)
 ```
 
 ## Architecture

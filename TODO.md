@@ -26,5 +26,19 @@
 - [x] Build conversation app (`mcp-app/apps/conversation.html`) — chat UI with Mitra, TTS playback, message history
 - [x] Build lessons app (`mcp-app/apps/lessons.html`) — lesson browser, vocabulary cards, quiz interface
 - [x] Bundle with Vite + vite-plugin-singlefile for sandboxed iframe delivery
+- [x] Add stdio transport for Claude Desktop integration
 - [ ] Deploy as remote MCP server with SSE transport + cloudflared or Render
 - [ ] Register as Claude custom connector for testing
+
+## Content
+- [x] Generate 80 Marathi lessons (20 per level × 4 levels) with vocabulary + quizzes
+- [x] Add per-lesson icons (lucide icon names) for semantic lesson cards
+- [x] Seed all lessons into Supabase with `--reseed` support
+
+## Guardrails
+- [x] Input validation: max message length (500), profanity filter, prompt injection detection
+- [x] Output validation: JSON structure check, URL/email/phone stripping, profanity fallback
+- [x] Session limits: 50 messages/conversation, 30 min duration, 3 concurrent conversations
+- [x] Content flagging: `conversation_flags` table, auto-flag sanitized outputs, parent review endpoint
+- [x] Cost protection: daily LLM call limit (configurable via `DAILY_LLM_CALL_LIMIT`)
+- [x] Eval tests: 112 pytest cases covering all guardrail categories

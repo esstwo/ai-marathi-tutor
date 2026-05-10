@@ -26,6 +26,13 @@
 │  │  Thin HTTP layer — validates auth, maps requests to skills   │   │
 │  │  and connectors. CRUD calls connectors directly.             │   │
 │  │  Conversations use run_skill() for LLM orchestration.        │   │
+│  │                                                              │   │
+│  │  ┌─────────────── Guardrails (guardrails.py) ─────────────┐ │   │
+│  │  │ Input:  max length, profanity filter, injection detect │ │   │
+│  │  │ Output: JSON validation, PII/URL strip, safe fallback  │ │   │
+│  │  │ Session: msg cap (50), time cap (30m), concurrency (3) │ │   │
+│  │  │ Cost:   daily LLM call limit, usage tracking           │ │   │
+│  │  └────────────────────────────────────────────────────────┘ │   │
 │  └──────┬────────────────────┬──────────────────────────────────┘   │
 │         │                    │                                       │
 │         │              ┌─────▼──────────────────────────────────┐   │
@@ -94,6 +101,18 @@
                     │  Claude Desktop connects via       │
                     │  stdio transport.                   │
                     └──────────────────────────────────┘
+
+                    ┌──────────────────────────────────┐
+                    │    MCP App (mcp-app/server.ts)    │
+                    │                                    │
+                    │  Interactive HTML UIs inside       │
+                    │  Claude Desktop / claude.ai.       │
+                    │  3 apps: conversation, lessons,    │
+                    │  progress. Proxies to FastAPI      │
+                    │  via service key auth.              │
+                    │                                    │
+                    │  stdio (Desktop) or HTTP (remote)  │
+                    └──────────────────────────────────┘
 ```
 
 ## Request Flow: AI Conversation
@@ -113,6 +132,16 @@ User sends message
 │  gateway/api.py │────▶│  verify auth +   │
 │                 │     │  child ownership │
 └───────┬─────────┘     └──────────────────┘
+        │
+        ▼
+┌──────────────────────────────────────────┐
+│  Guardrails (input)                      │
+│  ✓ message length ≤ 500                  │
+│  ✓ no profanity / inappropriate content  │
+│  ✓ no prompt injection patterns          │
+│  ✓ session: msg count < 50, time < 30m   │
+│  ✓ cost: daily LLM calls within limit    │
+└───────┬──────────────────────────────────┘
         │
         ▼
 ┌─────────────────┐
@@ -157,6 +186,15 @@ User sends message
 └───────┬──────────────────────────────────┘
         │
         ▼
+┌──────────────────────────────────────────┐
+│  Guardrails (output)                     │
+│  ✓ marathi_text exists (else fallback)   │
+│  ✓ strip URLs, emails, phone numbers     │
+│  ✓ no profanity (else safe fallback)     │
+│  ✓ flag conversation if sanitized        │
+└───────┬──────────────────────────────────┘
+        │
+        ▼
 ┌─────────────────┐
 │  save_message   │──── connector call ──▶ supabase
 │  (Mitra's reply)│
@@ -172,10 +210,13 @@ User sends message
 | Layer | Directory | Responsibility |
 |-------|-----------|----------------|
 | **Gateway** | `backend/gateway/` | HTTP endpoints, auth validation, request/response mapping. CRUD calls connectors directly. Conversations use `run_skill()`. |
+| **Guardrails** | `backend/gateway/guardrails.py` | Child safety: input validation (length, profanity, prompt injection), output sanitization (PII/URL stripping, JSON validation), session limits (message/time/concurrency caps), cost protection (daily LLM call limit). |
 | **Core** | `backend/core/` | Generic infrastructure: skill loader, connector registry, agentic tool-calling loop. Not MarathiMitra-specific. |
 | **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. The product's intelligence. |
 | **Connectors** | `backend/connectors/` | Minimal glue code — plain Python functions that call external systems. No business logic. |
 | **Services** | `backend/services/` | Shared utilities (Google Cloud TTS wrapper with caching). |
+| **Tests** | `backend/tests/` | 112 eval tests covering all guardrail categories. Run: `pytest backend/tests/` |
+| **MCP App** | `mcp-app/` | TypeScript MCP server serving interactive HTML UIs (chat, lessons, progress) inside Claude Desktop/claude.ai. Proxies to FastAPI via service key auth. |
 
 ## Skill File Format
 
@@ -225,13 +266,12 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 
 ```
 parents ──────< children ──────< conversations ──────< messages
+                   │                    │
+                   │                    └──────< conversation_flags
                    │
-                   ├──────< lesson_completions >────── lessons
-                   │                                      │
-                   │                                      ├──< vocabulary
-                   │                                      └──< quiz_questions
+                   ├──────< child_lesson_progress >────── lessons (icon, vocab, quiz)
                    │
-                   └──────< child_progress (view)
+                   └──────< child_mission_progress >───── missions
 ```
 
-Core tables: `parents`, `children`, `lessons`, `vocabulary`, `quiz_questions`, `lesson_completions`, `conversations`, `messages`. Row-level security ensures parents only access their own children's data.
+Core tables: `parents`, `children`, `lessons`, `child_lesson_progress`, `conversations`, `conversation_messages`, `conversation_flags`, `missions`. RLS on `parents` and `children`; all other access goes through the FastAPI gateway with auth checks.
