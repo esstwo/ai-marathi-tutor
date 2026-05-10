@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Send, Flower2, User, Sparkles, Square, Zap } from "lucide-react";
+import { Send, Flower2, User, Sparkles, Square, Zap, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,8 +27,45 @@ const Chats = () => {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isStarting, setIsStarting] = useState(true);
   const [chatEnded, setChatEnded] = useState(false);
+  const [playingId, setPlayingId] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // ── TTS ──────────────────────────────────────────────────────────────
+
+  const playTTS = useCallback(async (text: string, messageId: number) => {
+    try {
+      // Stop any currently playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+
+      setPlayingId(messageId);
+      const blob = await api.speakMarathiTTS(text);
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setPlayingId(null);
+        URL.revokeObjectURL(url);
+        audioRef.current = null;
+      };
+      audio.onerror = () => {
+        setPlayingId(null);
+        URL.revokeObjectURL(url);
+        audioRef.current = null;
+      };
+
+      await audio.play();
+    } catch {
+      setPlayingId(null);
+    }
+  }, []);
+
+  // ── Conversation lifecycle ──────────────────────────────────────────
 
   // Start conversation on mount
   useEffect(() => {
@@ -39,15 +76,18 @@ const Chats = () => {
       try {
         const res = await api.startConversation(activeChild.id);
         if (cancelled) return;
+        const msgId = Date.now();
         setConversationId(res.conversation_id);
         setMessages([
           {
-            id: Date.now(),
+            id: msgId,
             role: "assistant",
             content: res.marathi_text,
             hint: res.english_hint ?? undefined,
           },
         ]);
+        // Auto-play greeting
+        playTTS(res.marathi_text, msgId);
       } catch (err: any) {
         if (!cancelled) {
           toast.error("Failed to start conversation");
@@ -58,7 +98,7 @@ const Chats = () => {
     })();
 
     return () => { cancelled = true; };
-  }, [activeChild]);
+  }, [activeChild, playTTS]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -70,16 +110,19 @@ const Chats = () => {
     mutationFn: (message: string) =>
       api.sendMessage(conversationId!, message),
     onSuccess: (data) => {
+      const msgId = Date.now() + 1;
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: msgId,
           role: "assistant",
           content: data.marathi_text,
           hint: data.english_hint ?? undefined,
         },
       ]);
       setIsTyping(false);
+      // Auto-play Mitra's reply
+      playTTS(data.marathi_text, msgId);
     },
     onError: () => {
       toast.error("Failed to send message");
@@ -91,6 +134,12 @@ const Chats = () => {
     mutationFn: () => api.endConversation(conversationId!),
     onSuccess: (data) => {
       setChatEnded(true);
+      // Stop any playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+        setPlayingId(null);
+      }
       toast.success(
         `Chat ended! +${data.xp_earned} XP earned (${data.duration_minutes} min)`,
         { duration: 5000 }
@@ -125,18 +174,27 @@ const Chats = () => {
     setIsStarting(true);
     setInput("");
 
+    // Stop any playing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setPlayingId(null);
+    }
+
     (async () => {
       try {
         const res = await api.startConversation(activeChild!.id);
+        const msgId = Date.now();
         setConversationId(res.conversation_id);
         setMessages([
           {
-            id: Date.now(),
+            id: msgId,
             role: "assistant",
             content: res.marathi_text,
             hint: res.english_hint ?? undefined,
           },
         ]);
+        playTTS(res.marathi_text, msgId);
       } catch {
         toast.error("Failed to start new conversation");
       } finally {
@@ -232,10 +290,25 @@ const Chats = () => {
                   >
                     {msg.content}
                   </div>
-                  {msg.hint && (
-                    <p className="text-xs text-muted-foreground mt-1 ml-2 italic">
-                      {msg.hint}
-                    </p>
+                  {msg.role === "assistant" && (
+                    <div className="flex items-center gap-2 mt-1 ml-2">
+                      {msg.hint && (
+                        <p className="text-xs text-muted-foreground italic">
+                          {msg.hint}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => playTTS(msg.content, msg.id)}
+                        className={`inline-flex items-center justify-center w-6 h-6 rounded-full transition-colors ${
+                          playingId === msg.id
+                            ? "text-primary animate-pulse"
+                            : "text-muted-foreground hover:text-primary"
+                        }`}
+                        title="Play audio"
+                      >
+                        <Volume2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

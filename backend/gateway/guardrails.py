@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 MAX_MESSAGE_LENGTH = 500
 MAX_MESSAGES_PER_CONVERSATION = 50
 MAX_CONVERSATION_MINUTES = 30
-MAX_CONCURRENT_CONVERSATIONS = 3
+MAX_CONCURRENT_CONVERSATIONS = 10
 DAILY_LLM_CALL_LIMIT = int(os.environ.get("DAILY_LLM_CALL_LIMIT", "500"))
 
 # ── Input guardrails ──────────────────────────────────────────────────
@@ -182,8 +182,37 @@ def check_conversation_duration(started_at: str):
         pass  # If we can't parse the timestamp, skip this check
 
 
+def auto_close_stale_conversations(child_id: str, supabase_admin):
+    """Auto-close conversations older than MAX_CONVERSATION_MINUTES."""
+    now = datetime.now(timezone.utc)
+    result = (
+        supabase_admin.table("conversations")
+        .select("id, started_at")
+        .eq("child_id", child_id)
+        .is_("ended_at", "null")
+        .execute()
+    )
+    stale_ids = []
+    for conv in result.data or []:
+        try:
+            start = datetime.fromisoformat(conv["started_at"].replace("Z", "+00:00"))
+            elapsed = (now - start).total_seconds() / 60
+            if elapsed > MAX_CONVERSATION_MINUTES:
+                stale_ids.append(conv["id"])
+        except (ValueError, TypeError, KeyError):
+            continue
+
+    if stale_ids:
+        supabase_admin.table("conversations").update(
+            {"ended_at": now.isoformat()}
+        ).in_("id", stale_ids).execute()
+        logger.info("Auto-closed %d stale conversations for child %s", len(stale_ids), child_id)
+
+
 def check_concurrent_conversations(child_id: str, supabase_admin):
-    """Raise if child has too many active (un-ended) conversations."""
+    """Auto-close stale conversations, then raise if still too many active."""
+    auto_close_stale_conversations(child_id, supabase_admin)
+
     result = (
         supabase_admin.table("conversations")
         .select("id", count="exact")
