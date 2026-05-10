@@ -1,0 +1,409 @@
+/**
+ * MCP App server — exposes MarathiMitra as interactive HTML UIs inside Claude.
+ *
+ * 3 primary tools (each opens an HTML app in Claude):
+ *   - start-marathi-practice → conversation UI
+ *   - browse-lessons → lesson browser UI
+ *   - show-progress → progress dashboard UI
+ *
+ * 7 inner tools (called by apps via postMessage):
+ *   - chat-send-message, chat-end, speak-marathi
+ *   - list-lessons, get-lesson, complete-lesson, get-progress
+ *
+ * 3 resources serving bundled HTML from dist/apps/.
+ */
+
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
+import { z } from "zod";
+import { readFileSync } from "fs";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+import { randomUUID } from "crypto";
+
+import { MarathiApiClient } from "./api-client.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// ── Config ───────────────────────────────────────────────────────────
+
+const API_BASE_URL = process.env.MARATHI_API_URL || "http://localhost:8000";
+const SERVICE_KEY = process.env.MARATHI_SERVICE_KEY || "";
+const PORT = parseInt(process.env.MCP_APP_PORT || "3001", 10);
+
+const api = new MarathiApiClient(API_BASE_URL, SERVICE_KEY);
+
+// ── Helper: load bundled HTML ────────────────────────────────────────
+
+function loadAppHtml(name: string): string {
+  const path = resolve(__dirname, "dist", "apps", `${name}.html`);
+  try {
+    return readFileSync(path, "utf-8");
+  } catch {
+    return `<html><body><p>App "${name}" not built yet. Run: npm run build:apps</p></body></html>`;
+  }
+}
+
+// ── MCP Server ───────────────────────────────────────────────────────
+
+const server = new McpServer({
+  name: "MarathiMitra",
+  version: "1.0.0",
+});
+
+// ── Resources: bundled HTML apps ─────────────────────────────────────
+
+server.resource(
+  "Conversation App",
+  "ui://marathi-mitra/conversation",
+  { mimeType: "text/html" },
+  async () => ({
+    contents: [
+      {
+        uri: "ui://marathi-mitra/conversation",
+        mimeType: "text/html",
+        text: loadAppHtml("conversation"),
+      },
+    ],
+  })
+);
+
+server.resource(
+  "Lessons App",
+  "ui://marathi-mitra/lessons",
+  { mimeType: "text/html" },
+  async () => ({
+    contents: [
+      {
+        uri: "ui://marathi-mitra/lessons",
+        mimeType: "text/html",
+        text: loadAppHtml("lessons"),
+      },
+    ],
+  })
+);
+
+server.resource(
+  "Progress App",
+  "ui://marathi-mitra/progress",
+  { mimeType: "text/html" },
+  async () => ({
+    contents: [
+      {
+        uri: "ui://marathi-mitra/progress",
+        mimeType: "text/html",
+        text: loadAppHtml("progress"),
+      },
+    ],
+  })
+);
+
+// ── Primary tools (open HTML apps) ───────────────────────────────────
+
+server.registerTool("start-marathi-practice", {
+  title: "Practice Marathi",
+  description:
+    "Start a Marathi conversation with Mitra, the AI tutor. Opens an interactive chat UI.",
+  inputSchema: {
+    child_id: z.string().describe("The child's UUID"),
+  },
+  _meta: {
+    ui: { resourceUri: "ui://marathi-mitra/conversation" },
+  },
+}, async ({ child_id }) => {
+  try {
+    const result = await api.startConversation(child_id);
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(result),
+        },
+      ],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("browse-lessons", {
+  title: "Browse Lessons",
+  description:
+    "Browse Marathi vocabulary lessons by level. Opens a lesson browser with flashcards and quizzes.",
+  inputSchema: {
+    child_id: z.string().describe("The child's UUID"),
+    level: z.number().min(1).max(5).optional().describe("Lesson level (1-5). Defaults to child's current level."),
+  },
+  _meta: {
+    ui: { resourceUri: "ui://marathi-mitra/lessons" },
+  },
+}, async ({ child_id, level }) => {
+  try {
+    const targetLevel = level || 1;
+    const lessons = await api.listLessons(targetLevel);
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify({ child_id, level: targetLevel, lessons }),
+        },
+      ],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("show-progress", {
+  title: "Show Progress",
+  description:
+    "Show a child's Marathi learning progress — XP, streak, level, lessons completed.",
+  inputSchema: {
+    child_id: z.string().describe("The child's UUID"),
+  },
+  _meta: {
+    ui: { resourceUri: "ui://marathi-mitra/progress" },
+  },
+}, async ({ child_id }) => {
+  try {
+    const progress = await api.getProgress(child_id);
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(progress),
+        },
+      ],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+// ── Inner tools (called by apps via postMessage) ─────────────────────
+
+server.registerTool("chat-send-message", {
+  title: "Send Chat Message",
+  description: "Send a message in an active Marathi conversation.",
+  inputSchema: {
+    conversation_id: z.string().describe("Active conversation UUID"),
+    message: z.string().describe("The child's message"),
+  },
+}, async ({ conversation_id, message }) => {
+  try {
+    const result = await api.sendMessage(conversation_id, message);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(result) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("chat-end", {
+  title: "End Chat",
+  description: "End an active Marathi conversation and get XP summary.",
+  inputSchema: {
+    conversation_id: z.string().describe("Active conversation UUID"),
+  },
+}, async ({ conversation_id }) => {
+  try {
+    const result = await api.endConversation(conversation_id);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(result) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("speak-marathi", {
+  title: "Speak Marathi",
+  description: "Convert Marathi text to speech. Returns base64-encoded MP3 audio.",
+  inputSchema: {
+    text: z.string().max(200).describe("Marathi text to speak (max 200 chars)"),
+  },
+}, async ({ text }) => {
+  try {
+    const base64Audio = await api.speakMarathi(text);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify({ audio_base64: base64Audio }) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("list-lessons", {
+  title: "List Lessons",
+  description: "List Marathi lessons for a given level.",
+  inputSchema: {
+    level: z.number().min(1).max(5).describe("Lesson level (1-5)"),
+  },
+}, async ({ level }) => {
+  try {
+    const lessons = await api.listLessons(level);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(lessons) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("get-lesson", {
+  title: "Get Lesson",
+  description: "Get a specific lesson with vocabulary and quiz questions.",
+  inputSchema: {
+    lesson_id: z.string().describe("Lesson UUID"),
+  },
+}, async ({ lesson_id }) => {
+  try {
+    const lesson = await api.getLesson(lesson_id);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(lesson) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("complete-lesson", {
+  title: "Complete Lesson",
+  description: "Record lesson completion and award XP.",
+  inputSchema: {
+    lesson_id: z.string().describe("Lesson UUID"),
+    child_id: z.string().describe("Child UUID"),
+    score: z.number().min(0).max(100).describe("Quiz score (0-100)"),
+  },
+}, async ({ lesson_id, child_id, score }) => {
+  try {
+    const result = await api.completeLesson(lesson_id, child_id, score);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(result) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+server.registerTool("get-progress", {
+  title: "Get Progress",
+  description: "Get a child's learning progress stats.",
+  inputSchema: {
+    child_id: z.string().describe("Child UUID"),
+  },
+}, async ({ child_id }) => {
+  try {
+    const progress = await api.getProgress(child_id);
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(progress) }],
+    };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return {
+      content: [{ type: "text" as const, text: `Error: ${msg}` }],
+      isError: true,
+    };
+  }
+});
+
+// ── HTTP transport ───────────────────────────────────────────────────
+
+const app = createMcpExpressApp({ host: "0.0.0.0" });
+
+// Track transports for session management
+const transports = new Map<string, StreamableHTTPServerTransport>();
+
+app.post("/mcp", async (req, res) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+
+  if (sessionId && transports.has(sessionId)) {
+    // Existing session
+    const transport = transports.get(sessionId)!;
+    await transport.handleRequest(req, res, req.body);
+    return;
+  }
+
+  // New session
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: () => randomUUID(),
+  });
+
+  transport.onclose = () => {
+    const sid = (transport as unknown as { sessionId?: string }).sessionId;
+    if (sid) transports.delete(sid);
+  };
+
+  await server.connect(transport);
+  await transport.handleRequest(req, res, req.body);
+
+  // Store transport by session ID from response header
+  const newSessionId = res.getHeader("mcp-session-id") as string | undefined;
+  if (newSessionId) {
+    transports.set(newSessionId, transport);
+  }
+});
+
+app.get("/mcp", async (req, res) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  if (sessionId && transports.has(sessionId)) {
+    const transport = transports.get(sessionId)!;
+    await transport.handleRequest(req, res);
+    return;
+  }
+  res.status(400).json({ error: "No session. Send POST to /mcp first." });
+});
+
+app.delete("/mcp", async (req, res) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  if (sessionId && transports.has(sessionId)) {
+    const transport = transports.get(sessionId)!;
+    await transport.handleRequest(req, res);
+    transports.delete(sessionId);
+    return;
+  }
+  res.status(400).json({ error: "No session." });
+});
+
+app.listen(PORT, () => {
+  console.log(`MarathiMitra MCP App server running on http://localhost:${PORT}/mcp`);
+  console.log(`Backend API: ${API_BASE_URL}`);
+});
