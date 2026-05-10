@@ -23,8 +23,8 @@
 - [x] Build MCP server (`server.ts`) with 3 primary tools + 7 inner tools + 3 HTML resources
 - [x] Create shared CSS design system (`styles/shared.css`) with Devanagari fonts
 - [x] Build progress app (`mcp-app/apps/progress.html`) — XP, streak, level dashboard with roadmap
-- [ ] Build conversation app (`mcp-app/apps/conversation.html`) — chat UI with Mitra, TTS playback, message history
-- [ ] Build lessons app (`mcp-app/apps/lessons.html`) — lesson browser, vocabulary cards, quiz interface
-- [ ] Bundle with Vite + vite-plugin-singlefile for sandboxed iframe delivery
+- [x] Build conversation app (`mcp-app/apps/conversation.html`) — chat UI with Mitra, TTS playback, message history
+- [x] Build lessons app (`mcp-app/apps/lessons.html`) — lesson browser, vocabulary cards, quiz interface
+- [x] Bundle with Vite + vite-plugin-singlefile for sandboxed iframe delivery
 - [ ] Deploy as remote MCP server with SSE transport + cloudflared or Render
 - [ ] Register as Claude custom connector for testing

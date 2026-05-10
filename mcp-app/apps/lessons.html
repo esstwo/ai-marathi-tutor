@@ -5,9 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MarathiMitra Lessons</title>
   <link rel="stylesheet" href="../styles/shared.css" />
+  <style>
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .quiz-feedback {
+      text-align: center;
+      padding: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      margin-top: 12px;
+      animation: fadeInUp 0.25s ease-out;
+    }
+    .quiz-feedback.correct {
+      background: var(--mint-light);
+      color: #1d7a72;
+    }
+    .quiz-feedback.incorrect {
+      background: var(--coral-light);
+      color: #b44a43;
+    }
+    .results-emoji {
+      font-size: 4rem;
+      animation: bounceIn 0.5s ease-out;
+    }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app" class="app-container">
+    <div class="loading-center" id="loading">
+      <div class="spinner"></div>
+      <span>Loading lessons...</span>
+    </div>
+  </div>
   <script type="module" src="../src/lessons-app.ts"></script>
 </body>
 </html>
