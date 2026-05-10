@@ -37,12 +37,17 @@ const api = new MarathiApiClient(API_BASE_URL, SERVICE_KEY);
 // ── Helper: load bundled HTML ────────────────────────────────────────
 
 function loadAppHtml(name: string): string {
-  const path = resolve(__dirname, "dist", "apps", `${name}.html`);
-  try {
-    return readFileSync(path, "utf-8");
-  } catch {
-    return `<html><body><p>App "${name}" not built yet. Run: npm run build:apps</p></body></html>`;
+  // Works whether running from source (tsx server.ts) or compiled (node dist/server.js)
+  const fromSource = resolve(__dirname, "dist", "apps", `${name}.html`);
+  const fromDist = resolve(__dirname, "apps", `${name}.html`);
+  for (const p of [fromSource, fromDist]) {
+    try {
+      return readFileSync(p, "utf-8");
+    } catch {
+      continue;
+    }
   }
+  return `<html><body><p>App "${name}" not built yet. Run: npm run build:apps</p></body></html>`;
 }
 
 // ── MCP Server ───────────────────────────────────────────────────────
