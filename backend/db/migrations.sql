@@ -137,3 +137,16 @@ create table child_mission_progress (
 );
 
 create index idx_child_mission_child on child_mission_progress(child_id);
+
+-- ================================================
+-- CONVERSATION_FLAGS
+-- Safety flags for parent review
+-- ================================================
+create table conversation_flags (
+  id uuid primary key default uuid_generate_v4(),
+  conversation_id uuid not null references conversations(id) on delete cascade,
+  reason text not null,
+  flagged_at timestamptz not null default now()
+);
+
+create index idx_conversation_flags_conv on conversation_flags(conversation_id);

@@ -13,6 +13,11 @@ from fastapi.responses import Response
 from pydantic import BaseModel, EmailStr
 
 from backend.gateway.auth import get_current_parent, verify_child_ownership, SERVICE_MODE_PARENT
+from backend.gateway.guardrails import (
+    validate_message_input, validate_llm_output,
+    check_message_limit, check_conversation_duration, check_concurrent_conversations,
+    track_llm_call, flag_conversation,
+)
 from backend.core.skill_loader import load_skills
 from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMAuthError, LLMContentFilterError, LLMServiceError
 from backend.core.connector_registry import get_for_skill
@@ -25,6 +30,7 @@ from backend.connectors.supabase.conversations import (
     start_conversation_record, save_message, get_conversation_messages,
     get_conversation, update_conversation_message_count, end_conversation_record,
 )
+from backend.db.supabase_client import supabase_admin
 from backend.services.tts import synthesize_marathi
 from backend.gateway.progress_utils import (
     award_lesson_xp, award_conversation_xp, get_child_progress, get_parent_progress,
@@ -221,6 +227,8 @@ def _handle_llm_errors(fn):
 @_handle_llm_errors
 async def start_conversation(req: StartConversationRequest, parent_id: str = Depends(get_current_parent)):
     verify_child_ownership(req.child_id, parent_id)
+    check_concurrent_conversations(req.child_id, supabase_admin)
+    track_llm_call()
 
     conv = start_conversation_record(req.child_id)
     if not conv:
@@ -242,6 +250,7 @@ async def start_conversation(req: StartConversationRequest, parent_id: str = Dep
         },
     ]
     result = run_skill(conversation_skill, messages, connectors)
+    result = validate_llm_output(result)
 
     save_message(conversation_id, "mitra", result["marathi_text"])
     update_conversation_message_count(conversation_id, 1)
@@ -262,9 +271,19 @@ async def send_message(conversation_id: str, req: SendMessageRequest, parent_id:
 
     child_id = conv["child_id"]
     verify_child_ownership(child_id, parent_id)
-    current_count = conv["message_count"] or 0
 
-    save_message(conversation_id, "child", req.message)
+    # Session guardrails
+    current_count = conv["message_count"] or 0
+    check_message_limit(current_count)
+    check_conversation_duration(conv["started_at"])
+
+    # Input guardrails
+    clean_message = validate_message_input(req.message)
+
+    # Cost protection
+    track_llm_call()
+
+    save_message(conversation_id, "child", clean_message)
 
     history_rows = get_conversation_messages(conversation_id)
     connectors = get_for_skill(conversation_skill.connector_names)
@@ -274,10 +293,9 @@ async def send_message(conversation_id: str, req: SendMessageRequest, parent_id:
     for msg in history_rows[-MAX_HISTORY:]:
         role = "assistant" if msg["role"] == "mitra" else "user"
         messages.append({"role": role, "content": msg["content"]})
-    messages.append({"role": "user", "content": req.message})
+    messages.append({"role": "user", "content": clean_message})
 
     # Append child_id to system prompt so tools can use it
-    skill_with_context = conversation_skill
     original_prompt = conversation_skill.system_prompt
     conversation_skill.system_prompt = original_prompt + f"\n\nThe child's ID is: {child_id}"
 
@@ -285,6 +303,13 @@ async def send_message(conversation_id: str, req: SendMessageRequest, parent_id:
 
     # Restore original prompt
     conversation_skill.system_prompt = original_prompt
+
+    # Output guardrails
+    result = validate_llm_output(result)
+
+    # Flag if output was sanitized
+    if result.get("_flagged"):
+        flag_conversation(conversation_id, "LLM output contained PII/URLs — sanitized", supabase_admin)
 
     save_message(conversation_id, "mitra", result["marathi_text"])
     update_conversation_message_count(conversation_id, current_count + 2)
@@ -335,6 +360,34 @@ def parent_progress(parent_id: str, current_parent_id: str = Depends(get_current
     if current_parent_id != SERVICE_MODE_PARENT and parent_id != current_parent_id:
         raise HTTPException(status_code=403, detail="Access denied")
     return get_parent_progress(parent_id)
+
+
+@progress_router.get("/parents/{parent_id}/flags")
+def parent_flags(parent_id: str, current_parent_id: str = Depends(get_current_parent)):
+    """Get safety flags for all conversations belonging to this parent's children."""
+    if current_parent_id != SERVICE_MODE_PARENT and parent_id != current_parent_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+    children = get_children_by_parent(parent_id)
+    child_ids = [c["id"] for c in children]
+    if not child_ids:
+        return []
+    conversations = (
+        supabase_admin.table("conversations")
+        .select("id")
+        .in_("child_id", child_ids)
+        .execute()
+    )
+    conv_ids = [c["id"] for c in (conversations.data or [])]
+    if not conv_ids:
+        return []
+    flags = (
+        supabase_admin.table("conversation_flags")
+        .select("*")
+        .in_("conversation_id", conv_ids)
+        .order("flagged_at", desc=True)
+        .execute()
+    )
+    return flags.data or []
 
 
 # ── TTS route ───────────────────────────────────────────────────────────
