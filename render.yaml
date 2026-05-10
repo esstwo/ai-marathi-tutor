@@ -1,0 +1,38 @@
+services:
+  # ── FastAPI backend ──────────────────────────────────────────────────
+  - type: web
+    name: marathi-mitra-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        sync: false
+      - key: MARATHI_SERVICE_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: DAILY_LLM_CALL_LIMIT
+        value: "500"
+
+  # ── MCP App server (Node) ───────────────────────────────────────────
+  - type: web
+    name: marathi-mitra-mcp-app
+    runtime: node
+    rootDir: mcp-app
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    envVars:
+      - key: MARATHI_API_URL
+        sync: false  # Set to the backend's public URL, e.g. https://marathi-mitra-api.onrender.com
+      - key: MARATHI_SERVICE_KEY
+        sync: false
+      # PORT is auto-injected by Render — server.ts reads it directly

@@ -31,7 +31,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const API_BASE_URL = process.env.MARATHI_API_URL || "http://localhost:8000";
 const SERVICE_KEY = process.env.MARATHI_SERVICE_KEY || "";
-const PORT = parseInt(process.env.MCP_APP_PORT || "3001", 10);
+const PORT = parseInt(process.env.PORT || process.env.MCP_APP_PORT || "3001", 10);
 
 const api = new MarathiApiClient(API_BASE_URL, SERVICE_KEY);
 
@@ -66,12 +66,12 @@ const server = new McpServer({
 server.resource(
   "Conversation App",
   "ui://marathi-mitra/conversation",
-  { mimeType: "text/html" },
+  { mimeType: "text/html;profile=mcp-app" },
   async () => ({
     contents: [
       {
         uri: "ui://marathi-mitra/conversation",
-        mimeType: "text/html",
+        mimeType: "text/html;profile=mcp-app",
         text: loadAppHtml("conversation"),
       },
     ],
@@ -81,12 +81,12 @@ server.resource(
 server.resource(
   "Lessons App",
   "ui://marathi-mitra/lessons",
-  { mimeType: "text/html" },
+  { mimeType: "text/html;profile=mcp-app" },
   async () => ({
     contents: [
       {
         uri: "ui://marathi-mitra/lessons",
-        mimeType: "text/html",
+        mimeType: "text/html;profile=mcp-app",
         text: loadAppHtml("lessons"),
       },
     ],
@@ -96,12 +96,12 @@ server.resource(
 server.resource(
   "Progress App",
   "ui://marathi-mitra/progress",
-  { mimeType: "text/html" },
+  { mimeType: "text/html;profile=mcp-app" },
   async () => ({
     contents: [
       {
         uri: "ui://marathi-mitra/progress",
-        mimeType: "text/html",
+        mimeType: "text/html;profile=mcp-app",
         text: loadAppHtml("progress"),
       },
     ],
