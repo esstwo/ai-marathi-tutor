@@ -27,8 +27,9 @@ DAILY_LLM_CALL_LIMIT = int(os.environ.get("DAILY_LLM_CALL_LIMIT", "500"))
 
 # Prompt injection patterns — phrases that attempt to override system instructions
 _INJECTION_PATTERNS = [
-    r"ignore\s+(your|all|previous|above)\s+(instructions|rules|prompt)",
-    r"forget\s+(your|all|previous|above)\s+(instructions|rules|prompt)",
+    r"ignore\s+(your|all|previous|above|the)\s+(?:\w+\s+)?(instructions|rules|prompt|guidelines)",
+    r"ignore\s+all\s+previous\s+\w+",
+    r"forget\s+(your|all|previous|above|the)\s+(?:\w+\s+)?(instructions|rules|prompt|guidelines)",
     r"you\s+are\s+now\s+(?:a|an)\s+",
     r"new\s+instructions?\s*:",
     r"system\s*prompt\s*:",
@@ -49,7 +50,8 @@ _PROFANITY_WORDS = {
     "dick", "cock", "pussy", "slut", "whore", "nigger", "faggot",
     "kill", "murder", "suicide", "rape", "porn", "sex", "drug",
     "alcohol", "beer", "wine", "vodka", "whiskey", "cigarette",
-    "gun", "bomb", "weapon", "terrorist",
+    "gun", "bomb", "bombs", "weapon", "terrorist",
+    "drugs", "guns", "weapons",
 }
 # Build regex that matches whole words only
 _PROFANITY_RE = re.compile(
@@ -166,6 +168,8 @@ def check_message_limit(message_count: int):
 
 def check_conversation_duration(started_at: str):
     """Raise if conversation has been running too long."""
+    if not started_at:
+        return
     try:
         start = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
         elapsed = (datetime.now(timezone.utc) - start).total_seconds() / 60
