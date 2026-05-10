@@ -50,8 +50,11 @@ function loadAppHtml(name: string): string {
   return `<html><body><p>App "${name}" not built yet. Run: npm run build:apps</p></body></html>`;
 }
 
-// ── MCP Server ───────────────────────────────────────────────────────
+// ── MCP Server factory ───────────────────────────────────────────────
+// Each session gets its own McpServer instance since McpServer only
+// supports a single transport connection at a time.
 
+function createServer(): McpServer {
 const server = new McpServer({
   name: "MarathiMitra",
   version: "1.0.0",
@@ -350,47 +353,51 @@ server.registerTool("get-progress", {
   }
 });
 
+return server;
+}
+
 // ── HTTP transport ───────────────────────────────────────────────────
 
 const app = createMcpExpressApp({ host: "0.0.0.0" });
 
-// Track transports for session management
-const transports = new Map<string, StreamableHTTPServerTransport>();
+// Track transports and their server instances per session
+const sessions = new Map<string, { transport: StreamableHTTPServerTransport; server: McpServer }>();
 
 app.post("/mcp", async (req, res) => {
   const sessionId = req.headers["mcp-session-id"] as string | undefined;
 
-  if (sessionId && transports.has(sessionId)) {
+  if (sessionId && sessions.has(sessionId)) {
     // Existing session
-    const transport = transports.get(sessionId)!;
+    const { transport } = sessions.get(sessionId)!;
     await transport.handleRequest(req, res, req.body);
     return;
   }
 
-  // New session
+  // New session — each gets its own McpServer instance
+  const mcpServer = createServer();
   const transport = new StreamableHTTPServerTransport({
     sessionIdGenerator: () => randomUUID(),
   });
 
   transport.onclose = () => {
     const sid = (transport as unknown as { sessionId?: string }).sessionId;
-    if (sid) transports.delete(sid);
+    if (sid) sessions.delete(sid);
   };
 
-  await server.connect(transport);
+  await mcpServer.connect(transport);
   await transport.handleRequest(req, res, req.body);
 
-  // Store transport by session ID from response header
+  // Store session
   const newSessionId = res.getHeader("mcp-session-id") as string | undefined;
   if (newSessionId) {
-    transports.set(newSessionId, transport);
+    sessions.set(newSessionId, { transport, server: mcpServer });
   }
 });
 
 app.get("/mcp", async (req, res) => {
   const sessionId = req.headers["mcp-session-id"] as string | undefined;
-  if (sessionId && transports.has(sessionId)) {
-    const transport = transports.get(sessionId)!;
+  if (sessionId && sessions.has(sessionId)) {
+    const { transport } = sessions.get(sessionId)!;
     await transport.handleRequest(req, res);
     return;
   }
@@ -399,10 +406,10 @@ app.get("/mcp", async (req, res) => {
 
 app.delete("/mcp", async (req, res) => {
   const sessionId = req.headers["mcp-session-id"] as string | undefined;
-  if (sessionId && transports.has(sessionId)) {
-    const transport = transports.get(sessionId)!;
+  if (sessionId && sessions.has(sessionId)) {
+    const { transport } = sessions.get(sessionId)!;
     await transport.handleRequest(req, res);
-    transports.delete(sessionId);
+    sessions.delete(sessionId);
     return;
   }
   res.status(400).json({ error: "No session." });
