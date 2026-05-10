@@ -5,9 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MarathiMitra Chat</title>
   <link rel="stylesheet" href="../styles/shared.css" />
+  <style>
+    .typing-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 18px;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.4;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+    .chat-ended-banner {
+      text-align: center;
+      padding: 24px 16px;
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      margin-top: 12px;
+    }
+    .chat-ended-banner .xp-earned {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--saffron);
+    }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app" class="app-container">
+    <div class="loading-center" id="loading">
+      <div class="spinner"></div>
+      <span>Starting conversation...</span>
+    </div>
+  </div>
   <script type="module" src="../src/conversation-app.ts"></script>
 </body>
 </html>
