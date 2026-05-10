@@ -14,6 +14,7 @@
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
 import { z } from "zod";
@@ -356,66 +357,75 @@ server.registerTool("get-progress", {
 return server;
 }
 
-// ── HTTP transport ───────────────────────────────────────────────────
+// ── Transport ────────────────────────────────────────────────────────
+// Use --stdio flag for Claude Desktop (stdio transport).
+// Default: HTTP transport for remote access / claude.ai.
 
-const app = createMcpExpressApp({ host: "0.0.0.0" });
+const useStdio = process.argv.includes("--stdio");
 
-// Track transports and their server instances per session
-const sessions = new Map<string, { transport: StreamableHTTPServerTransport; server: McpServer }>();
-
-app.post("/mcp", async (req, res) => {
-  const sessionId = req.headers["mcp-session-id"] as string | undefined;
-
-  if (sessionId && sessions.has(sessionId)) {
-    // Existing session
-    const { transport } = sessions.get(sessionId)!;
-    await transport.handleRequest(req, res, req.body);
-    return;
-  }
-
-  // New session — each gets its own McpServer instance
+if (useStdio) {
+  // Stdio mode — single session, launched by Claude Desktop
   const mcpServer = createServer();
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: () => randomUUID(),
+  const transport = new StdioServerTransport();
+  await mcpServer.connect(transport);
+  console.error(`MarathiMitra MCP App running (stdio). Backend: ${API_BASE_URL}`);
+} else {
+  // HTTP mode — multi-session, for remote access
+  const expressApp = createMcpExpressApp({ host: "0.0.0.0" });
+
+  const sessions = new Map<string, { transport: StreamableHTTPServerTransport; server: McpServer }>();
+
+  expressApp.post("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+
+    if (sessionId && sessions.has(sessionId)) {
+      const { transport } = sessions.get(sessionId)!;
+      await transport.handleRequest(req, res, req.body);
+      return;
+    }
+
+    const mcpServer = createServer();
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: () => randomUUID(),
+    });
+
+    transport.onclose = () => {
+      const sid = (transport as unknown as { sessionId?: string }).sessionId;
+      if (sid) sessions.delete(sid);
+    };
+
+    await mcpServer.connect(transport);
+    await transport.handleRequest(req, res, req.body);
+
+    const newSessionId = res.getHeader("mcp-session-id") as string | undefined;
+    if (newSessionId) {
+      sessions.set(newSessionId, { transport, server: mcpServer });
+    }
   });
 
-  transport.onclose = () => {
-    const sid = (transport as unknown as { sessionId?: string }).sessionId;
-    if (sid) sessions.delete(sid);
-  };
+  expressApp.get("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (sessionId && sessions.has(sessionId)) {
+      const { transport } = sessions.get(sessionId)!;
+      await transport.handleRequest(req, res);
+      return;
+    }
+    res.status(400).json({ error: "No session. Send POST to /mcp first." });
+  });
 
-  await mcpServer.connect(transport);
-  await transport.handleRequest(req, res, req.body);
+  expressApp.delete("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (sessionId && sessions.has(sessionId)) {
+      const { transport } = sessions.get(sessionId)!;
+      await transport.handleRequest(req, res);
+      sessions.delete(sessionId);
+      return;
+    }
+    res.status(400).json({ error: "No session." });
+  });
 
-  // Store session
-  const newSessionId = res.getHeader("mcp-session-id") as string | undefined;
-  if (newSessionId) {
-    sessions.set(newSessionId, { transport, server: mcpServer });
-  }
-});
-
-app.get("/mcp", async (req, res) => {
-  const sessionId = req.headers["mcp-session-id"] as string | undefined;
-  if (sessionId && sessions.has(sessionId)) {
-    const { transport } = sessions.get(sessionId)!;
-    await transport.handleRequest(req, res);
-    return;
-  }
-  res.status(400).json({ error: "No session. Send POST to /mcp first." });
-});
-
-app.delete("/mcp", async (req, res) => {
-  const sessionId = req.headers["mcp-session-id"] as string | undefined;
-  if (sessionId && sessions.has(sessionId)) {
-    const { transport } = sessions.get(sessionId)!;
-    await transport.handleRequest(req, res);
-    sessions.delete(sessionId);
-    return;
-  }
-  res.status(400).json({ error: "No session." });
-});
-
-app.listen(PORT, () => {
-  console.log(`MarathiMitra MCP App server running on http://localhost:${PORT}/mcp`);
-  console.log(`Backend API: ${API_BASE_URL}`);
-});
+  expressApp.listen(PORT, () => {
+    console.log(`MarathiMitra MCP App server running on http://localhost:${PORT}/mcp`);
+    console.log(`Backend API: ${API_BASE_URL}`);
+  });
+}
