@@ -50,6 +50,16 @@ backend/
     supabase_client.py             # Supabase client init
     migrations.sql                 # Database schema
 mcp_server.py                      # Standalone MCP server for Claude Desktop
+mcp-app/
+  server.ts                          # MCP App server — interactive UIs inside Claude
+  api-client.ts                      # API client proxying to FastAPI with service key
+  types.ts                           # Shared TypeScript types
+  apps/                              # HTML entry points (bundled to single-file by Vite)
+    conversation.html                # Chat with Mitra
+    lessons.html                     # Lesson browser + quiz
+    progress.html                    # XP dashboard + level roadmap
+  src/                               # App logic (TypeScript)
+  styles/shared.css                  # Kid-friendly design system
 frontend-react/
   src/
     components/                    # Navbar, LessonCard, LessonView, ProtectedRoute, shadcn/ui
