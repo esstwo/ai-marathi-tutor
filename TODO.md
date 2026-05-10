@@ -5,7 +5,7 @@
 
 ## Capstone Review Fixes (Remaining)
 - [ ] Fix 4 (Section 3.2): Compute `marathi_ratio` — calculate Devanagari character ratio in child messages, write to `conversations` table in `end_conversation`
-- [ ] Fix 5 (Section 3.5): Prompt engineering — add few-shot examples, Romanized Marathi handling, conversation flow control to `skills/conversation.md`
+- [x] Fix 5 (Section 3.5): Prompt engineering — add few-shot examples, Romanized Marathi handling, conversation flow control to `skills/conversation.md`
 
 ## Plugin Architecture
 - [x] Phase 1: Extract skill definitions as Markdown files with YAML frontmatter (`skills/conversation.md`, `lessons.md`, `progress.md`) + skill loader

@@ -190,8 +190,11 @@ MarathiMitra also has an MCP App server that renders interactive HTML UIs (chat,
 
 ## Deployment
 
+A `render.yaml` Blueprint defines both backend services — connect the repo to Render and it auto-configures everything.
+
 - **Frontend:** Deploy `frontend-react/` to Vercel or Netlify — set `VITE_API_BASE_URL` env var to the backend URL
 - **Backend:** Deploy to [Render](https://render.com) — start command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+- **MCP App:** Deploy `mcp-app/` to Render as a Node service — set `MARATHI_API_URL` to the backend URL and `MARATHI_SERVICE_KEY` to match the backend. MCP endpoint: `https://your-service.onrender.com/mcp`
 
 ## Project Status
 
