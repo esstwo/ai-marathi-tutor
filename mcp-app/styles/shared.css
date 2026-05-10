@@ -1,1 +1,735 @@
-/* Shared styles — implemented in Step 4 */
+/* MarathiMitra MCP App — Kid-friendly design system */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap');
+
+/* ── Reset & Base ─────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Primary palette */
+  --primary: #2fa89e;           /* teal — main brand color */
+  --primary-light: #e0f5f3;     /* teal tint for backgrounds */
+  --primary-dark: #1d7a72;      /* teal shade for hover */
+
+  /* Accent colors */
+  --saffron: #f5a623;           /* saffron — Indian accent */
+  --saffron-light: #fef3d7;
+  --coral: #e8736a;             /* coral — errors, end actions */
+  --coral-light: #fde8e6;
+  --mint: #7ecdb8;              /* mint — success */
+  --mint-light: #e3f6ef;
+  --sky: #6bb3d9;               /* sky — child messages */
+  --sky-light: #e0f0f9;
+  --lavender: #a78bca;          /* lavender — level badges */
+  --lemon: #e8d44d;             /* lemon — XP/streaks */
+
+  /* Neutrals */
+  --bg: #f2f9f8;                /* page background */
+  --card-bg: #ffffff;
+  --text: #1e3a36;              /* primary text */
+  --text-muted: #5e8580;        /* secondary text */
+  --border: #d1e6e3;
+  --border-light: #e8f0ee;
+
+  /* Sizing */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-body: 'Nunito', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-devanagari: 'Noto Sans Devanagari', 'Nunito', system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(30, 58, 54, 0.08);
+  --shadow-md: 0 4px 12px rgba(30, 58, 54, 0.1);
+  --shadow-lg: 0 8px 24px rgba(30, 58, 54, 0.12);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.375rem; }
+h3 { font-size: 1.125rem; }
+h4 { font-size: 1rem; }
+
+.text-devanagari {
+  font-family: var(--font-devanagari);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-small {
+  font-size: 0.875rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────── */
+
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  text-align: center;
+  padding: 12px 0 16px;
+}
+
+.app-header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.card-accent {
+  border-left: 4px solid var(--primary);
+}
+
+.card-saffron {
+  border-left: 4px solid var(--saffron);
+}
+
+/* ── Button ───────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--border);
+}
+
+.btn-saffron {
+  background: var(--saffron);
+  color: white;
+}
+
+.btn-saffron:hover:not(:disabled) {
+  background: #d99118;
+}
+
+.btn-danger {
+  background: var(--coral);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #d45a51;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 8px 12px;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--border-light);
+  color: var(--text);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  min-height: 36px;
+  font-size: 0.875rem;
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radius-full);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ── Input ────────────────────────────────────────────────────────── */
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ── Chat ─────────────────────────────────────────────────────────── */
+
+.chat-feed {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  line-height: 1.5;
+  animation: fadeInUp 0.25s ease-out;
+}
+
+.chat-bubble-mitra {
+  align-self: flex-start;
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-bubble-mitra .marathi-text {
+  font-family: var(--font-devanagari);
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.chat-bubble-mitra .english-hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.chat-bubble-child {
+  align-self: flex-end;
+  background: var(--sky);
+  color: white;
+}
+
+.chat-input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.chat-input-bar .input {
+  flex: 1;
+}
+
+/* ── Progress Bar ─────────────────────────────────────────────────── */
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--mint));
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+.progress-bar-saffron .progress-bar-fill {
+  background: linear-gradient(90deg, var(--saffron), var(--lemon));
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────────── */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-xp .stat-value { color: var(--saffron); }
+.stat-streak .stat-value { color: var(--coral); }
+.stat-lessons .stat-value { color: var(--primary); }
+.stat-chats .stat-value { color: var(--sky); }
+
+/* ── Level Badge ──────────────────────────────────────────────────── */
+
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: var(--lavender);
+  color: white;
+}
+
+/* ── Level Roadmap ────────────────────────────────────────────────── */
+
+.level-roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.level-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+}
+
+.level-step.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.level-step.completed {
+  border-color: var(--mint);
+  background: var(--mint-light);
+}
+
+.level-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.level-step.completed .level-dot {
+  background: var(--mint);
+  color: white;
+}
+
+.level-step.active .level-dot {
+  background: var(--primary);
+  color: white;
+}
+
+.level-step:not(.active):not(.completed) .level-dot {
+  background: var(--border);
+  color: var(--text-muted);
+}
+
+/* ── Lesson Card ──────────────────────────────────────────────────── */
+
+.lesson-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lesson-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.lesson-card-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.lesson-card-theme {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ── Vocabulary Flashcard ─────────────────────────────────────────── */
+
+.flashcard {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border-light);
+}
+
+.flashcard-marathi {
+  font-family: var(--font-devanagari);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.flashcard-pronunciation {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.flashcard-english {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.flashcard-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.flashcard-counter {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ── Quiz ─────────────────────────────────────────────────────────── */
+
+.quiz-question {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-option {
+  padding: 14px 16px;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.quiz-option.correct {
+  border-color: var(--mint);
+  background: var(--mint-light);
+  animation: pop 0.35s ease-out;
+}
+
+.quiz-option.incorrect {
+  border-color: var(--coral);
+  background: var(--coral-light);
+  animation: shake 0.4s ease;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* ── Level Tabs ───────────────────────────────────────────────────── */
+
+.level-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.level-tab {
+  padding: 8px 16px;
+  min-height: 36px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--card-bg);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.level-tab:hover {
+  border-color: var(--primary);
+}
+
+.level-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* ── Results ──────────────────────────────────────────────────────── */
+
+.results-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.results-score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.results-xp {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--saffron);
+  margin-bottom: 4px;
+}
+
+/* ── Loading ──────────────────────────────────────────────────────── */
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--text-muted);
+}
+
+/* ── Empty State ──────────────────────────────────────────────────── */
+
+.empty-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+/* ── TTS Button ───────────────────────────────────────────────────── */
+
+.tts-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 1.125rem;
+  transition: all 0.15s ease;
+}
+
+.tts-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.tts-btn.playing {
+  background: var(--primary);
+  color: white;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* ── Animations ───────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Utility ──────────────────────────────────────────────────────── */
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-4 { gap: 4px; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.hidden { display: none; }
