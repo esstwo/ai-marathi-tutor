@@ -21,46 +21,51 @@
 │                         BACKEND (FastAPI)                            │
 │                              │                                       │
 │  ┌───────────────────────────▼──────────────────────────────────┐   │
-│  │                      Routers (Gateway)                       │   │
-│  │  auth.py │ lessons.py │ conversations.py │ progress.py │ tts │   │
+│  │                   Gateway (gateway/api.py)                   │   │
 │  │                                                              │   │
-│  │  Thin HTTP layer — validates auth, delegates to services     │   │
+│  │  Thin HTTP layer — validates auth, maps requests to skills   │   │
+│  │  and connectors. CRUD calls connectors directly.             │   │
+│  │  Conversations use run_skill() for LLM orchestration.        │   │
 │  └──────┬────────────────────┬──────────────────────────────────┘   │
 │         │                    │                                       │
 │         │              ┌─────▼──────────────────────────────────┐   │
-│         │              │         Skills Layer                    │   │
-│         │              │    mitra_conversation.py                │   │
+│         │              │         Core (core/llm.py)             │   │
+│         │              │     Generic Agentic Loop               │   │
 │         │              │                                        │   │
-│         │              │  ┌──────────────────────────────────┐  │   │
-│         │              │  │      Agentic Tool-Calling Loop   │  │   │
-│         │              │  │                                  │  │   │
-│         │              │  │  1. Send prompt + tool defs      │  │   │
-│         │              │  │  2. LLM requests tool calls      │  │   │
-│         │              │  │  3. Execute tools via MCP        │  │   │
-│         │              │  │  4. Feed results back to LLM     │  │   │
-│         │              │  │  5. LLM returns JSON response    │  │   │
-│         │              │  └──────────────┬───────────────────┘  │   │
-│         │              └────────────────┬┘                      │   │
-│         │                               │                       │   │
-│  ┌──────▼───────────────────────────────▼──────────────────────┐   │
-│  │                     MCP Client (client.py)                   │   │
-│  │              Async in-process tool invocation                │   │
-│  └──────┬───────────────────────────────┬──────────────────────┘   │
-│         │                               │                          │
-│  ┌──────▼──────────────┐  ┌─────────────▼────────────────────┐    │
-│  │  supabase-mcp       │  │  tts-mcp                         │    │
-│  │  FastMCP Server     │  │  FastMCP Server                  │    │
-│  │  (19 tools)         │  │  (1 tool)                        │    │
-│  │                     │  │                                  │    │
-│  │  get_child_profile  │  │  speak_marathi                   │    │
-│  │  get_lesson_context │  │                                  │    │
-│  │  save_message       │  └──────────────┬───────────────────┘    │
-│  │  create_conversation│                 │                         │
-│  │  update_xp          │                 │                         │
-│  │  ... (14 more)      │                 │                         │
-│  └──────┬──────────────┘                 │                         │
-│         │                                │                         │
-└─────────┼────────────────────────────────┼─────────────────────────┘
+│         │              │  run_skill(skill, messages, connectors) │   │
+│         │              │                                        │   │
+│         │              │  1. Load skill's system prompt (.md)   │   │
+│         │              │  2. Auto-generate tool schemas from    │   │
+│         │              │     connector function signatures      │   │
+│         │              │  3. Send to LLM with tool definitions  │   │
+│         │              │  4. LLM requests tool calls            │   │
+│         │              │  5. Execute against connectors          │   │
+│         │              │  6. Feed results back, loop             │   │
+│         │              │  7. Parse JSON response                │   │
+│         │              └──────────────┬─────────────────────────┘   │
+│         │                             │                              │
+│  ┌──────▼─────────────────────────────▼────────────────────────┐    │
+│  │                  Connectors (connectors/)                    │    │
+│  │           Direct function calls to external systems          │    │
+│  │                                                              │    │
+│  │  supabase/          tts/                                     │    │
+│  │    auth.py            google_tts.py                          │    │
+│  │    children.py          speak_marathi()                      │    │
+│  │    conversations.py                                          │    │
+│  │    lessons.py                                                │    │
+│  │    progress.py                                               │    │
+│  └──────┬──────────────────────────────┬───────────────────────┘    │
+│         │                              │                             │
+│  ┌──────▼──────────┐   ┌──────────────▼──────────────┐              │
+│  │  Skill Files    │   │  Connector Registry          │              │
+│  │  (skills/*.md)  │   │  (core/connector_registry.py)│              │
+│  │                 │   │                              │              │
+│  │  conversation   │   │  Auto-discovers all          │              │
+│  │  lessons        │   │  connector functions,        │              │
+│  │  progress       │   │  maps names → callables      │              │
+│  └─────────────────┘   └─────────────────────────────┘              │
+│                                                                      │
+└─────────┬────────────────────────────────┬───────────────────────────┘
           │                                │
           ▼                                ▼
 ┌──────────────────┐            ┌─────────────────────┐
@@ -77,6 +82,18 @@
 │  Llama 3.3 70B   │
 │  (LLM engine)    │
 └──────────────────┘
+
+
+                    ┌──────────────────────────────────┐
+                    │     MCP Server (mcp_server.py)    │
+                    │                                    │
+                    │  Same connectors exposed as MCP    │
+                    │  tools. Skills exposed as MCP      │
+                    │  resources and prompts.             │
+                    │                                    │
+                    │  Claude Desktop connects via       │
+                    │  stdio transport.                   │
+                    └──────────────────────────────────┘
 ```
 
 ## Request Flow: AI Conversation
@@ -93,42 +110,47 @@ User sends message
         │
         ▼
 ┌─────────────────┐     ┌──────────────────┐
-│  conversations  │────▶│  verify auth +   │
-│  router         │     │  child ownership │
+│  gateway/api.py │────▶│  verify auth +   │
+│                 │     │  child ownership │
 └───────┬─────────┘     └──────────────────┘
         │
         ▼
 ┌─────────────────┐
-│  save_message   │──── MCP call ──▶ supabase-mcp
+│  save_message   │──── connector call ──▶ supabase
 │  (child's msg)  │
 └───────┬─────────┘
         │
         ▼
 ┌──────────────────────────────────────────┐
-│  mitra_conversation.chat()               │
+│  run_skill(conversation_skill, ...)      │
 │                                          │
-│  Build messages:                         │
-│    [system prompt, history, user msg]    │
+│  1. Load system prompt from              │
+│     skills/conversation.md               │
 │                                          │
-│  call_llm(messages, tools=MITRA_TOOLS)   │
+│  2. Build messages:                      │
+│     [system prompt, history, user msg]   │
+│                                          │
+│  3. Auto-generate tool schemas from      │
+│     connector functions                  │
+│                                          │
+│  4. Agentic loop (max 3 rounds):         │
 │         │                                │
-│         ▼                                │
-│  ┌─── Agentic Loop (max 3 rounds) ───┐  │
-│  │                                    │  │
-│  │  Groq API ◀──────────────────────┐ │  │
-│  │    │                             │ │  │
-│  │    ▼                             │ │  │
-│  │  tool_calls?                     │ │  │
-│  │    │ yes          │ no           │ │  │
-│  │    ▼              ▼              │ │  │
-│  │  Execute via    Return JSON      │ │  │
-│  │  MCP client     response         │ │  │
-│  │    │                             │ │  │
-│  │    ▼                             │ │  │
-│  │  Append tool                     │ │  │
-│  │  results to ─────────────────────┘ │  │
-│  │  messages                          │  │
-│  └────────────────────────────────────┘  │
+│  ┌─── Loop ──────────────────────────┐   │
+│  │                                    │   │
+│  │  Groq API ◀──────────────────────┐│   │
+│  │    │                             ││   │
+│  │    ▼                             ││   │
+│  │  tool_calls?                     ││   │
+│  │    │ yes          │ no           ││   │
+│  │    ▼              ▼              ││   │
+│  │  Execute via    Return JSON      ││   │
+│  │  connectors     response         ││   │
+│  │    │                             ││   │
+│  │    ▼                             ││   │
+│  │  Append tool                     ││   │
+│  │  results to ─────────────────────┘│   │
+│  │  messages                         │   │
+│  └───────────────────────────────────┘   │
 │                                          │
 │  parse_json_response(raw_text)           │
 │    → {marathi_text, english_hint}        │
@@ -136,34 +158,66 @@ User sends message
         │
         ▼
 ┌─────────────────┐
-│  save_message   │──── MCP call ──▶ supabase-mcp
+│  save_message   │──── connector call ──▶ supabase
 │  (Mitra's reply)│
 └───────┬─────────┘
         │
         ▼
   Return to client:
-  {marathi_text, english_hint, audio_url}
+  {marathi_text, english_hint}
 ```
 
 ## Layer Responsibilities
 
 | Layer | Directory | Responsibility |
 |-------|-----------|----------------|
-| **Gateway** | `backend/routers/` | HTTP endpoints, auth validation, request/response shaping. No business logic. |
-| **Skills** | `backend/skills/` | LLM orchestration — prompt construction, agentic tool-calling loop, response parsing. |
-| **Services** | `backend/services/` | Business logic (XP calculation, TTS caching). Bridges routers and MCP. |
-| **MCP Servers** | `backend/mcp/` | Standardized tool interface. All DB and TTS operations exposed as MCP tools. |
-| **Prompts** | `backend/prompts/` | System prompt definitions. Personality, safety rules, response format. |
+| **Gateway** | `backend/gateway/` | HTTP endpoints, auth validation, request/response mapping. CRUD calls connectors directly. Conversations use `run_skill()`. |
+| **Core** | `backend/core/` | Generic infrastructure: skill loader, connector registry, agentic tool-calling loop. Not MarathiMitra-specific. |
+| **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. The product's intelligence. |
+| **Connectors** | `backend/connectors/` | Minimal glue code — plain Python functions that call external systems. No business logic. |
+| **Services** | `backend/services/` | Shared utilities (Google Cloud TTS wrapper with caching). |
+
+## Skill File Format
+
+Skills are Markdown files with YAML frontmatter — the same format as Claude skill files:
+
+```markdown
+---
+name: marathi_conversation_partner
+description: Friendly Marathi tutor for diaspora kids
+input:
+  child_id: string
+  message: string
+  history: list
+output:
+  format: json
+  schema:
+    marathi_text: string
+    english_hint: string?
+connectors:
+  - get_child_profile
+  - get_lesson_context
+---
+
+You are Mitra, a friendly Marathi tutor for kids.
+... (the system prompt — this IS the intelligence)
+```
+
+The frontmatter declares structured metadata. The Markdown body is used directly as the LLM system prompt.
 
 ## Key Design Decisions
 
-**LLM-as-Orchestrator**: The LLM receives tool definitions and decides what context it needs. The gateway doesn't hardcode "fetch profile, then fetch lesson, then call LLM." Instead, the LLM calls `get_child_profile` and `get_lesson_context` itself via the agentic loop. This makes the system more flexible — the LLM can skip tools it doesn't need or call them in any order.
+**Skills as Markdown, not code**: The intelligence lives in portable `.md` files — system prompts with input/output contracts. The same skill file works in the web app (via `run_skill()`), in Claude Desktop (via MCP resources), or in any future client. Adding a new capability means writing a new `.md` file, not Python code.
 
-**MCP for Tool Interface**: All database operations are registered as MCP tools via FastMCP. Currently called in-process, but the same tools can be deployed as standalone services with SSE/HTTP transport, or called by external MCP clients (Claude Desktop, other LLM apps).
+**LLM-as-Orchestrator**: The LLM receives connector tool definitions and decides what context it needs. The gateway doesn't hardcode "fetch profile, then fetch lesson, then call LLM." Instead, the LLM calls `get_child_profile` and `get_lesson_context` itself via the agentic loop.
 
-**Data-fetching vs Persistence Split**: The LLM can only call read-only tools (`get_child_profile`, `get_lesson_context`). Write operations (`save_message`, `update_xp`) are called by the gateway — the LLM should never decide when to persist data.
+**Connectors, not MCP in-process**: Connectors are plain Python functions called directly — no MCP client/server indirection for in-process calls. The MCP server (`mcp_server.py`) wraps the same connectors for external access.
 
-**Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` instead of a free-text format parsed with regex. Falls back gracefully if the LLM returns plain text.
+**Deterministic logic stays in code**: XP/streak calculations are math, not AI. They live in `gateway/progress_utils.py` as plain functions, not LLM skill invocations.
+
+**Auto-generated tool schemas**: `core/llm.py` generates OpenAI-style tool definitions from connector function signatures and docstrings — no hand-written tool manifests to keep in sync.
+
+**Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` enforced via `response_format`. Falls back gracefully if the LLM returns plain text.
 
 **Token Refresh**: The frontend's Axios interceptor catches 401s, refreshes the JWT via `/auth/refresh`, and retries the original request. Concurrent requests queue behind the refresh.
 

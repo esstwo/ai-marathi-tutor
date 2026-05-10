@@ -11,66 +11,80 @@ and game-based missions.
 ## Tech Stack
 
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
-- **Backend:** Python + FastAPI + FastMCP (Model Context Protocol)
+- **Backend:** Python + FastAPI (thin gateway) + portable Markdown skill files
 - **Database:** Supabase (PostgreSQL + Auth)
 - **AI:** Groq API (Llama 3.3 70B)
 - **TTS:** Google Cloud Text-to-Speech (Marathi)
+- **MCP:** FastMCP server for Claude Desktop integration
 - **Deployment:** Vercel (frontend) + Render (backend)
 
 ## Project Structure
 
 ```
 backend/
-  main.py                  # FastAPI app with CORS
-  db/
-    supabase_client.py     # Supabase client init
-    migrations.sql         # Full database schema (run in Supabase SQL Editor)
-  mcp/                     # MCP (Model Context Protocol) layer
-    supabase_tools.py      # All Supabase operations as standalone functions
-    supabase_server.py     # FastMCP server (19 tools registered)
-    tts_tools.py           # TTS tool with base64 encoding
-    tts_server.py          # FastMCP server (1 tool registered)
-    client.py              # Async MCP client helper for in-process calls
-  skills/
-    mitra_conversation.py  # Mitra conversation skill (prompt building, LLM calls, response parsing)
-  models/
-    schemas.py             # Pydantic request/response models
-  routers/
-    auth.py                # Signup, login, child creation, token refresh
-    lessons.py             # Lesson retrieval and completion
-    conversations.py       # AI chat management
-    progress.py            # Progress tracking
-    tts.py                 # Text-to-speech endpoint
+  main.py                          # FastAPI app — loads gateway routers
+  core/
+    skill_loader.py                # Discovers and loads .md skill files
+    connector_registry.py          # Maps connector names → callable functions
+    llm.py                         # Generic agentic loop + LLM error hierarchy
+  skills/                          # Portable skill definitions (Markdown + YAML frontmatter)
+    conversation.md                # Mitra tutor — personality, safety, response format
+    lessons.md                     # Lesson delivery — retrieve and present vocabulary
+    progress.md                    # Progress tracker — XP rules, streak logic
+  connectors/                      # Minimal code bridging skills to external systems
+    supabase/
+      auth.py                      # signup, login, refresh, parent records
+      children.py                  # child profiles, ownership checks
+      conversations.py             # start/end conversations, save/get messages
+      lessons.py                   # list/get/complete lessons
+      progress.py                  # counts and aggregations for reporting
+    tts/
+      google_tts.py                # speak_marathi (base64 MP3)
+  gateway/                         # Thin HTTP layer
+    api.py                         # All REST endpoints (single file)
+    auth.py                        # Token validation + child ownership
+    progress_utils.py              # Deterministic XP/streak calculations
   services/
-    mitra.py               # Re-exports from skills/mitra_conversation.py
-    progress.py            # XP/streak calculations (async, calls MCP tools)
-    tts.py                 # Google Cloud TTS wrapper with caching
-    llm_errors.py          # LLM exception hierarchy
-  dependencies/
-    auth.py                # Token validation + child ownership checks
-  prompts/
-    mitra_system.py        # Mitra personality prompt template
+    tts.py                         # Google Cloud TTS wrapper with caching
+  db/
+    supabase_client.py             # Supabase client init
+    migrations.sql                 # Database schema
+mcp_server.py                      # Standalone MCP server for Claude Desktop
 frontend-react/
   src/
-    components/            # Navbar, LessonCard, LessonView, ProtectedRoute, shadcn/ui
-    contexts/              # AuthContext (token + refresh token management)
-    services/              # Axios API client with Bearer token + 401 refresh interceptor
-    types/                 # TypeScript interfaces matching backend schemas
+    components/                    # Navbar, LessonCard, LessonView, ProtectedRoute, shadcn/ui
+    contexts/                      # AuthContext (token + refresh token management)
+    services/                      # Axios API client with Bearer token + 401 refresh interceptor
+    types/                         # TypeScript interfaces matching backend schemas
     pages/
-      Index.tsx            # Landing page
-      Login.tsx            # Sign in / sign up
-      ChildSetup.tsx       # Child profile creation + selection
-      Home.tsx             # Dashboard with stats + quick actions
-      Lessons.tsx          # Lesson browser with level selector
-      Chats.tsx            # AI conversation with Mitra
-      Progress.tsx         # Child progress + level roadmap
-      ParentProgress.tsx   # Parent aggregated dashboard
+      Index.tsx                    # Landing page
+      Login.tsx                    # Sign in / sign up
+      ChildSetup.tsx               # Child profile creation + selection
+      Home.tsx                     # Dashboard with stats + quick actions
+      Lessons.tsx                  # Lesson browser with level selector
+      Chats.tsx                    # AI conversation with Mitra
+      Progress.tsx                 # Child progress + level roadmap
+      ParentProgress.tsx           # Parent aggregated dashboard
 content/
-  level1_lessons.json      # Level 1 lesson data (vocabulary + quizzes)
-  level2_lessons.json      # Level 2 lesson data
+  level1_lessons.json              # Level 1 lesson data (vocabulary + quizzes)
+  level2_lessons.json              # Level 2 lesson data
 scripts/
-  seed_content.py          # Seed lessons into Supabase
+  seed_content.py                  # Seed lessons into Supabase
 ```
+
+## Architecture
+
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for detailed diagrams and request flows.
+
+The backend uses a **skills + connectors** architecture:
+
+- **Skills** (`backend/skills/*.md`) — Portable Markdown files that define *what* the AI does. Each skill has YAML frontmatter (input/output schema, connector dependencies) and a Markdown body that serves as the LLM system prompt. Skills can run in the web app, Claude Desktop, or any MCP client.
+- **Connectors** (`backend/connectors/`) — Minimal Python functions that bridge skills to external systems (Supabase, Google TTS). No business logic — just glue.
+- **Core** (`backend/core/`) — Generic infrastructure: skill loader, connector registry, and the agentic tool-calling loop that works with any skill.
+- **Gateway** (`backend/gateway/`) — Thin HTTP layer that maps REST endpoints to skill invocations and connector calls.
+- **MCP Server** (`mcp_server.py`) — Exposes all connectors as MCP tools and skills as MCP resources/prompts for Claude Desktop.
+
+The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connector tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding.
 
 ## API Endpoints
 
@@ -116,22 +130,33 @@ scripts/
    ```
 8. Open `http://localhost:5173`
 
+## Claude Desktop Integration
+
+MarathiMitra can also run as an MCP server inside Claude Desktop:
+
+1. Run `python mcp_server.py` or add to your Claude Desktop config:
+   ```json
+   {
+     "mcpServers": {
+       "marathi-tutor": {
+         "command": "python",
+         "args": ["/path/to/mcp_server.py"],
+         "env": {
+           "GROQ_API_KEY": "...",
+           "SUPABASE_URL": "...",
+           "SUPABASE_KEY": "...",
+           "SUPABASE_SERVICE_KEY": "..."
+         }
+       }
+     }
+   }
+   ```
+2. Claude gets access to 22 tools (child profiles, lessons, conversations, progress, TTS) and can read skill prompts to act as the Mitra tutor.
+
 ## Deployment
 
 - **Frontend:** Deploy `frontend-react/` to Vercel or Netlify — set `VITE_API_BASE_URL` env var to the backend URL
 - **Backend:** Deploy to [Render](https://render.com) — start command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-
-## Architecture
-
-See **[ARCHITECTURE.md](ARCHITECTURE.md)** for detailed diagrams and request flows.
-
-The backend uses a **plugin architecture** based on the [Model Context Protocol (MCP)](https://modelcontextprotocol.io):
-
-- **MCP Servers** (`backend/mcp/`) — all database operations and TTS are registered as MCP tools via FastMCP, callable by any MCP client
-- **Skills** (`backend/skills/`) — LLM-as-orchestrator: the LLM receives tool definitions and decides which tools to call via an agentic loop, with structured JSON output
-- **Gateway** (routers) — thin HTTP layer that calls MCP tools via an async in-process client
-
-The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives MCP tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding. The gateway just runs the agentic tool-calling loop. This separation means the same tools can later be called by Claude Desktop, other LLM apps, or deployed as standalone MCP services.
 
 ## Project Status
 
