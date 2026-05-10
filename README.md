@@ -163,6 +163,23 @@ MarathiMitra can also run as an MCP server inside Claude Desktop:
    ```
 2. Claude gets access to 22 tools (child profiles, lessons, conversations, progress, TTS) and can read skill prompts to act as the Mitra tutor.
 
+## MCP App (Interactive UI inside Claude)
+
+MarathiMitra also has an MCP App server that renders interactive HTML UIs (chat, lessons, progress) directly inside Claude Desktop or claude.ai:
+
+1. Set `MARATHI_SERVICE_KEY` in your `.env` (any secret string — must match backend)
+2. Build and start:
+   ```bash
+   cd mcp-app
+   npm install
+   npm run build
+   MARATHI_API_URL=http://localhost:8000 MARATHI_SERVICE_KEY=your-key npm start
+   ```
+3. The server runs on `http://localhost:3001/mcp` (StreamableHTTP transport)
+4. Connect via Claude Desktop config or cloudflared tunnel for claude.ai
+
+**Tools registered:** `start-marathi-practice`, `browse-lessons`, `show-progress` (each opens an interactive HTML app), plus 7 inner tools for app-to-server communication.
+
 ## Deployment
 
 - **Frontend:** Deploy `frontend-react/` to Vercel or Netlify — set `VITE_API_BASE_URL` env var to the backend URL
