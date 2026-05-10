@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel, EmailStr
 
-from backend.gateway.auth import get_current_parent, verify_child_ownership
+from backend.gateway.auth import get_current_parent, verify_child_ownership, SERVICE_MODE_PARENT
 from backend.core.skill_loader import load_skills
 from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMAuthError, LLMContentFilterError, LLMServiceError
 from backend.core.connector_registry import get_for_skill
@@ -331,7 +331,7 @@ def child_progress(child_id: str, parent_id: str = Depends(get_current_parent)):
 
 @progress_router.get("/parents/{parent_id}/progress")
 def parent_progress(parent_id: str, current_parent_id: str = Depends(get_current_parent)):
-    if parent_id != current_parent_id:
+    if current_parent_id != SERVICE_MODE_PARENT and parent_id != current_parent_id:
         raise HTTPException(status_code=403, detail="Access denied")
     return get_parent_progress(parent_id)
 
