@@ -117,9 +117,12 @@ create table missions (
   id uuid primary key default uuid_generate_v4(),
   level int not null check (level between 1 and 4),
   title text not null,           -- e.g. "आजीचे स्वयंपाक"
+  title_english text,            -- e.g. "Grandma's Kitchen"
   scenario text not null,        -- roleplay scenario description
+  steps jsonb,                   -- [{step, prompt, target_vocab}]
   required_vocab jsonb not null, -- vocabulary the mission tests
-  xp_reward int not null default 25
+  xp_reward int not null default 25,
+  created_at timestamptz not null default now()
 );
 
 -- ================================================
