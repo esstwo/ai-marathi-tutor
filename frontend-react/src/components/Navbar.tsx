@@ -16,6 +16,7 @@ const Navbar = () => {
         { label: "Home", path: "/home" },
         { label: "Lessons", path: "/lessons" },
         { label: "Chats", path: "/chats" },
+        { label: "Missions", path: "/missions" },
         { label: "Progress", path: "/progress" },
         { label: "Parents", path: "/parents" },
       ]

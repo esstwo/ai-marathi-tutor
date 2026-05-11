@@ -11,6 +11,7 @@ import ChildSetup from "./pages/ChildSetup";
 import Home from "./pages/Home";
 import Lessons from "./pages/Lessons";
 import Chats from "./pages/Chats";
+import Missions from "./pages/Missions";
 import ProgressPage from "./pages/Progress";
 import ParentProgress from "./pages/ParentProgress";
 import NotFound from "./pages/NotFound";
@@ -56,6 +57,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Chats />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/missions"
+              element={
+                <ProtectedRoute>
+                  <Missions />
                 </ProtectedRoute>
               }
             />

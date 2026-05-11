@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Flame, Zap, Trophy, BookOpen, MessageCircle, BarChart3, Sparkles } from "lucide-react";
+import { Flame, Zap, Trophy, BookOpen, MessageCircle, BarChart3, Sparkles, Target } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -25,6 +25,7 @@ const Home = () => {
   const quickActions = [
     { icon: BookOpen, label: "Start a Lesson", description: "Learn new Marathi words", path: "/lessons", bg: "bg-mint/30" },
     { icon: MessageCircle, label: "Chat with Mitra", description: "Practice with your AI buddy", path: "/chats", bg: "bg-lavender/30" },
+    { icon: Target, label: "Play Missions", description: "Complete fun Marathi challenges", path: "/missions", bg: "bg-lemon/30" },
     { icon: BarChart3, label: "View Progress", description: "See how far you've come", path: "/progress", bg: "bg-peach/30" },
   ];
 
