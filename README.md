@@ -6,7 +6,9 @@ Your child's friendly AI companion for learning spoken Marathi.
 
 MarathiMitra helps diaspora kids (ages 5-12) who understand Marathi but respond in English
 to build confidence in spoken Marathi through AI-powered conversations, structured lessons,
-and game-based missions.
+and game-based missions — interactive, scenario-based challenges where the child speaks Marathi
+to progress through culturally familiar situations (visiting grandma, shopping at a market,
+celebrating Ganpati).
 
 ## Tech Stack
 
@@ -31,6 +33,8 @@ backend/
     conversation.md                # Mitra tutor — personality, safety, response format
     lessons.md                     # Lesson delivery — retrieve and present vocabulary
     progress.md                    # Progress tracker — XP rules, streak logic
+    mission_generator.md           # Generate mission scenarios from level vocabulary
+    mission_guide.md               # Play scenario character, guide child through steps
   connectors/                      # Minimal code bridging skills to external systems
     supabase/
       auth.py                      # signup, login, refresh, parent records
@@ -38,6 +42,7 @@ backend/
       conversations.py             # start/end conversations, save/get messages
       lessons.py                   # list/get/complete lessons
       progress.py                  # counts and aggregations for reporting
+      missions.py                  # CRUD for missions + child mission progress
     tts/
       google_tts.py                # speak_marathi (base64 MP3)
   gateway/                         # Thin HTTP layer
@@ -79,6 +84,7 @@ frontend-react/
       Home.tsx                     # Dashboard with stats + quick actions
       Lessons.tsx                  # Lesson browser with level selector
       Chats.tsx                    # AI conversation with Mitra
+      Missions.tsx                 # Mission list + play view with step progress
       Progress.tsx                 # Child progress + level roadmap
       ParentProgress.tsx           # Parent aggregated dashboard
 content/
@@ -102,7 +108,7 @@ The backend uses a **skills + connectors** architecture:
 - **Gateway** (`backend/gateway/`) — Thin HTTP layer that maps REST endpoints to skill invocations and connector calls.
 - **MCP Server** (`mcp_server.py`) — Exposes all connectors as MCP tools and skills as MCP resources/prompts for Claude Desktop.
 
-The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connector tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding.
+The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connector tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding. Missions use two skills: `mission_generator` creates scenarios from level vocabulary (shared across all children), and `mission_guide` plays the scenario character, tracking step progression and scoring Marathi usage.
 
 ## API Endpoints
 

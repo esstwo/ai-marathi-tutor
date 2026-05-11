@@ -60,6 +60,7 @@
 │  │    children.py          speak_marathi()                      │    │
 │  │    conversations.py                                          │    │
 │  │    lessons.py                                                │    │
+│  │    missions.py                                               │    │
 │  │    progress.py                                               │    │
 │  └──────┬──────────────────────────────┬───────────────────────┘    │
 │         │                              │                             │
@@ -67,9 +68,11 @@
 │  │  Skill Files    │   │  Connector Registry          │              │
 │  │  (skills/*.md)  │   │  (core/connector_registry.py)│              │
 │  │                 │   │                              │              │
-│  │  conversation   │   │  Auto-discovers all          │              │
-│  │  lessons        │   │  connector functions,        │              │
-│  │  progress       │   │  maps names → callables      │              │
+│  │  conversation      │   │  Auto-discovers all          │              │
+│  │  lessons           │   │  connector functions,        │              │
+│  │  progress          │   │  maps names → callables      │              │
+│  │  mission_generator │   │                              │              │
+│  │  mission_guide     │   │                              │              │
 │  └─────────────────┘   └─────────────────────────────┘              │
 │                                                                      │
 └─────────┬────────────────────────────────┬───────────────────────────┘
@@ -205,14 +208,93 @@ User sends message
   {marathi_text, english_hint}
 ```
 
+## Request Flow: Mission Gameplay
+
+```
+Child starts a mission
+       │
+       ▼
+┌─────────────────┐
+│  POST /missions/ │
+│  start           │
+└───────┬─────────┘
+        │
+        ▼
+  Create conversation with context = {"mission_id": "..."}
+  Mark mission progress as "in_progress"
+        │
+        ▼
+  run_skill(mission_guide_skill, opening prompt, connectors)
+    │
+    │  LLM calls get_child_profile + get_mission_by_id
+    │  Sets the scene, prompts child for Step 1
+    │
+    ▼
+  Return: {marathi_text, mission_step: 1, mission_complete: false}
+        │
+        ▼
+  ┌── Message Loop ─────────────────────────────────┐
+  │                                                   │
+  │  Child sends message                              │
+  │    │                                              │
+  │    ▼                                              │
+  │  POST /missions/{conv_id}/message                 │
+  │    │                                              │
+  │    ▼                                              │
+  │  Guardrails (same as conversations)               │
+  │    │                                              │
+  │    ▼                                              │
+  │  run_skill(mission_guide_skill, ...)              │
+  │    │                                              │
+  │    ▼                                              │
+  │  LLM returns:                                     │
+  │    mission_step (current step number)              │
+  │    step_score (0-3: Marathi quality)               │
+  │    mission_complete (bool)                         │
+  │    │                                              │
+  │    ├── Not complete → continue loop               │
+  │    │                                              │
+  │    └── Complete →                                 │
+  │         Calculate final score (avg step_scores)    │
+  │         XP = xp_reward × (score/100), min 10      │
+  │         Award XP, end conversation                 │
+  │         Return: {score, xp_earned, xp_total}       │
+  └───────────────────────────────────────────────────┘
+```
+
+## Request Flow: Mission Generation
+
+```
+Child taps "Generate New Mission" for level 2
+       │
+       ▼
+  POST /missions/generate  {child_id, level: 2}
+       │
+       ▼
+  Fetch all lesson vocabulary for level 2
+       │
+       ▼
+  run_skill(mission_generator_skill, vocab context)
+       │
+       ▼
+  LLM returns:
+    {title, title_english, scenario, steps[], required_vocab[], xp_reward}
+       │
+       ▼
+  Save to shared `missions` table (available to all children)
+       │
+       ▼
+  Return the new mission
+```
+
 ## Layer Responsibilities
 
 | Layer | Directory | Responsibility |
 |-------|-----------|----------------|
-| **Gateway** | `backend/gateway/` | HTTP endpoints, auth validation, request/response mapping. CRUD calls connectors directly. Conversations use `run_skill()`. |
+| **Gateway** | `backend/gateway/` | HTTP endpoints, auth validation, request/response mapping. CRUD calls connectors directly. Conversations and missions use `run_skill()`. Mission scoring and XP are deterministic (in `progress_utils.py`). |
 | **Guardrails** | `backend/gateway/guardrails.py` | Child safety: input validation (length, profanity, prompt injection), output sanitization (PII/URL stripping, JSON validation), session limits (message/time/concurrency caps), cost protection (daily LLM call limit). |
 | **Core** | `backend/core/` | Generic infrastructure: skill loader, connector registry, agentic tool-calling loop. Not MarathiMitra-specific. |
-| **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. The product's intelligence. |
+| **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. Five skills: conversation, lessons, progress, mission_generator, mission_guide. The product's intelligence. |
 | **Connectors** | `backend/connectors/` | Minimal glue code — plain Python functions that call external systems. No business logic. |
 | **Services** | `backend/services/` | Shared utilities (Google Cloud TTS wrapper with caching). |
 | **Tests** | `backend/tests/` | 112 eval tests covering all guardrail categories. Run: `pytest backend/tests/` |
@@ -258,6 +340,8 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 
 **Auto-generated tool schemas**: `core/llm.py` generates OpenAI-style tool definitions from connector function signatures and docstrings — no hand-written tool manifests to keep in sync.
 
+**Shared, LLM-Generated Missions**: Missions are not static content — they're generated on-the-fly by the `mission_generator` skill using level vocabulary. Generated missions are saved to a shared `missions` table so all children can play them. Any child can request a new mission to grow the pool. The `mission_guide` skill plays the scenario character, tracks step progression, and scores Marathi usage (0-3 per step). The gateway aggregates step scores into a final 0-100 percentage and awards XP proportionally.
+
 **Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` enforced via `response_format`. Falls back gracefully if the LLM returns plain text.
 
 **Token Refresh**: The frontend's Axios interceptor catches 401s, refreshes the JWT via `/auth/refresh`, and retries the original request. Concurrent requests queue behind the refresh.
@@ -274,4 +358,4 @@ parents ──────< children ──────< conversations ───
                    └──────< child_mission_progress >───── missions
 ```
 
-Core tables: `parents`, `children`, `lessons`, `child_lesson_progress`, `conversations`, `conversation_messages`, `conversation_flags`, `missions`. RLS on `parents` and `children`; all other access goes through the FastAPI gateway with auth checks.
+Core tables: `parents`, `children`, `lessons`, `child_lesson_progress`, `conversations`, `conversation_messages`, `conversation_flags`, `missions`, `child_mission_progress`. Missions store `steps` (jsonb) and `required_vocab` alongside the scenario. RLS on `parents` and `children`; all other access goes through the FastAPI gateway with auth checks.
