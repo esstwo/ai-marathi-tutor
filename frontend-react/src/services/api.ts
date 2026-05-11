@@ -10,6 +10,11 @@ import type {
   EndConversationResponse,
   ChildProgress,
   ParentProgress,
+  Mission,
+  MissionProgress,
+  StartMissionResponse,
+  SendMissionMessageResponse,
+  EndMissionResponse,
 } from "@/types";
 
 const api = axios.create({
@@ -181,5 +186,59 @@ export async function speakMarathiTTS(text: string): Promise<Blob> {
   const { data } = await api.post("/tts/speak", { text }, {
     responseType: "blob",
   });
+  return data;
+}
+
+// ── Missions ──────────────────────────────────────────────────────────
+
+export async function listMissions(level: number): Promise<Mission[]> {
+  const { data } = await api.get(`/missions/by-level/${level}`);
+  return data;
+}
+
+export async function generateMission(
+  childId: string,
+  level: number
+): Promise<Mission> {
+  const { data } = await api.post("/missions/generate", {
+    child_id: childId,
+    level,
+  });
+  return data;
+}
+
+export async function getMissionProgress(
+  childId: string
+): Promise<MissionProgress[]> {
+  const { data } = await api.get(`/missions/progress/${childId}`);
+  return data;
+}
+
+export async function startMission(
+  childId: string,
+  missionId: string
+): Promise<StartMissionResponse> {
+  const { data } = await api.post("/missions/start", {
+    child_id: childId,
+    mission_id: missionId,
+  });
+  return data;
+}
+
+export async function sendMissionMessage(
+  conversationId: string,
+  message: string
+): Promise<SendMissionMessageResponse> {
+  const { data } = await api.post(
+    `/missions/${conversationId}/message`,
+    { message }
+  );
+  return data;
+}
+
+export async function endMission(
+  conversationId: string
+): Promise<EndMissionResponse> {
+  const { data } = await api.post(`/missions/${conversationId}/end`);
   return data;
 }

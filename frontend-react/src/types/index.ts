@@ -73,6 +73,59 @@ export interface ChildProgress {
   current_level: number;
   lessons_completed: number;
   conversations_count: number;
+  missions_completed: number;
+}
+
+// ── Missions ──────────────────────────────────────────────────────────
+
+export interface MissionStep {
+  step: number;
+  prompt: string;
+  target_vocab: string[];
+}
+
+export interface Mission {
+  id: string;
+  level: number;
+  title: string;
+  title_english: string;
+  scenario: string;
+  steps: MissionStep[];
+  required_vocab: string[];
+  xp_reward: number;
+}
+
+export interface MissionProgress {
+  mission_id: string;
+  status: "not_started" | "in_progress" | "completed";
+  score: number;
+  completed_at?: string;
+  missions?: Mission;
+}
+
+export interface StartMissionResponse {
+  conversation_id: string;
+  marathi_text: string;
+  english_hint?: string;
+  mission_step: number;
+  total_steps: number;
+}
+
+export interface SendMissionMessageResponse {
+  marathi_text: string;
+  english_hint?: string;
+  mission_step: number;
+  mission_complete: boolean;
+  step_score: number;
+  total_steps: number;
+  xp_earned?: number;
+  xp_total?: number;
+  score?: number;
+}
+
+export interface EndMissionResponse {
+  message: string;
+  xp_earned: number;
 }
 
 export interface ParentProgress {
