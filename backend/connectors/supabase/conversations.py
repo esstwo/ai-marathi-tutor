@@ -41,7 +41,7 @@ def get_conversation(conversation_id: str) -> dict | None:
     """Fetch a conversation row (child_id, message_count, ended_at, started_at)."""
     result = (
         supabase_admin.table("conversations")
-        .select("child_id, message_count, ended_at, started_at")
+        .select("child_id, message_count, ended_at, started_at, context")
         .eq("id", conversation_id)
         .single()
         .execute()
