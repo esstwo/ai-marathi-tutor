@@ -222,11 +222,22 @@ def run_skill_raw(messages: list[dict], connectors: dict[str, Callable]) -> str:
 
 def parse_json_response(raw_text: str) -> dict:
     """Parse LLM's JSON response. Falls back gracefully for plain text."""
+    text = raw_text.strip()
+
+    # Strip markdown code fences (```json ... ``` or ``` ... ```)
+    if text.startswith("```"):
+        lines = text.split("\n")
+        # Remove first line (```json or ```) and last line (```)
+        lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+
     try:
-        data = json.loads(raw_text)
+        data = json.loads(text)
         return data
     except (json.JSONDecodeError, TypeError):
-        return {"marathi_text": raw_text.strip(), "english_hint": None}
+        return {"marathi_text": text, "english_hint": None}
 
 
 def run_skill(skill: Skill, messages: list[dict],
