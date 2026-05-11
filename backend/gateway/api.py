@@ -33,7 +33,12 @@ from backend.connectors.supabase.conversations import (
 from backend.db.supabase_client import supabase_admin
 from backend.services.tts import synthesize_marathi
 from backend.gateway.progress_utils import (
-    award_lesson_xp, award_conversation_xp, get_child_progress, get_parent_progress,
+    award_lesson_xp, award_conversation_xp, award_mission_xp,
+    get_child_progress, get_parent_progress,
+)
+from backend.connectors.supabase.missions import (
+    list_missions as list_missions_db, get_mission_by_id, create_mission,
+    get_child_mission_progress, upsert_mission_progress,
 )
 
 from supabase_auth.errors import AuthApiError
@@ -43,6 +48,8 @@ logger = logging.getLogger(__name__)
 # Load skills once at import time
 _skills = load_skills()
 conversation_skill = _skills["marathi_conversation_partner"]
+mission_generator_skill = _skills["mission_generator"]
+mission_guide_skill = _skills["marathi_mission_guide"]
 
 MAX_HISTORY = 10
 
@@ -78,6 +85,17 @@ class TTSRequest(BaseModel):
 class LessonCompleteRequest(BaseModel):
     child_id: str
     score: int
+
+class GenerateMissionRequest(BaseModel):
+    child_id: str
+    level: int
+
+class StartMissionRequest(BaseModel):
+    child_id: str
+    mission_id: str
+
+class SendMissionMessageRequest(BaseModel):
+    message: str
 
 
 # ── Auth routes ─────────────────────────────────────────────────────────
@@ -403,6 +421,266 @@ def speak(req: TTSRequest, _parent_id: str = Depends(get_current_parent)):
     return Response(content=audio_bytes, media_type="audio/mpeg")
 
 
+# ── Mission routes (LLM-generated, shared, scenario-based challenges) ──
+
+missions_router = APIRouter(prefix="/missions", tags=["missions"])
+
+
+@missions_router.get("/by-level/{level}")
+def list_missions_by_level(level: int, _parent_id: str = Depends(get_current_parent)):
+    return list_missions_db(level)
+
+
+@missions_router.get("/progress/{child_id}")
+def mission_progress(child_id: str, parent_id: str = Depends(get_current_parent)):
+    verify_child_ownership(child_id, parent_id)
+    return get_child_mission_progress(child_id)
+
+
+@missions_router.post("/generate")
+@_handle_llm_errors
+async def generate_mission(req: GenerateMissionRequest, parent_id: str = Depends(get_current_parent)):
+    verify_child_ownership(req.child_id, parent_id)
+    if not 1 <= req.level <= 4:
+        raise HTTPException(400, "Level must be between 1 and 4")
+
+    track_llm_call()
+
+    # Gather vocabulary from all lessons at this level
+    level_lessons = list_lessons(req.level)
+    vocab_items = []
+    for lesson in level_lessons:
+        vocab = lesson.get("vocabulary") or []
+        if isinstance(vocab, list):
+            vocab_items.extend(vocab)
+
+    import json
+    vocab_context = json.dumps(vocab_items, ensure_ascii=False) if vocab_items else "[]"
+
+    # Run the generator skill (no connectors — vocab is passed inline)
+    messages = [
+        {
+            "role": "user",
+            "content": (
+                f"Generate a mission for Level {req.level}.\n\n"
+                f"Available vocabulary from this level's lessons:\n{vocab_context}\n\n"
+                "Create a fun, culturally relevant scenario using some of these words. Respond as JSON."
+            ),
+        },
+    ]
+    connectors = get_for_skill(mission_generator_skill.connector_names)
+    result = run_skill(mission_generator_skill, messages, connectors)
+
+    # Save generated mission to shared table
+    mission = create_mission(
+        level=req.level,
+        title=result.get("title", "मिशन"),
+        title_english=result.get("title_english", "Mission"),
+        scenario=result.get("scenario", ""),
+        steps=result.get("steps", []),
+        required_vocab=result.get("required_vocab", []),
+        xp_reward=result.get("xp_reward", 25),
+    )
+
+    return mission
+
+
+@missions_router.post("/start")
+@_handle_llm_errors
+async def start_mission(req: StartMissionRequest, parent_id: str = Depends(get_current_parent)):
+    verify_child_ownership(req.child_id, parent_id)
+    check_concurrent_conversations(req.child_id, supabase_admin)
+    track_llm_call()
+
+    mission = get_mission_by_id(req.mission_id)
+    if not mission:
+        raise HTTPException(404, "Mission not found")
+
+    # Create a conversation linked to this mission
+    import json
+    conv = start_conversation_record(req.child_id)
+    if not conv:
+        raise HTTPException(500, "Failed to create conversation")
+
+    conversation_id = conv["id"]
+    # Store mission_id in conversation context
+    supabase_admin.table("conversations").update(
+        {"context": json.dumps({"mission_id": req.mission_id})}
+    ).eq("id", conversation_id).execute()
+
+    # Mark mission as in_progress
+    upsert_mission_progress(req.child_id, req.mission_id, "in_progress")
+
+    connectors = get_for_skill(mission_guide_skill.connector_names)
+    total_steps = len(mission.get("steps") or [])
+
+    messages = [
+        {
+            "role": "user",
+            "content": (
+                f"[SYSTEM: The child (child_id: {req.child_id}) is starting mission (mission_id: {req.mission_id}). "
+                "Use your tools to learn about the child and load the mission details. "
+                "Then set the scene — introduce the scenario in character, and prompt the child for Step 1. "
+                "Respond as JSON with mission_step=1, mission_complete=false, step_score=0.]"
+            ),
+        },
+    ]
+    result = run_skill(mission_guide_skill, messages, connectors)
+    result = validate_llm_output(result)
+
+    save_message(conversation_id, "mitra", result["marathi_text"])
+    update_conversation_message_count(conversation_id, 1)
+
+    return {
+        "conversation_id": conversation_id,
+        "marathi_text": result["marathi_text"],
+        "english_hint": result.get("english_hint"),
+        "mission_step": result.get("mission_step", 1),
+        "total_steps": total_steps,
+    }
+
+
+@missions_router.post("/{conversation_id}/message")
+@_handle_llm_errors
+async def send_mission_message(
+    conversation_id: str, req: SendMissionMessageRequest, parent_id: str = Depends(get_current_parent)
+):
+    conv = get_conversation(conversation_id)
+    if not conv:
+        raise HTTPException(404, "Conversation not found")
+
+    child_id = conv["child_id"]
+    verify_child_ownership(child_id, parent_id)
+
+    # Extract mission_id from conversation context
+    import json
+    context = {}
+    if conv.get("context"):
+        try:
+            context = json.loads(conv["context"]) if isinstance(conv["context"], str) else conv["context"]
+        except (json.JSONDecodeError, TypeError):
+            pass
+    mission_id = context.get("mission_id")
+    if not mission_id:
+        raise HTTPException(400, "This conversation is not a mission")
+
+    mission = get_mission_by_id(mission_id)
+    total_steps = len(mission.get("steps") or []) if mission else 5
+
+    # Session guardrails
+    current_count = conv["message_count"] or 0
+    check_message_limit(current_count)
+    check_conversation_duration(conv["started_at"])
+
+    # Input guardrails
+    clean_message = validate_message_input(req.message)
+    track_llm_call()
+
+    save_message(conversation_id, "child", clean_message)
+
+    history_rows = get_conversation_messages(conversation_id)
+    connectors = get_for_skill(mission_guide_skill.connector_names)
+
+    messages = []
+    for msg in history_rows[-MAX_HISTORY:]:
+        role = "assistant" if msg["role"] == "mitra" else "user"
+        messages.append({"role": role, "content": msg["content"]})
+    messages.append({"role": "user", "content": clean_message})
+
+    # Inject child_id and mission_id into system prompt
+    original_prompt = mission_guide_skill.system_prompt
+    mission_guide_skill.system_prompt = (
+        original_prompt + f"\n\nThe child's ID is: {child_id}\nThe mission ID is: {mission_id}"
+    )
+
+    result = run_skill(mission_guide_skill, messages, connectors)
+    mission_guide_skill.system_prompt = original_prompt
+
+    # Output guardrails
+    result = validate_llm_output(result)
+
+    if result.get("_flagged"):
+        flag_conversation(conversation_id, "LLM output contained PII/URLs — sanitized", supabase_admin)
+
+    save_message(conversation_id, "mitra", result["marathi_text"])
+    update_conversation_message_count(conversation_id, current_count + 2)
+
+    mission_complete = result.get("mission_complete", False)
+    step_score = result.get("step_score", 1)
+    mission_step = result.get("mission_step", 1)
+
+    # If mission is complete, calculate final score and award XP
+    xp_result = None
+    if mission_complete and mission_id:
+        # Calculate aggregate score from step_scores in conversation history
+        scores = []
+        for msg in history_rows:
+            if msg["role"] == "mitra":
+                try:
+                    parsed = json.loads(msg["content"])
+                    if "step_score" in parsed:
+                        scores.append(parsed["step_score"])
+                except (json.JSONDecodeError, TypeError):
+                    pass
+        scores.append(step_score)  # Include current step
+        avg_score = sum(scores) / len(scores) if scores else 1
+        final_score = round(avg_score / 3 * 100)  # Scale 0-3 to 0-100
+
+        upsert_mission_progress(child_id, mission_id, "completed", final_score)
+
+        # End the conversation
+        now = datetime.now(timezone.utc).isoformat()
+        end_conversation_record(conversation_id, now)
+
+        xp_result = award_mission_xp(child_id, mission_id, final_score)
+
+    response = {
+        "marathi_text": result["marathi_text"],
+        "english_hint": result.get("english_hint"),
+        "mission_step": mission_step,
+        "mission_complete": mission_complete,
+        "step_score": step_score,
+        "total_steps": total_steps,
+    }
+
+    if xp_result:
+        response["xp_earned"] = xp_result["xp_earned"]
+        response["xp_total"] = xp_result["xp_total"]
+        response["score"] = xp_result["score"]
+
+    return response
+
+
+@missions_router.post("/{conversation_id}/end")
+async def end_mission(conversation_id: str, parent_id: str = Depends(get_current_parent)):
+    """End a mission early (quit). No XP awarded."""
+    conv = get_conversation(conversation_id)
+    if not conv:
+        raise HTTPException(404, "Conversation not found")
+
+    verify_child_ownership(conv["child_id"], parent_id)
+
+    if conv.get("ended_at"):
+        return {"message": "Mission already ended"}
+
+    now = datetime.now(timezone.utc).isoformat()
+    end_conversation_record(conversation_id, now)
+
+    # Reset mission progress
+    import json
+    context = {}
+    if conv.get("context"):
+        try:
+            context = json.loads(conv["context"]) if isinstance(conv["context"], str) else conv["context"]
+        except (json.JSONDecodeError, TypeError):
+            pass
+    mission_id = context.get("mission_id")
+    if mission_id:
+        upsert_mission_progress(conv["child_id"], mission_id, "not_started", 0)
+
+    return {"message": "Mission ended", "xp_earned": 0}
+
+
 # ── Collect all routers ─────────────────────────────────────────────────
 
-all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router]
+all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router, missions_router]

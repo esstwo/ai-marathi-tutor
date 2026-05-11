@@ -14,10 +14,13 @@ from backend.connectors.supabase.progress import (
     count_conversations,
     get_conversations_with_ratios,
 )
+from backend.connectors.supabase.missions import get_mission_by_id
 from backend.connectors.supabase.children import get_children_by_parent
+from backend.db.supabase_client import supabase_admin
 
 XP_PER_LESSON = 10
 XP_PER_CONVERSATION_MINUTE = 5
+XP_MISSION_MIN = 10
 
 
 def _update_streak(child: dict) -> dict:
@@ -92,6 +95,46 @@ def award_conversation_xp(child_id: str, conversation_id: str) -> dict:
     }
 
 
+def award_mission_xp(child_id: str, mission_id: str, score: int) -> dict:
+    """Award XP for completing a mission based on score and update streak.
+
+    XP = mission's xp_reward × (score / 100), minimum XP_MISSION_MIN.
+    """
+    mission = get_mission_by_id(mission_id)
+    base_xp = mission["xp_reward"] if mission else 25
+    xp_earned = max(XP_MISSION_MIN, round(base_xp * score / 100))
+
+    child = get_child_profile(child_id)
+    streak = _update_streak(child)
+    new_xp_total = child["xp_total"] + xp_earned
+
+    update_child_stats(
+        child_id=child_id,
+        xp_total=new_xp_total,
+        streak_days=streak["streak_days"],
+        streak_last_date=streak["streak_last_date"],
+    )
+
+    return {
+        "xp_earned": xp_earned,
+        "xp_total": new_xp_total,
+        "streak_days": streak["streak_days"],
+        "score": score,
+    }
+
+
+def _count_completed_missions(child_id: str) -> int:
+    """Count missions completed by a child."""
+    result = (
+        supabase_admin.table("child_mission_progress")
+        .select("id", count="exact")
+        .eq("child_id", child_id)
+        .eq("status", "completed")
+        .execute()
+    )
+    return result.count if result.count is not None else len(result.data or [])
+
+
 def get_child_progress(child_id: str) -> dict:
     """Fetch current progress stats for a child."""
     child = get_child_profile(child_id)
@@ -101,6 +144,7 @@ def get_child_progress(child_id: str) -> dict:
         "current_level": child["current_level"],
         "lessons_completed": count_completed_lessons(child_id=child_id),
         "conversations_count": count_conversations(child_id=child_id),
+        "missions_completed": _count_completed_missions(child_id),
     }
 
 
