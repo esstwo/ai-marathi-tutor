@@ -61,6 +61,7 @@ const ProgressPage = () => {
     { icon: Flame, label: "Day Streak", value: progress.streak_days, bg: "bg-peach/40" },
     { icon: BookOpen, label: "Lessons Done", value: progress.lessons_completed, bg: "bg-mint/40" },
     { icon: MessageCircle, label: "Chats", value: progress.conversations_count, bg: "bg-lavender/40" },
+    { icon: Target, label: "Missions", value: progress.missions_completed ?? 0, bg: "bg-sky/40" },
     { icon: Zap, label: "Total XP", value: xp, bg: "bg-lemon/40" },
   ];
 

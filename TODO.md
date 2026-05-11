@@ -30,6 +30,16 @@
 - [ ] Deploy as remote MCP server with SSE transport + cloudflared or Render
 - [ ] Register as Claude custom connector for testing
 
+## Game-Based Missions
+- [x] DB migration: add `steps`, `title_english`, `created_at` to missions table
+- [x] Mission connectors (`connectors/supabase/missions.py`): CRUD + progress tracking
+- [x] Mission generator skill (`skills/mission_generator.md`): LLM generates scenarios from level vocab
+- [x] Mission guide skill (`skills/mission_guide.md`): LLM plays scenario character, tracks steps, scores Marathi
+- [x] Mission API routes: generate, start, message, end, list, progress
+- [x] Mission XP: score-based XP awards, missions_completed in progress
+- [x] Frontend: Missions page with list + play views, TTS, step progress bar, completion overlay
+- [x] Navigation: Missions in navbar, Home quick action, Progress stat
+
 ## Content
 - [x] Generate 80 Marathi lessons (20 per level × 4 levels) with vocabulary + quizzes
 - [x] Add per-lesson icons (lucide icon names) for semantic lesson cards

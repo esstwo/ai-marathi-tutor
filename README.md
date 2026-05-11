@@ -121,6 +121,12 @@ The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connec
 | POST   | /conversations/{id}/end             | End chat, calculate XP               | Bearer token |
 | GET    | /progress/{child_id}                | Get child progress stats             | Bearer token |
 | GET    | /parents/{parent_id}/progress       | Aggregated stats across children     | Bearer token |
+| GET    | /missions/by-level/{level}          | List missions for a level            | Bearer token |
+| POST   | /missions/generate                  | LLM-generate a new mission           | Bearer token |
+| GET    | /missions/progress/{child_id}       | Get child's mission progress         | Bearer token |
+| POST   | /missions/start                     | Start a mission (creates conversation)| Bearer token |
+| POST   | /missions/{id}/message              | Send message in active mission       | Bearer token |
+| POST   | /missions/{id}/end                  | Quit mission early                   | Bearer token |
 | POST   | /tts/speak                          | Synthesize Marathi text to audio     | Bearer token |
 
 ## Setup
