@@ -32,11 +32,11 @@ def get_for_skill(connector_names: list[str]) -> dict[str, Callable]:
 
 def _auto_register():
     """Auto-register all connector functions from connector modules."""
-    from backend.connectors.supabase import children, auth, lessons, conversations, progress
+    from backend.connectors.supabase import children, auth, lessons, conversations, progress, missions
     from backend.connectors.tts import google_tts
 
     # Each module's public functions become connectors
-    modules = [children, auth, lessons, conversations, progress, google_tts]
+    modules = [children, auth, lessons, conversations, progress, missions, google_tts]
     for module in modules:
         for name in dir(module):
             if name.startswith("_"):
