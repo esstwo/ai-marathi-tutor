@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Send, Target, Sparkles, Volume2, ArrowLeft, Plus, Star, Flower2, User, Square, Trophy,
+  Send, Target, Sparkles, Volume2, ArrowLeft, Plus, Star, Flower2, User, Square, Trophy, Mic, MicOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,8 +45,12 @@ const Missions = () => {
   } | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [playingId, setPlayingId] = useState<number | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
 
   // ── Data fetching ─────────────────────────────────────────────────
   const { data: missions = [], refetch: refetchMissions } = useQuery({
@@ -183,6 +187,48 @@ const Missions = () => {
     setIsTyping(true);
     sendMutation.mutate(msg);
   };
+
+  // ── Voice recording ──────────────────────────────────────────────
+  const startRecording = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+        if (blob.size === 0) return;
+
+        setIsTranscribing(true);
+        try {
+          const text = await api.transcribeAudio(blob);
+          if (text) setInput((prev) => (prev ? prev + " " + text : text));
+        } catch {
+          toast.error("Could not transcribe audio");
+        } finally {
+          setIsTranscribing(false);
+        }
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch {
+      toast.error("Microphone access denied");
+    }
+  }, []);
+
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+      mediaRecorderRef.current.stop();
+    }
+    setIsRecording(false);
+  }, []);
 
   // ── Quit mission ──────────────────────────────────────────────────
   const handleQuit = async () => {
@@ -513,16 +559,26 @@ const Missions = () => {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type in Marathi or English..."
+                placeholder={isTranscribing ? "Transcribing..." : "Type or tap mic to speak..."}
                 className="flex-1 rounded-2xl bg-muted/50 border-border/50 h-12 text-base font-medium"
-                disabled={isTyping || !conversationId}
+                disabled={isTyping || isTranscribing || !conversationId}
               />
+              <Button
+                type="button"
+                size="icon"
+                variant={isRecording ? "destructive" : "outline"}
+                className={`rounded-2xl shrink-0 w-12 h-12 ${isRecording ? "animate-pulse" : ""}`}
+                onClick={isRecording ? stopRecording : startRecording}
+                disabled={isTyping || isTranscribing || !conversationId}
+              >
+                {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+              </Button>
               <Button
                 type="submit"
                 size="icon"
                 variant="hero"
                 className="rounded-2xl shrink-0 w-12 h-12 fun-shadow"
-                disabled={!input.trim() || isTyping || !conversationId}
+                disabled={!input.trim() || isTyping || isTranscribing || !conversationId}
               >
                 <Send className="h-5 w-5" />
               </Button>

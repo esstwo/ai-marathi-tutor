@@ -17,6 +17,7 @@ celebrating Ganpati).
 - **Database:** Supabase (PostgreSQL + Auth)
 - **AI:** Groq API (Llama 3.3 70B)
 - **TTS:** Google Cloud Text-to-Speech (Marathi)
+- **STT:** Groq Whisper large-v3 (Marathi speech-to-text)
 - **MCP:** FastMCP server for Claude Desktop integration
 - **Deployment:** Vercel (frontend) + Render (backend)
 
@@ -134,6 +135,7 @@ The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connec
 | POST   | /missions/{id}/message              | Send message in active mission       | Bearer token |
 | POST   | /missions/{id}/end                  | Quit mission early                   | Bearer token |
 | POST   | /tts/speak                          | Synthesize Marathi text to audio     | Bearer token |
+| POST   | /tts/transcribe                     | Transcribe Marathi audio to text     | Bearer token |
 
 ## Setup
 

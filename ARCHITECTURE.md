@@ -91,6 +91,8 @@
 │   Groq Cloud     │
 │  Llama 3.3 70B   │
 │  (LLM engine)    │
+│  Whisper v3      │
+│  (speech-to-text)│
 └──────────────────┘
 
 
@@ -341,6 +343,8 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 **Auto-generated tool schemas**: `core/llm.py` generates OpenAI-style tool definitions from connector function signatures and docstrings — no hand-written tool manifests to keep in sync.
 
 **Shared, LLM-Generated Missions**: Missions are not static content — they're generated on-the-fly by the `mission_generator` skill using level vocabulary. Generated missions are saved to a shared `missions` table so all children can play them. Any child can request a new mission to grow the pool. The `mission_guide` skill plays the scenario character, tracks step progression, and scores Marathi usage (0-3 per step). The gateway aggregates step scores into a final 0-100 percentage and awards XP proportionally.
+
+**Voice Input via Groq Whisper**: Kids can tap a mic button to speak instead of type. Audio is recorded in the browser (WebM), sent to Groq's Whisper large-v3 model with `language="mr"` (Marathi), and the transcribed text is inserted into the input field for review before sending. This keeps the STT on the same provider as the LLM, and Whisper's multilingual model handles the mixed Marathi-English speech diaspora kids naturally produce.
 
 **Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` enforced via `response_format`. Falls back gracefully if the LLM returns plain text.
 

@@ -8,7 +8,7 @@ import logging
 from datetime import datetime, timezone
 from functools import wraps
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from fastapi.responses import Response
 from pydantic import BaseModel, EmailStr
 
@@ -419,6 +419,30 @@ def speak(req: TTSRequest, _parent_id: str = Depends(get_current_parent)):
         raise HTTPException(400, "Text must be 1-200 characters")
     audio_bytes = synthesize_marathi(req.text)
     return Response(content=audio_bytes, media_type="audio/mpeg")
+
+
+@tts_router.post("/transcribe")
+async def transcribe(audio: UploadFile = File(...), _parent_id: str = Depends(get_current_parent)):
+    """Transcribe audio to Marathi text using Groq Whisper."""
+    import os
+    from groq import Groq
+
+    audio_bytes = await audio.read()
+    if len(audio_bytes) > 10 * 1024 * 1024:  # 10MB limit
+        raise HTTPException(400, "Audio file too large (max 10MB)")
+
+    groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+    try:
+        transcription = groq_client.audio.transcriptions.create(
+            file=(audio.filename or "audio.webm", audio_bytes),
+            model="whisper-large-v3",
+            language="mr",
+            response_format="text",
+        )
+        return {"text": transcription.strip() if isinstance(transcription, str) else transcription.text.strip()}
+    except Exception as e:
+        logger.warning("Groq transcription failed: %s", e)
+        raise HTTPException(500, "Transcription failed")
 
 
 # ── Mission routes (LLM-generated, shared, scenario-based challenges) ──

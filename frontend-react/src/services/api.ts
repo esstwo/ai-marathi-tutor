@@ -189,6 +189,15 @@ export async function speakMarathiTTS(text: string): Promise<Blob> {
   return data;
 }
 
+export async function transcribeAudio(audioBlob: Blob): Promise<string> {
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "recording.webm");
+  const { data } = await api.post("/tts/transcribe", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data.text;
+}
+
 // ── Missions ──────────────────────────────────────────────────────────
 
 export async function listMissions(level: number): Promise<Mission[]> {
