@@ -1,6 +1,9 @@
 /**
  * API client that proxies to the FastAPI backend.
- * Uses X-Service-Key header for auth — no JWT, no login, no refresh.
+ *
+ * Supports two auth modes:
+ *   - { userToken }  → Authorization: Bearer <jwt>   (OAuth sessions)
+ *   - { serviceKey } → X-Service-Key: <key>           (stdio / CI)
  */
 
 import type {
@@ -12,23 +15,28 @@ import type {
   ChildProgress,
 } from "./types.js";
 
+type AuthOptions =
+  | { userToken: string; serviceKey?: never }
+  | { serviceKey: string; userToken?: never };
+
 export class MarathiApiClient {
   private baseUrl: string;
-  private serviceKey: string;
+  private auth: AuthOptions;
 
-  constructor(baseUrl: string, serviceKey: string) {
-    // Strip trailing slash
+  constructor(baseUrl: string, auth: AuthOptions) {
     this.baseUrl = baseUrl.replace(/\/+$/, "");
-    this.serviceKey = serviceKey;
+    this.auth = auth;
   }
 
-  private async request<T>(
-    path: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  private authHeaders(): Record<string, string> {
+    if (this.auth.userToken) return { Authorization: `Bearer ${this.auth.userToken}` };
+    return { "X-Service-Key": this.auth.serviceKey ?? "" };
+  }
+
+  private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const headers: Record<string, string> = {
-      "X-Service-Key": this.serviceKey,
+      ...this.authHeaders(),
       ...(options.headers as Record<string, string> | undefined),
     };
 
@@ -43,8 +51,7 @@ export class MarathiApiClient {
       throw new Error(`API ${res.status}: ${detail}`);
     }
 
-    // Handle binary responses (TTS audio)
-    const contentType = res.headers.get("content-type") || "";
+    const contentType = res.headers.get("content-type") ?? "";
     if (contentType.includes("audio/")) {
       const buffer = await res.arrayBuffer();
       return Buffer.from(buffer).toString("base64") as unknown as T;
@@ -55,35 +62,24 @@ export class MarathiApiClient {
 
   // ── Conversations ──────────────────────────────────────────────────
 
-  async startConversation(
-    childId: string
-  ): Promise<StartConversationResponse> {
+  async startConversation(childId: string): Promise<StartConversationResponse> {
     return this.request<StartConversationResponse>("/conversations/start", {
       method: "POST",
       body: JSON.stringify({ child_id: childId }),
     });
   }
 
-  async sendMessage(
-    conversationId: string,
-    message: string
-  ): Promise<SendMessageResponse> {
-    return this.request<SendMessageResponse>(
-      `/conversations/${conversationId}/message`,
-      {
-        method: "POST",
-        body: JSON.stringify({ message }),
-      }
-    );
+  async sendMessage(conversationId: string, message: string): Promise<SendMessageResponse> {
+    return this.request<SendMessageResponse>(`/conversations/${conversationId}/message`, {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    });
   }
 
-  async endConversation(
-    conversationId: string
-  ): Promise<EndConversationResponse> {
-    return this.request<EndConversationResponse>(
-      `/conversations/${conversationId}/end`,
-      { method: "POST" }
-    );
+  async endConversation(conversationId: string): Promise<EndConversationResponse> {
+    return this.request<EndConversationResponse>(`/conversations/${conversationId}/end`, {
+      method: "POST",
+    });
   }
 
   // ── Lessons ────────────────────────────────────────────────────────
@@ -96,18 +92,11 @@ export class MarathiApiClient {
     return this.request<Lesson>(`/lessons/${lessonId}`);
   }
 
-  async completeLesson(
-    lessonId: string,
-    childId: string,
-    score: number
-  ): Promise<LessonCompleteResponse> {
-    return this.request<LessonCompleteResponse>(
-      `/lessons/${lessonId}/complete`,
-      {
-        method: "POST",
-        body: JSON.stringify({ child_id: childId, score }),
-      }
-    );
+  async completeLesson(lessonId: string, childId: string, score: number): Promise<LessonCompleteResponse> {
+    return this.request<LessonCompleteResponse>(`/lessons/${lessonId}/complete`, {
+      method: "POST",
+      body: JSON.stringify({ child_id: childId, score }),
+    });
   }
 
   // ── Progress ───────────────────────────────────────────────────────
@@ -119,7 +108,6 @@ export class MarathiApiClient {
   // ── TTS ────────────────────────────────────────────────────────────
 
   async speakMarathi(text: string): Promise<string> {
-    // Returns base64-encoded MP3 audio
     return this.request<string>("/tts/speak", {
       method: "POST",
       body: JSON.stringify({ text }),

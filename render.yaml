@@ -35,4 +35,10 @@ services:
         sync: false  # Set to the backend's public URL, e.g. https://marathi-mitra-api.onrender.com
       - key: MARATHI_SERVICE_KEY
         sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: MCP_BASE_URL
+        sync: false  # Set to this service's public URL, e.g. https://marathi-mitra-mcp-app.onrender.com
       # PORT is auto-injected by Render — server.ts reads it directly

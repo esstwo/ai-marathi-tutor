@@ -12,15 +12,16 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "express": "^4.21.0",
-    "cors": "^2.8.5"
+    "@supabase/supabase-js": "^2.105.4",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
     "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.0.0",
-    "typescript": "^5.7.0",
     "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
     "vite": "^6.0.0",
     "vite-plugin-singlefile": "^2.0.0"
   }

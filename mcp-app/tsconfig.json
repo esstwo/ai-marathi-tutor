@@ -14,6 +14,6 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["server.ts", "api-client.ts", "types.ts"],
+  "include": ["server.ts", "api-client.ts", "auth.ts", "types.ts"],
   "exclude": ["node_modules", "dist", "apps", "src"]
 }
