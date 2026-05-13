@@ -14,15 +14,28 @@
  *   7. requireAuth middleware validates JWT and attaches parentId to the request
  */
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createHash, randomBytes } from "crypto";
 import type { Request, Response, NextFunction } from "express";
 
-const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
-const SUPABASE_KEY = process.env.SUPABASE_KEY ?? "";
 const MCP_BASE_URL = (process.env.MCP_BASE_URL ?? `http://localhost:${process.env.PORT ?? 3001}`).replace(/\/+$/, "");
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Lazily initialised so missing env vars produce a clear error at first use,
+// not a cryptic Supabase internal error at module load time.
+let _supabase: SupabaseClient | null = null;
+
+function getSupabase(): SupabaseClient {
+  if (_supabase) return _supabase;
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_KEY;
+  if (!url || !key) {
+    throw new Error(
+      "Missing env vars: SUPABASE_URL and SUPABASE_KEY must be set on the MCP App service in Render."
+    );
+  }
+  _supabase = createClient(url, key);
+  return _supabase;
+}
 
 // ── Augmented request type ────────────────────────────────────────────
 
@@ -160,7 +173,7 @@ export async function loginSubmit(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await getSupabase().auth.signInWithPassword({ email, password });
 
   if (error || !data.session) {
     const params = new URLSearchParams({
@@ -225,7 +238,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   }
 
   const token = authHeader.slice(7);
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error } = await getSupabase().auth.getUser(token);
 
   if (error || !data.user) {
     res.status(401).json({ error: "unauthorized", error_description: "Invalid or expired token" });
