@@ -6,7 +6,6 @@ import os
 from datetime import datetime, timedelta, timezone
 
 import resend
-from groq import Groq
 
 from backend.connectors.supabase.children import get_children_by_parent
 from backend.connectors.supabase.digest import (
@@ -14,10 +13,12 @@ from backend.connectors.supabase.digest import (
     get_weekly_conversations,
     get_weekly_lesson_completions,
 )
+from backend.core.llm import run_skill_raw
+from backend.core.skill_loader import load_skills
 
 logger = logging.getLogger(__name__)
 
-_groq = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+_digest_skill = load_skills()["parent_digest"]
 
 RESEND_FROM = os.environ.get("RESEND_FROM_EMAIL", "MarathiMitra <digest@marathimitra.com>")
 
@@ -94,24 +95,11 @@ def _build_prompt(parent_name: str, children_stats: list[dict]) -> str:
 
 
 def generate_digest_text(parent_name: str, children_stats: list[dict]) -> str:
-    prompt = _build_prompt(parent_name, children_stats)
-    response = _groq.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        max_tokens=600,
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "You are a friendly assistant for MarathiMitra, a Marathi learning app for kids. "
-                    "Write warm, specific, encouraging parent digest emails. "
-                    "Mention specific lessons and scores when available. "
-                    "Keep a positive tone even when activity was low — gently encourage."
-                ),
-            },
-            {"role": "user", "content": prompt},
-        ],
-    )
-    return response.choices[0].message.content or ""
+    messages = [
+        {"role": "system", "content": _digest_skill.system_prompt},
+        {"role": "user", "content": _build_prompt(parent_name, children_stats)},
+    ]
+    return run_skill_raw(messages, connectors={}, max_tokens=_digest_skill.max_tokens)
 
 
 # ── Email sending ─────────────────────────────────────────────────────

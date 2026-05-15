@@ -18,6 +18,7 @@ class Skill:
     input_schema: dict
     output_schema: dict
     connector_names: list[str]  # Which connectors this skill needs
+    max_tokens: int = 300       # Override global MAX_TOKENS for skills that need longer output
 
 
 def load_skill(path: Path) -> Skill:
@@ -30,6 +31,7 @@ def load_skill(path: Path) -> Skill:
         input_schema=post.get("input", {}),
         output_schema=post.get("output", {}),
         connector_names=post.get("connectors", []),
+        max_tokens=post.get("max_tokens", 300),
     )
 
 

@@ -110,11 +110,12 @@ def connectors_to_tools(connectors: dict[str, Callable]) -> list[dict]:
 # ── Groq API call with retries ──────────────────────────────────────────
 
 def _call_groq(messages: list[dict], tools: list[dict] | None = None,
-               response_format: dict | None = None, max_retries: int = 2):
+               response_format: dict | None = None, max_retries: int = 2,
+               max_tokens: int = MAX_TOKENS):
     """Single Groq API call with retry logic. Returns the raw response."""
     kwargs = {
         "model": MODEL,
-        "max_tokens": MAX_TOKENS,
+        "max_tokens": max_tokens,
         "messages": messages,
     }
     if tools:
@@ -179,7 +180,8 @@ def _execute_tool_calls(tool_calls, connectors: dict[str, Callable]) -> list[dic
 
 # ── Generic agentic loop ────────────────────────────────────────────────
 
-def run_skill_raw(messages: list[dict], connectors: dict[str, Callable]) -> str:
+def run_skill_raw(messages: list[dict], connectors: dict[str, Callable],
+                  max_tokens: int = MAX_TOKENS) -> str:
     """Run the agentic tool-calling loop with given messages and connectors.
 
     If the LLM requests tool calls, execute them against connectors and feed
@@ -195,7 +197,8 @@ def run_skill_raw(messages: list[dict], connectors: dict[str, Callable]) -> str:
             current_tools = None
             response_format = {"type": "json_object"}
 
-        response = _call_groq(messages, tools=current_tools, response_format=response_format)
+        response = _call_groq(messages, tools=current_tools, response_format=response_format,
+                              max_tokens=max_tokens)
         message = response.choices[0].message
 
         if message.tool_calls and round_num < MAX_TOOL_ROUNDS:
@@ -257,7 +260,7 @@ def run_skill(skill: Skill, messages: list[dict],
         *messages,
     ]
 
-    raw_text = run_skill_raw(full_messages, connectors)
+    raw_text = run_skill_raw(full_messages, connectors, max_tokens=skill.max_tokens)
     parsed = parse_json_response(raw_text)
     parsed["raw"] = raw_text
     return parsed
