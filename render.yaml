@@ -22,6 +22,10 @@ services:
         sync: false
       - key: DAILY_LLM_CALL_LIMIT
         value: "500"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false  # e.g. MarathiMitra <digest@yourdomain.com>
 
   # ── MCP App server (Node) ───────────────────────────────────────────
   - type: web
@@ -42,3 +46,31 @@ services:
       - key: MCP_BASE_URL
         sync: false  # Set to this service's public URL, e.g. https://marathi-mitra-mcp-app.onrender.com
       # PORT is auto-injected by Render — server.ts reads it directly
+
+  # ── Weekly digest cron job ──────────────────────────────────────────
+  - type: cron
+    name: marathi-weekly-digest
+    runtime: python
+    schedule: "0 9 * * 0"  # Sundays at 9am UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: >
+      python -c "
+      from dotenv import load_dotenv; load_dotenv();
+      from backend.services.digest import send_all_digests;
+      import json, logging;
+      logging.basicConfig(level=logging.INFO);
+      print(json.dumps(send_all_digests()))
+      "
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false

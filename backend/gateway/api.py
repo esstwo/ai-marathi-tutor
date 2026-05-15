@@ -705,6 +705,49 @@ async def end_mission(conversation_id: str, parent_id: str = Depends(get_current
     return {"message": "Mission ended", "xp_earned": 0}
 
 
+# ── Digest routes ──────────────────────────────────────────────────────
+
+digest_router = APIRouter(prefix="/digest", tags=["digest"])
+
+from backend.services.digest import build_parent_digest, generate_digest_text, send_all_digests
+
+
+@digest_router.post("/send")
+def send_digests(_parent_id: str = Depends(get_current_parent)):
+    """Trigger weekly digests for all parents. Service-key only."""
+    if _parent_id != SERVICE_MODE_PARENT:
+        raise HTTPException(status_code=403, detail="Service key required")
+    return send_all_digests()
+
+
+@digest_router.get("/preview/{parent_id}")
+def preview_digest(parent_id: str, current_parent_id: str = Depends(get_current_parent)):
+    """Preview the digest for a parent without sending it. For testing."""
+    if current_parent_id != SERVICE_MODE_PARENT and parent_id != current_parent_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    data = build_parent_digest(parent_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="No children found for this parent")
+
+    # Fetch parent name for the preview
+    parent_row = (
+        supabase_admin.table("parents")
+        .select("name, email")
+        .eq("id", parent_id)
+        .single()
+        .execute()
+    )
+    parent = parent_row.data or {}
+
+    digest_text = generate_digest_text(parent.get("name") or "there", data["children_stats"])
+    return {
+        "to": parent.get("email"),
+        "children_stats": data["children_stats"],
+        "digest_text": digest_text,
+    }
+
+
 # ── Collect all routers ─────────────────────────────────────────────────
 
-all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router, missions_router]
+all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router, missions_router, digest_router]
