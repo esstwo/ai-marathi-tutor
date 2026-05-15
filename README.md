@@ -15,11 +15,12 @@ celebrating Ganpati).
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
 - **Backend:** Python + FastAPI (thin gateway) + portable Markdown skill files
 - **Database:** Supabase (PostgreSQL + Auth)
-- **AI:** Groq API (Llama 3.3 70B)
-- **TTS:** Google Cloud Text-to-Speech (Marathi)
-- **STT:** Groq Whisper large-v3 (Marathi speech-to-text)
-- **MCP:** FastMCP server for Claude Desktop integration
-- **Deployment:** Vercel (frontend) + Render (backend)
+- **AI:** Groq API (Llama 3.3 70B) — conversations, missions, weekly digest
+- **TTS:** Google Cloud Text-to-Speech (Marathi) — vocabulary, quiz, chat
+- **STT:** Groq Whisper large-v3 — Marathi speech-to-text input
+- **Email:** Resend — weekly AI-written parent digest
+- **MCP:** MCP App server (Node/TypeScript) with OAuth 2.1 for Claude Desktop + claude.ai
+- **Deployment:** Vercel (frontend) + Render (backend + MCP App + digest cron)
 
 ## Project Structure
 
@@ -44,6 +45,7 @@ backend/
       lessons.py                   # list/get/complete lessons
       progress.py                  # counts and aggregations for reporting
       missions.py                  # CRUD for missions + child mission progress
+      digest.py                    # date-filtered queries for weekly digest
     tts/
       google_tts.py                # speak_marathi (base64 MP3)
   gateway/                         # Thin HTTP layer
@@ -53,23 +55,21 @@ backend/
     progress_utils.py              # Deterministic XP/streak calculations
   services/
     tts.py                         # Google Cloud TTS wrapper with caching
+    digest.py                      # Weekly parent digest: stats gathering, LLM call, email send
   db/
     supabase_client.py             # Supabase client init
     migrations.sql                 # Database schema
   tests/
     test_guardrails.py             # 112 eval tests for all guardrail categories
-mcp_server.py                      # Standalone MCP server for Claude Desktop
+mcp_server.py                      # Standalone MCP server for Claude Desktop (stdio)
 mcp-app/
   server.ts                        # MCP App server — interactive UIs inside Claude
-  api-client.ts                    # API client proxying to FastAPI with service key
+  api-client.ts                    # API client proxying to FastAPI (Bearer or service key)
+  auth.ts                          # OAuth 2.1 + PKCE server: discovery, login page, token exchange
   types.ts                         # Shared TypeScript types
-  apps/                            # HTML entry points (bundled to single-file by Vite)
-    conversation.html              # Chat with Mitra
-    lessons.html                   # Lesson browser + quiz
-    progress.html                  # XP dashboard + level roadmap
   src/                             # App logic (TypeScript)
     conversation-app.ts            # Chat logic (message feed, TTS, end-chat)
-    lessons-app.ts                 # Lesson flow (browse → learn → quiz → results)
+    lessons-app.ts                 # Lesson flow (browse → learn → quiz → results + TTS on Marathi)
     progress-app.ts                # Dashboard rendering
   styles/shared.css                # Kid-friendly design system
 frontend-react/
@@ -107,35 +107,36 @@ The backend uses a **skills + connectors** architecture:
 - **Connectors** (`backend/connectors/`) — Minimal Python functions that bridge skills to external systems (Supabase, Google TTS). No business logic — just glue.
 - **Core** (`backend/core/`) — Generic infrastructure: skill loader, connector registry, and the agentic tool-calling loop that works with any skill.
 - **Gateway** (`backend/gateway/`) — Thin HTTP layer that maps REST endpoints to skill invocations and connector calls.
-- **MCP Server** (`mcp_server.py`) — Exposes all connectors as MCP tools and skills as MCP resources/prompts for Claude Desktop.
-
-The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connector tool definitions and autonomously calls `get_child_profile` and `get_lesson_context` to gather context before responding. Missions use two skills: `mission_generator` creates scenarios from level vocabulary (shared across all children), and `mission_guide` plays the scenario character, tracking step progression and scoring Marathi usage.
+- **Services** (`backend/services/`) — Shared utilities: Google Cloud TTS wrapper with caching, and the weekly parent digest service (stats gathering + LLM call + Resend email).
+- **MCP App** (`mcp-app/`) — TypeScript MCP server with OAuth 2.1 authentication serving interactive HTML apps inside Claude.
 
 ## API Endpoints
 
-| Method | Path                                | Description                          | Auth         |
-|--------|-------------------------------------|--------------------------------------|--------------|
-| GET    | /health                             | Health check                         | None         |
-| POST   | /auth/signup                        | Create account                       | None         |
-| POST   | /auth/login                         | Authenticate user                    | None         |
-| POST   | /auth/children                      | Add a child profile                  | Bearer token |
-| POST   | /auth/refresh                       | Refresh expired access token         | None         |
-| GET    | /lessons/by-level/{level}           | List lessons for a level             | None         |
-| GET    | /lessons/{lesson_id}                | Get lesson with vocabulary + quiz    | None         |
-| POST   | /lessons/{lesson_id}/complete       | Record completion, award XP          | Bearer token |
-| POST   | /conversations/start                | Start AI conversation                | Bearer token |
-| POST   | /conversations/{id}/message         | Send message, get AI response        | Bearer token |
-| POST   | /conversations/{id}/end             | End chat, calculate XP               | Bearer token |
-| GET    | /progress/{child_id}                | Get child progress stats             | Bearer token |
-| GET    | /parents/{parent_id}/progress       | Aggregated stats across children     | Bearer token |
-| GET    | /missions/by-level/{level}          | List missions for a level            | Bearer token |
-| POST   | /missions/generate                  | LLM-generate a new mission           | Bearer token |
-| GET    | /missions/progress/{child_id}       | Get child's mission progress         | Bearer token |
-| POST   | /missions/start                     | Start a mission (creates conversation)| Bearer token |
-| POST   | /missions/{id}/message              | Send message in active mission       | Bearer token |
-| POST   | /missions/{id}/end                  | Quit mission early                   | Bearer token |
-| POST   | /tts/speak                          | Synthesize Marathi text to audio     | Bearer token |
-| POST   | /tts/transcribe                     | Transcribe Marathi audio to text     | Bearer token |
+| Method | Path                                | Description                              | Auth              |
+|--------|-------------------------------------|------------------------------------------|-------------------|
+| GET    | /health                             | Health check                             | None              |
+| POST   | /auth/signup                        | Create account                           | None              |
+| POST   | /auth/login                         | Authenticate user                        | None              |
+| POST   | /auth/children                      | Add a child profile                      | Bearer token      |
+| POST   | /auth/refresh                       | Refresh expired access token             | None              |
+| GET    | /lessons/by-level/{level}           | List lessons for a level                 | None              |
+| GET    | /lessons/{lesson_id}                | Get lesson with vocabulary + quiz        | None              |
+| POST   | /lessons/{lesson_id}/complete       | Record completion, award XP              | Bearer token      |
+| POST   | /conversations/start                | Start AI conversation                    | Bearer token      |
+| POST   | /conversations/{id}/message         | Send message, get AI response            | Bearer token      |
+| POST   | /conversations/{id}/end             | End chat, calculate XP                   | Bearer token      |
+| GET    | /progress/{child_id}                | Get child progress stats                 | Bearer token      |
+| GET    | /parents/{parent_id}/progress       | Aggregated stats across children         | Bearer token      |
+| GET    | /missions/by-level/{level}          | List missions for a level                | Bearer token      |
+| POST   | /missions/generate                  | LLM-generate a new mission               | Bearer token      |
+| GET    | /missions/progress/{child_id}       | Get child's mission progress             | Bearer token      |
+| POST   | /missions/start                     | Start a mission (creates conversation)   | Bearer token      |
+| POST   | /missions/{id}/message              | Send message in active mission           | Bearer token      |
+| POST   | /missions/{id}/end                  | Quit mission early                       | Bearer token      |
+| POST   | /tts/speak                          | Synthesize Marathi text to audio         | Bearer token      |
+| POST   | /tts/transcribe                     | Transcribe Marathi audio to text         | Bearer token      |
+| POST   | /digest/send                        | Trigger weekly digests for all parents   | Service key only  |
+| GET    | /digest/preview/{parent_id}         | Preview digest without sending           | Bearer / svc key  |
 
 ## Setup
 
@@ -146,6 +147,8 @@ The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connec
    SUPABASE_KEY=...
    SUPABASE_SERVICE_KEY=...
    GROQ_API_KEY=...
+   RESEND_API_KEY=...
+   RESEND_FROM_EMAIL=MarathiMitra <digest@yourdomain.com>
    ```
 3. Install backend dependencies: `pip install -r requirements.txt`
 4. Run the database migration: apply `backend/db/migrations.sql` in Supabase SQL Editor
@@ -162,53 +165,81 @@ The LLM (Llama 3.3 70B via Groq) acts as the orchestrator — it receives connec
    ```
 8. Open `http://localhost:5173`
 
-## Claude Desktop Integration
+## Claude Desktop Integration (stdio)
 
-MarathiMitra can also run as an MCP server inside Claude Desktop:
+MarathiMitra has two MCP integration paths. For Claude Desktop, use the stdio MCP App server — no OAuth needed, uses a service key directly:
 
-1. Run `python mcp_server.py` or add to your Claude Desktop config:
-   ```json
-   {
-     "mcpServers": {
-       "marathi-tutor": {
-         "command": "python",
-         "args": ["/path/to/mcp_server.py"],
-         "env": {
-           "GROQ_API_KEY": "...",
-           "SUPABASE_URL": "...",
-           "SUPABASE_KEY": "...",
-           "SUPABASE_SERVICE_KEY": "..."
-         }
-       }
-     }
-   }
-   ```
-2. Claude gets access to 22 tools (child profiles, lessons, conversations, progress, TTS) and can read skill prompts to act as the Mitra tutor.
+```json
+{
+  "mcpServers": {
+    "marathi-mitra": {
+      "command": "node",
+      "args": ["/path/to/mcp-app/dist/server.js", "--stdio"],
+      "env": {
+        "MARATHI_API_URL": "https://marathi-mitra-api.onrender.com",
+        "MARATHI_SERVICE_KEY": "your-service-key"
+      }
+    }
+  }
+}
+```
+
+Build first: `cd mcp-app && npm run build`
 
 ## MCP App (Interactive UI inside Claude)
 
-MarathiMitra also has an MCP App server that renders interactive HTML UIs (chat, lessons, progress) directly inside Claude Desktop or claude.ai:
+The MCP App server renders interactive HTML UIs (chat, lessons, progress dashboard) directly inside Claude Desktop or claude.ai.
 
-1. Set `MARATHI_SERVICE_KEY` in your `.env` (any secret string — must match backend)
-2. Build and start:
-   ```bash
-   cd mcp-app
-   npm install
-   npm run build
-   MARATHI_API_URL=http://localhost:8000 MARATHI_SERVICE_KEY=your-key npm start
-   ```
-3. The server runs on `http://localhost:3001/mcp` (StreamableHTTP transport)
-4. Connect via Claude Desktop config or cloudflared tunnel for claude.ai
+**For claude.ai (remote HTTP + OAuth 2.1):**
+
+1. Deploy `mcp-app/` to Render (see `render.yaml`)
+2. Set env vars: `MARATHI_API_URL`, `MARATHI_SERVICE_KEY`, `SUPABASE_URL`, `SUPABASE_KEY`, `MCP_BASE_URL`
+3. Add `https://your-mcp-app.onrender.com/mcp` as a remote MCP server in claude.ai settings
+4. Claude opens the OAuth login page — parents sign in with their existing MarathiMitra credentials
+5. All subsequent `/mcp` requests carry a Supabase JWT — the backend validates ownership normally
+
+**OAuth 2.1 endpoints exposed by the MCP App:**
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /.well-known/oauth-authorization-server` | OAuth discovery metadata |
+| `GET /.well-known/oauth-protected-resource` | Protected resource metadata |
+| `GET /authorize` | Start OAuth flow |
+| `GET /login` | Login page (email + password form) |
+| `POST /login` | Validate credentials, issue auth code |
+| `POST /token` | PKCE code exchange → Supabase JWT |
 
 **Tools registered:** `start-marathi-practice`, `browse-lessons`, `show-progress` (each opens an interactive HTML app), plus 7 inner tools for app-to-server communication.
 
+## Weekly Parent Digest
+
+Every Sunday at 9am UTC a Render cron job generates and emails personalised learning summaries to all parents. For each child the AI (Llama 3.3 70B) is given:
+
+- Lessons completed this week with quiz scores
+- Number of Mitra conversations
+- Current streak and total XP
+
+It writes a warm, specific, 3-4 paragraph email and sends it via Resend.
+
+To preview without sending:
+```bash
+curl https://marathi-mitra-api.onrender.com/digest/preview/<parent_id> \
+  -H "X-Service-Key: your-service-key"
+```
+
 ## Deployment
 
-A `render.yaml` Blueprint defines both backend services — connect the repo to Render and it auto-configures everything.
+A `render.yaml` Blueprint defines all backend services — connect the repo to Render and it auto-configures everything.
 
-- **Frontend:** Deploy `frontend-react/` to Vercel or Netlify — set `VITE_API_BASE_URL` env var to the backend URL
-- **Backend:** Deploy to [Render](https://render.com) — start command: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-- **MCP App:** Deploy `mcp-app/` to Render as a Node service — set `MARATHI_API_URL` to the backend URL and `MARATHI_SERVICE_KEY` to match the backend. MCP endpoint: `https://your-service.onrender.com/mcp`
+| Service | Type | Notes |
+|---|---|---|
+| `marathi-mitra-api` | Web | FastAPI backend |
+| `marathi-mitra-mcp-app` | Web | MCP App with OAuth 2.1 |
+| `marathi-weekly-digest` | Cron | Sundays 9am UTC |
+
+- **Frontend:** Deploy `frontend-react/` to Vercel — set `VITE_API_BASE_URL` to the backend URL
+- **Backend:** Render web service — `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+- **MCP App:** Render web service — `node dist/server.js` (no `--stdio` flag for HTTP mode)
 
 ## Project Status
 

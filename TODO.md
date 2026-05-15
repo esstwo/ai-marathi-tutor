@@ -27,8 +27,15 @@
 - [x] Build lessons app (`mcp-app/apps/lessons.html`) — lesson browser, vocabulary cards, quiz interface
 - [x] Bundle with Vite + vite-plugin-singlefile for sandboxed iframe delivery
 - [x] Add stdio transport for Claude Desktop integration
-- [ ] Deploy as remote MCP server with SSE transport + cloudflared or Render
-- [ ] Register as Claude custom connector for testing
+- [x] Deploy as remote MCP server on Render with StreamableHTTP transport
+- [x] Add OAuth 2.1 + PKCE authentication (`auth.ts`) for claude.ai remote access
+- [x] Add TTS buttons to quiz questions and answer options (Devanagari detection)
+
+## AI Features
+- [x] Weekly AI parent digest — Llama 3.3 writes personalised email from weekly stats, sent via Resend
+- [ ] AI pronunciation coach — STT + LLM feedback on Marathi pronunciation accuracy
+- [ ] Adaptive lesson generation — LLM generates new vocabulary + quizzes based on weak areas
+- [ ] Scenario-based conversation missions with specific roles (shopkeeper, grandparent, etc.)
 
 ## Game-Based Missions
 - [x] DB migration: add `steps`, `title_english`, `created_at` to missions table

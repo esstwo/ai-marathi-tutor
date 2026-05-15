@@ -62,6 +62,7 @@
 │  │    lessons.py                                                │    │
 │  │    missions.py                                               │    │
 │  │    progress.py                                               │    │
+│  │    digest.py          (weekly stats queries)                 │    │
 │  └──────┬──────────────────────────────┬───────────────────────┘    │
 │         │                              │                             │
 │  ┌──────▼──────────┐   ┌──────────────▼──────────────┐              │
@@ -113,10 +114,29 @@
                     │  Interactive HTML UIs inside       │
                     │  Claude Desktop / claude.ai.       │
                     │  3 apps: conversation, lessons,    │
-                    │  progress. Proxies to FastAPI      │
-                    │  via service key auth.              │
+                    │  progress. TTS on all Marathi      │
+                    │  text (vocab, quiz Q&A, chat).     │
                     │                                    │
-                    │  stdio (Desktop) or HTTP (remote)  │
+                    │  stdio (Desktop): service key auth │
+                    │  HTTP (claude.ai): OAuth 2.1+PKCE  │
+                    │    auth.ts hosts login page,       │
+                    │    /authorize, /token endpoints.   │
+                    │    Per-session JWT forwarded to    │
+                    │    FastAPI — owns child checks      │
+                    └──────────────────────────────────┘
+
+                    ┌──────────────────────────────────┐
+                    │  Weekly Digest (services/digest)  │
+                    │                                    │
+                    │  Render cron: Sundays 9am UTC      │
+                    │  For each parent:                  │
+                    │   1. Query this week's lesson      │
+                    │      completions + conversations   │
+                    │   2. LLM writes personalised email │
+                    │   3. Send via Resend               │
+                    │                                    │
+                    │  Preview: GET /digest/preview/:id  │
+                    │  Trigger: POST /digest/send        │
                     └──────────────────────────────────┘
 ```
 
@@ -298,9 +318,9 @@ Child taps "Generate New Mission" for level 2
 | **Core** | `backend/core/` | Generic infrastructure: skill loader, connector registry, agentic tool-calling loop. Not MarathiMitra-specific. |
 | **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. Five skills: conversation, lessons, progress, mission_generator, mission_guide. The product's intelligence. |
 | **Connectors** | `backend/connectors/` | Minimal glue code — plain Python functions that call external systems. No business logic. |
-| **Services** | `backend/services/` | Shared utilities (Google Cloud TTS wrapper with caching). |
+| **Services** | `backend/services/` | Shared utilities: Google Cloud TTS wrapper with caching; weekly digest service (stats gathering, LLM call, Resend email). |
 | **Tests** | `backend/tests/` | 112 eval tests covering all guardrail categories. Run: `pytest backend/tests/` |
-| **MCP App** | `mcp-app/` | TypeScript MCP server serving interactive HTML UIs (chat, lessons, progress) inside Claude Desktop/claude.ai. Proxies to FastAPI via service key auth. |
+| **MCP App** | `mcp-app/` | TypeScript MCP server serving interactive HTML UIs (chat, lessons, progress) inside Claude Desktop/claude.ai. TTS buttons on all Marathi text (detected via Devanagari Unicode range). stdio mode uses service key; HTTP mode uses OAuth 2.1 + PKCE backed by Supabase email/password. |
 
 ## Skill File Format
 
@@ -349,6 +369,12 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 **Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` enforced via `response_format`. Falls back gracefully if the LLM returns plain text.
 
 **Token Refresh**: The frontend's Axios interceptor catches 401s, refreshes the JWT via `/auth/refresh`, and retries the original request. Concurrent requests queue behind the refresh.
+
+**TTS on all Marathi text**: A `hasMarathi()` helper (Devanagari Unicode range `ऀ–ॿ`) detects Marathi in any string and conditionally renders a 🔊 button. Applied to vocabulary flashcards, quiz questions, and quiz answer options in both the React frontend (`LessonView.tsx`) and the MCP App lessons UI. Buttons outside interactive elements prevent click interference with answer selection.
+
+**MCP OAuth 2.1 backed by Supabase**: The MCP App acts as its own OAuth authorization server — `auth.ts` hosts the discovery metadata, login page, and token endpoints. The login form calls Supabase `signInWithPassword` directly and issues an OAuth auth code wrapping the resulting Supabase JWT. On token exchange the JWT is returned as the `access_token`. All `/mcp` requests validate the JWT via `supabase.auth.getUser()`. The FastAPI backend sees ordinary Bearer tokens and runs the same ownership checks as the web app. stdio mode (Claude Desktop) bypasses this entirely with a service key.
+
+**Weekly AI Parent Digest**: `services/digest.py` pre-fetches structured data (lesson titles, scores, conversation counts) from Supabase, then passes it to the LLM as a plain-text context block. The LLM writes the email body; it never calls tools or queries the DB itself. This keeps the digest fast, cheap, and fully auditable. A Render cron service fires weekly; `GET /digest/preview/:id` lets developers inspect output without sending.
 
 ## Database Schema (Supabase)
 
