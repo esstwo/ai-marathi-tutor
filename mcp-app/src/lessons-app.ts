@@ -237,7 +237,7 @@ function handleRetry(): void {
   render();
 }
 
-async function handleTTS(text: string, button: HTMLButtonElement): Promise<void> {
+async function handleTTS(text: string, button: HTMLElement): Promise<void> {
   if (ttsPlaying) return;
   ttsPlaying = true;
   button.classList.add("playing");
@@ -366,7 +366,7 @@ function renderLearning(app: HTMLElement): void {
   document.getElementById("prev-btn")!.addEventListener("click", handlePrevWord);
   document.getElementById("next-btn")!.addEventListener("click", handleNextWord);
 
-  document.querySelectorAll<HTMLButtonElement>("[data-tts]").forEach((btn) => {
+  document.querySelectorAll<HTMLElement>("[data-tts]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const text = btn.getAttribute("data-tts");
       if (text) handleTTS(text, btn);
@@ -398,7 +398,12 @@ function renderQuiz(app: HTMLElement): void {
       <span class="level-badge" style="background:var(--saffron)">\u{1F3AF} Quiz Time!</span>
     </div>
 
-    <div class="quiz-question">${escapeHtml(question.question)}</div>
+    <div class="quiz-question">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="flex:1">${escapeHtml(question.question)}</span>
+        ${marathiTtsBtn(question.question)}
+      </span>
+    </div>
 
     <div class="quiz-options">
       ${question.options.map((opt, i) => {
@@ -409,7 +414,11 @@ function renderQuiz(app: HTMLElement): void {
         }
         return `
           <button class="${cls}" data-answer="${i}" ${answered ? "disabled" : ""}>
-            <strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(opt)}
+            <span style="display:flex;align-items:center;gap:8px;width:100%">
+              <strong>${String.fromCharCode(65 + i)}.</strong>
+              <span style="flex:1;text-align:left">${escapeHtml(opt)}</span>
+              ${marathiTtsBtn(opt)}
+            </span>
           </button>
         `;
       }).join("")}
@@ -434,6 +443,15 @@ function renderQuiz(app: HTMLElement): void {
   document.querySelectorAll<HTMLButtonElement>("[data-answer]").forEach((btn) => {
     btn.addEventListener("click", () => {
       handleAnswer(parseInt(btn.dataset.answer!, 10));
+    });
+  });
+
+  // TTS spans inside answer buttons — stopPropagation so the answer isn't selected
+  document.querySelectorAll<HTMLElement>("[data-tts-opt]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const text = el.getAttribute("data-tts-opt");
+      if (text) handleTTS(text, el);
     });
   });
 
@@ -498,6 +516,18 @@ function escapeHtml(text: string): string {
 
 function escapeAttr(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function hasMarathi(text: string): boolean {
+  return /[ऀ-ॿ]/.test(text);
+}
+
+// Returns a TTS button only when the text contains Devanagari script.
+// Uses data-tts-opt so click handlers can stopPropagation before the
+// event reaches the surrounding answer <button>.
+function marathiTtsBtn(text: string): string {
+  if (!hasMarathi(text)) return "";
+  return `<span class="tts-btn" data-tts-opt="${escapeAttr(text)}" title="Listen" role="button" tabindex="0">\u{1F50A}</span>`;
 }
 
 // ── Init ─────────────────────────────────────────────────────────────

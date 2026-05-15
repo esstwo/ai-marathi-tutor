@@ -44,6 +44,8 @@ const ConfettiBurst = () => (
   </div>
 );
 
+const hasMarathi = (text: string) => /[ऀ-ॿ]/.test(text);
+
 const speakMarathi = async (text: string) => {
   try {
     const blob = await api.speakMarathiTTS(text);
@@ -218,16 +220,28 @@ const LessonView = ({ lesson, onBack }: LessonViewProps) => {
             <span className="inline-flex items-center gap-2 bg-primary/10 text-primary text-sm font-bold px-4 py-2 rounded-full mb-4">
               <Target className="w-4 h-4" /> Quiz Time!
             </span>
-            <p className="font-display text-2xl md:text-3xl font-bold text-foreground">
-              {question.question}
-            </p>
+            <div className="flex items-center justify-center gap-2">
+              <p className="font-display text-2xl md:text-3xl font-bold text-foreground">
+                {question.question}
+              </p>
+              {hasMarathi(question.question) && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full h-9 w-9 shrink-0 hover:bg-primary/10"
+                  onClick={() => speakMarathi(question.question)}
+                >
+                  <Volume2 className="w-5 h-5 text-primary" />
+                </Button>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 mb-8">
+          <div className="flex flex-col gap-3 mb-8">
             {question.options.map((option, i) => {
               let variant: "outline" | "default" | "destructive" = "outline";
               let icon = null;
-              let extraClass = "rounded-2xl h-14 text-base font-bold border-2";
+              let extraClass = "rounded-2xl h-14 text-base font-bold border-2 flex-1";
 
               if (answered) {
                 if (i === question.correct_index) {
@@ -243,18 +257,29 @@ const LessonView = ({ lesson, onBack }: LessonViewProps) => {
               }
 
               return (
-                <Button
-                  key={i}
-                  variant={variant}
-                  className={`${extraClass} justify-start gap-3`}
-                  onClick={() => handleAnswer(i)}
-                >
-                  <span className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center text-sm font-bold shrink-0">
-                    {String.fromCharCode(65 + i)}
-                  </span>
-                  {icon}
-                  {option}
-                </Button>
+                <div key={i} className="flex items-center gap-2">
+                  <Button
+                    variant={variant}
+                    className={`${extraClass} justify-start gap-3`}
+                    onClick={() => handleAnswer(i)}
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center text-sm font-bold shrink-0">
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    {icon}
+                    {option}
+                  </Button>
+                  {hasMarathi(option) && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full h-10 w-10 shrink-0 hover:bg-primary/10"
+                      onClick={() => speakMarathi(option)}
+                    >
+                      <Volume2 className="w-4 h-4 text-primary" />
+                    </Button>
+                  )}
+                </div>
               );
             })}
           </div>

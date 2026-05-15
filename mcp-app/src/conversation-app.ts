@@ -164,7 +164,7 @@ async function handleEnd(): Promise<void> {
   }
 }
 
-async function handleTTS(text: string, button: HTMLButtonElement): Promise<void> {
+async function handleTTS(text: string, button: HTMLElement): Promise<void> {
   if (ttsPlaying) return;
   ttsPlaying = true;
   button.classList.add("playing");
@@ -293,7 +293,7 @@ function render(): void {
   chatInput?.focus();
 
   // TTS buttons
-  document.querySelectorAll<HTMLButtonElement>("[data-tts]").forEach((btn) => {
+  document.querySelectorAll<HTMLElement>("[data-tts]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const text = btn.getAttribute("data-tts");
       if (text) handleTTS(text, btn);
