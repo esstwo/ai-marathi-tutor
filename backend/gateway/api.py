@@ -483,15 +483,19 @@ async def generate_mission(req: GenerateMissionRequest, parent_id: str = Depends
     vocab_context = json.dumps(vocab_items, ensure_ascii=False) if vocab_items else "[]"
 
     # Run the generator skill (no connectors — vocab is passed inline)
-    topic_line = f"Requested theme: {req.topic}\n\n" if req.topic else ""
+    topic_instruction = (
+        f"\n\nTHE MISSION MUST BE ABOUT: {req.topic}\n"
+        "Build all steps around this specific scenario. Only use vocabulary from the list above that fits naturally — do not force unrelated words."
+    ) if req.topic else "\n\nChoose a creative, culturally relevant scenario from the variety suggestions in your instructions."
+
     messages = [
         {
             "role": "user",
             "content": (
                 f"Generate a mission for Level {req.level}.\n\n"
-                f"{topic_line}"
-                f"Available vocabulary from this level's lessons:\n{vocab_context}\n\n"
-                "Create a fun, culturally relevant scenario using some of these words. Respond as JSON."
+                f"Available vocabulary you may draw from:\n{vocab_context}"
+                f"{topic_instruction}\n\n"
+                "Respond as JSON."
             ),
         },
     ]
