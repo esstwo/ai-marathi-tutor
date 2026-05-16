@@ -37,6 +37,7 @@ backend/
     progress.md                    # Progress tracker — XP rules, streak logic
     mission_generator.md           # Generate mission scenarios from level vocabulary
     mission_guide.md               # Play scenario character, guide child through steps
+    parent_digest.md               # Weekly parent email — tone rules + 3 few-shot examples
   connectors/                      # Minimal code bridging skills to external systems
     supabase/
       auth.py                      # signup, login, refresh, parent records

@@ -74,6 +74,7 @@
 │  │  progress          │   │  maps names → callables      │              │
 │  │  mission_generator │   │                              │              │
 │  │  mission_guide     │   │                              │              │
+│  │  parent_digest     │   │                              │              │
 │  └─────────────────┘   └─────────────────────────────┘              │
 │                                                                      │
 └─────────┬────────────────────────────────┬───────────────────────────┘
@@ -335,10 +336,11 @@ input:
   message: string
   history: list
 output:
-  format: json
+  format: json        # or "text" for plain-text output (e.g. parent_digest)
   schema:
     marathi_text: string
     english_hint: string?
+max_tokens: 300       # optional — override the global default (useful for longer outputs)
 connectors:
   - get_child_profile
   - get_lesson_context
@@ -348,7 +350,7 @@ You are Mitra, a friendly Marathi tutor for kids.
 ... (the system prompt — this IS the intelligence)
 ```
 
-The frontmatter declares structured metadata. The Markdown body is used directly as the LLM system prompt.
+The frontmatter declares structured metadata. The Markdown body is used directly as the LLM system prompt. Skills that produce longer output (e.g. `parent_digest` at 600 tokens) declare their own `max_tokens`; all others inherit the global default of 300.
 
 ## Key Design Decisions
 
@@ -375,6 +377,8 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 **MCP OAuth 2.1 backed by Supabase**: The MCP App acts as its own OAuth authorization server — `auth.ts` hosts the discovery metadata, login page, and token endpoints. The login form calls Supabase `signInWithPassword` directly and issues an OAuth auth code wrapping the resulting Supabase JWT. On token exchange the JWT is returned as the `access_token`. All `/mcp` requests validate the JWT via `supabase.auth.getUser()`. The FastAPI backend sees ordinary Bearer tokens and runs the same ownership checks as the web app. stdio mode (Claude Desktop) bypasses this entirely with a service key.
 
 **Weekly AI Parent Digest**: `services/digest.py` pre-fetches structured data (lesson titles, scores, conversation counts) from Supabase, then passes it to the LLM as a plain-text context block. The LLM writes the email body; it never calls tools or queries the DB itself. This keeps the digest fast, cheap, and fully auditable. A Render cron service fires weekly; `GET /digest/preview/:id` lets developers inspect output without sending.
+
+**Few-shot prompting in skill files**: The `parent_digest` skill embeds three annotated input/output examples directly in the Markdown body — an active week, a quiet week, and two children with mixed activity. This constrains tone, structure, and the contextualised XP phrasing without extra code. Any skill can adopt this pattern; the examples live in the same `.md` file as the instructions, so they stay in sync as the prompt evolves.
 
 ## Database Schema (Supabase)
 
