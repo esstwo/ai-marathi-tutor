@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Send, Target, Sparkles, Volume2, ArrowLeft, Plus, Star, Flower2, User, Square, Trophy, Mic, MicOff,
+  Send, Target, Sparkles, Volume2, ArrowLeft, Star, Flower2, User, Square, Trophy, Mic, MicOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,7 @@ const Missions = () => {
     score: number;
   } | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [topic, setTopic] = useState("");
   const [playingId, setPlayingId] = useState<number | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -105,11 +106,13 @@ const Missions = () => {
   }, [messages, isTyping]);
 
   // ── Generate mission ──────────────────────────────────────────────
-  const handleGenerate = async () => {
+  const handleGenerate = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!activeChild || isGenerating) return;
     setIsGenerating(true);
     try {
-      await api.generateMission(activeChild.id, level);
+      await api.generateMission(activeChild.id, level, topic.trim() || undefined);
+      setTopic("");
       refetchMissions();
       toast.success("New mission created!");
     } catch {
@@ -289,19 +292,33 @@ const Missions = () => {
             </p>
           </div>
 
+          <form onSubmit={handleGenerate} className="flex gap-2">
+            <Input
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="What should the mission be about? (e.g. visiting grandma, Diwali…)"
+              className="flex-1 rounded-2xl bg-muted/50 border-border/50 h-12 text-base"
+              disabled={isGenerating}
+            />
+            <Button
+              type="submit"
+              variant="hero"
+              className="rounded-2xl font-bold shrink-0 h-12 px-4"
+              disabled={isGenerating}
+            >
+              {isGenerating ? (
+                <Sparkles className="w-4 h-4 animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4" />
+              )}
+            </Button>
+          </form>
+
           {missions.length === 0 && !isGenerating && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground font-display font-bold mb-4">
-                No missions yet for Level {level}
+            <div className="text-center py-8">
+              <p className="text-muted-foreground font-display font-bold">
+                No missions yet — type a theme above or leave it blank for a surprise!
               </p>
-              <Button
-                variant="hero"
-                className="rounded-xl font-bold"
-                onClick={handleGenerate}
-              >
-                <Sparkles className="w-4 h-4 mr-1" />
-                Generate Your First Mission
-              </Button>
             </div>
           )}
 
@@ -349,28 +366,6 @@ const Missions = () => {
             })}
           </div>
 
-          {missions.length > 0 && (
-            <div className="text-center pt-2">
-              <Button
-                variant="outline"
-                className="rounded-xl font-display font-bold"
-                onClick={handleGenerate}
-                disabled={isGenerating}
-              >
-                {isGenerating ? (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-1 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-4 h-4 mr-1" />
-                    Generate New Mission
-                  </>
-                )}
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     );

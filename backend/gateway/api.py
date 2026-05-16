@@ -89,6 +89,7 @@ class LessonCompleteRequest(BaseModel):
 class GenerateMissionRequest(BaseModel):
     child_id: str
     level: int
+    topic: str | None = None  # Optional theme the parent/child wants the mission to be about
 
 class StartMissionRequest(BaseModel):
     child_id: str
@@ -482,11 +483,13 @@ async def generate_mission(req: GenerateMissionRequest, parent_id: str = Depends
     vocab_context = json.dumps(vocab_items, ensure_ascii=False) if vocab_items else "[]"
 
     # Run the generator skill (no connectors — vocab is passed inline)
+    topic_line = f"Requested theme: {req.topic}\n\n" if req.topic else ""
     messages = [
         {
             "role": "user",
             "content": (
                 f"Generate a mission for Level {req.level}.\n\n"
+                f"{topic_line}"
                 f"Available vocabulary from this level's lessons:\n{vocab_context}\n\n"
                 "Create a fun, culturally relevant scenario using some of these words. Respond as JSON."
             ),

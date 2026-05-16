@@ -207,11 +207,13 @@ export async function listMissions(level: number): Promise<Mission[]> {
 
 export async function generateMission(
   childId: string,
-  level: number
+  level: number,
+  topic?: string
 ): Promise<Mission> {
   const { data } = await api.post("/missions/generate", {
     child_id: childId,
     level,
+    ...(topic ? { topic } : {}),
   });
   return data;
 }
