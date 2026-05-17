@@ -22,6 +22,7 @@ MAX_MESSAGES_PER_CONVERSATION = 50
 MAX_CONVERSATION_MINUTES = 30
 MAX_CONCURRENT_CONVERSATIONS = 10
 DAILY_LLM_CALL_LIMIT = int(os.environ.get("DAILY_LLM_CALL_LIMIT", "500"))
+DAILY_LLM_CALL_LIMIT_PER_CHILD = int(os.environ.get("DAILY_LLM_CALL_LIMIT_PER_CHILD", "100"))
 
 # ── Input guardrails ──────────────────────────────────────────────────
 
@@ -266,6 +267,40 @@ def get_daily_usage() -> dict:
         "calls": _daily_calls["count"],
         "limit": DAILY_LLM_CALL_LIMIT,
     }
+
+
+def track_child_llm_call(child_id: str):
+    """Atomically increment today's per-child LLM call counter. Raise if limit exceeded.
+
+    This is the primary public-launch cost guardrail: one abusive account cannot
+    exhaust the global budget. Persisted in Supabase so the count survives deploys.
+    Falls back to a permissive log if the DB call fails — we don't want a counter
+    outage to block legitimate kids' learning.
+    """
+    # Import locally to avoid pulling Supabase into module-import time in tests
+    from backend.connectors.supabase.usage import increment_child_daily_calls
+
+    try:
+        new_count = increment_child_daily_calls(child_id)
+    except Exception as e:
+        logger.warning("Per-child usage counter failed for %s: %s", child_id, e)
+        return
+
+    if new_count > DAILY_LLM_CALL_LIMIT_PER_CHILD:
+        logger.warning(
+            "Per-child daily LLM limit exceeded for %s: %d/%d",
+            child_id, new_count, DAILY_LLM_CALL_LIMIT_PER_CHILD,
+        )
+        raise HTTPException(
+            status_code=429,
+            detail="You've done a lot of learning today! Come back tomorrow for more.",
+        )
+
+    if new_count == int(DAILY_LLM_CALL_LIMIT_PER_CHILD * 0.8):
+        logger.info(
+            "Child %s reached 80%% of daily LLM limit: %d/%d",
+            child_id, new_count, DAILY_LLM_CALL_LIMIT_PER_CHILD,
+        )
 
 
 # ── Content flagging ─────────────────────────────────────────────────

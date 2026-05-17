@@ -16,7 +16,7 @@ from backend.gateway.auth import get_current_parent, verify_child_ownership, SER
 from backend.gateway.guardrails import (
     validate_message_input, validate_llm_output,
     check_message_limit, check_conversation_duration, check_concurrent_conversations,
-    track_llm_call, flag_conversation,
+    track_llm_call, track_child_llm_call, flag_conversation,
 )
 from backend.core.skill_loader import load_skills
 from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMAuthError, LLMContentFilterError, LLMServiceError
@@ -248,6 +248,7 @@ async def start_conversation(req: StartConversationRequest, parent_id: str = Dep
     verify_child_ownership(req.child_id, parent_id)
     check_concurrent_conversations(req.child_id, supabase_admin)
     track_llm_call()
+    track_child_llm_call(req.child_id)
 
     conv = start_conversation_record(req.child_id)
     if not conv:
@@ -301,6 +302,7 @@ async def send_message(conversation_id: str, req: SendMessageRequest, parent_id:
 
     # Cost protection
     track_llm_call()
+    track_child_llm_call(child_id)
 
     save_message(conversation_id, "child", clean_message)
 
@@ -470,6 +472,7 @@ async def generate_mission(req: GenerateMissionRequest, parent_id: str = Depends
         raise HTTPException(400, "Level must be between 1 and 4")
 
     track_llm_call()
+    track_child_llm_call(req.child_id)
 
     # Gather vocabulary from all lessons at this level
     level_lessons = list_lessons(req.level)
@@ -522,6 +525,7 @@ async def start_mission(req: StartMissionRequest, parent_id: str = Depends(get_c
     verify_child_ownership(req.child_id, parent_id)
     check_concurrent_conversations(req.child_id, supabase_admin)
     track_llm_call()
+    track_child_llm_call(req.child_id)
 
     mission = get_mission_by_id(req.mission_id)
     if not mission:
@@ -606,6 +610,7 @@ async def send_mission_message(
     # Input guardrails
     clean_message = validate_message_input(req.message)
     track_llm_call()
+    track_child_llm_call(child_id)
 
     save_message(conversation_id, "child", clean_message)
 

@@ -6,7 +6,7 @@ that are easy to extend when new attack vectors or edge cases emerge.
 
 import pytest
 from datetime import datetime, timezone, timedelta
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from fastapi import HTTPException
 
@@ -17,6 +17,7 @@ from backend.gateway.guardrails import (
     check_conversation_duration,
     check_concurrent_conversations,
     track_llm_call,
+    track_child_llm_call,
     SAFE_FALLBACK,
     MAX_MESSAGE_LENGTH,
     MAX_MESSAGES_PER_CONVERSATION,
@@ -24,6 +25,7 @@ from backend.gateway.guardrails import (
     MAX_CONCURRENT_CONVERSATIONS,
     _daily_calls,
     DAILY_LLM_CALL_LIMIT,
+    DAILY_LLM_CALL_LIMIT_PER_CHILD,
 )
 
 
@@ -379,6 +381,37 @@ def test_daily_call_just_under_limit():
     _daily_calls["count"] = DAILY_LLM_CALL_LIMIT - 1
     track_llm_call()  # Should succeed (count is now at limit, not over)
     assert _daily_calls["count"] == DAILY_LLM_CALL_LIMIT
+
+
+# ── Cost protection: per-child persisted counter ─────────────────────
+
+@patch("backend.connectors.supabase.usage.increment_child_daily_calls")
+def test_track_child_llm_call_under_limit(mock_increment):
+    mock_increment.return_value = 1
+    track_child_llm_call("child-123")  # should not raise
+    mock_increment.assert_called_once_with("child-123")
+
+
+@patch("backend.connectors.supabase.usage.increment_child_daily_calls")
+def test_track_child_llm_call_at_limit_passes(mock_increment):
+    mock_increment.return_value = DAILY_LLM_CALL_LIMIT_PER_CHILD
+    track_child_llm_call("child-123")  # equal to limit is still allowed
+
+
+@patch("backend.connectors.supabase.usage.increment_child_daily_calls")
+def test_track_child_llm_call_over_limit_blocks(mock_increment):
+    mock_increment.return_value = DAILY_LLM_CALL_LIMIT_PER_CHILD + 1
+    with pytest.raises(HTTPException) as exc_info:
+        track_child_llm_call("child-123")
+    assert exc_info.value.status_code == 429
+    assert "tomorrow" in exc_info.value.detail.lower()
+
+
+@patch("backend.connectors.supabase.usage.increment_child_daily_calls")
+def test_track_child_llm_call_db_failure_does_not_block(mock_increment):
+    """If Supabase is unreachable, the counter fails open — kids' learning continues."""
+    mock_increment.side_effect = RuntimeError("supabase down")
+    track_child_llm_call("child-123")  # should not raise
 
 
 # ── Edge cases: Unicode / Devanagari handling ────────────────────────

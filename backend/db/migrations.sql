@@ -153,3 +153,36 @@ create table conversation_flags (
 );
 
 create index idx_conversation_flags_conv on conversation_flags(conversation_id);
+
+-- ================================================
+-- USAGE_COUNTERS
+-- Per-child, per-day counters for LLM cost protection.
+-- Persisted (survives restarts) and scoped per child so one
+-- account cannot exhaust the global daily budget.
+-- ================================================
+create table usage_counters (
+  child_id uuid not null references children(id) on delete cascade,
+  date date not null,
+  llm_calls int not null default 0,
+  updated_at timestamptz not null default now(),
+  primary key (child_id, date)
+);
+
+create index idx_usage_counters_date on usage_counters(date);
+
+-- Atomic upsert + increment. Returns the new llm_calls count for the day.
+create or replace function increment_usage_counter(p_child_id uuid, p_date date)
+returns int
+language plpgsql
+as $$
+declare
+  new_count int;
+begin
+  insert into usage_counters (child_id, date, llm_calls, updated_at)
+  values (p_child_id, p_date, 1, now())
+  on conflict (child_id, date)
+  do update set llm_calls = usage_counters.llm_calls + 1, updated_at = now()
+  returning llm_calls into new_count;
+  return new_count;
+end;
+$$;
