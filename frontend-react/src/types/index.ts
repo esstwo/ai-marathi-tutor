@@ -15,8 +15,10 @@ export interface LoginResponse {
 
 export interface SignupResponse {
   user_id: string;
-  access_token: string;
-  refresh_token: string;
+  access_token?: string | null;
+  refresh_token?: string | null;
+  email_verification_required: boolean;
+  message: string;
 }
 
 export interface VocabWord {

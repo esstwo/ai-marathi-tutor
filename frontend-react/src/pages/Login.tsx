@@ -27,9 +27,15 @@ const Login = () => {
     setLoading(true);
     try {
       if (isSignUp) {
-        await signup(name, email, password);
-        toast.success("Account created! Let's set up your child's profile.");
-        navigate("/child-setup");
+        const { emailVerificationRequired } = await signup(name, email, password);
+        if (emailVerificationRequired) {
+          toast.success("Check your email to verify your account, then sign in.");
+          setIsSignUp(false);
+          setPassword("");
+        } else {
+          toast.success("Account created! Let's set up your child's profile.");
+          navigate("/child-setup");
+        }
       } else {
         const { children } = await login(email, password);
         toast.success("Welcome back!");

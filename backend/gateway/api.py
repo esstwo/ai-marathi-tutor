@@ -120,17 +120,22 @@ def signup(req: SignupRequest):
     if not parent:
         raise HTTPException(status_code=500, detail="Failed to create parent record")
 
-    access_token = None
-    refresh_token = None
-    if auth_response.session:
-        access_token = auth_response.session.access_token
-        refresh_token = auth_response.session.refresh_token
+    # When Supabase "Confirm email" is enabled, sign_up returns a user but no
+    # session — the user must click the verification link before logging in.
+    if auth_response.session is None:
+        return {
+            "message": "Please check your email to verify your account before signing in.",
+            "user_id": user_id,
+            "email_verification_required": True,
+            "parent": parent,
+        }
 
     return {
         "message": "Signup successful",
         "user_id": user_id,
-        "access_token": access_token,
-        "refresh_token": refresh_token,
+        "access_token": auth_response.session.access_token,
+        "refresh_token": auth_response.session.refresh_token,
+        "email_verification_required": False,
         "parent": parent,
     }
 
