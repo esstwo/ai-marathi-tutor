@@ -8,9 +8,9 @@ import logging
 import os
 import re
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +23,7 @@ MAX_CONVERSATION_MINUTES = 30
 MAX_CONCURRENT_CONVERSATIONS = 10
 DAILY_LLM_CALL_LIMIT = int(os.environ.get("DAILY_LLM_CALL_LIMIT", "500"))
 DAILY_LLM_CALL_LIMIT_PER_CHILD = int(os.environ.get("DAILY_LLM_CALL_LIMIT_PER_CHILD", "100"))
+SIGNUP_ATTEMPTS_PER_HOUR = int(os.environ.get("SIGNUP_ATTEMPTS_PER_HOUR", "5"))
 
 # ── Input guardrails ──────────────────────────────────────────────────
 
@@ -267,6 +268,58 @@ def get_daily_usage() -> dict:
         "calls": _daily_calls["count"],
         "limit": DAILY_LLM_CALL_LIMIT,
     }
+
+
+def get_request_ip(request: Request) -> str:
+    """Extract the originating client IP, honouring X-Forwarded-For from proxies.
+
+    Render and Cloudflare set X-Forwarded-For with the client IP first. Fall back
+    to the direct connection if no header. Returns empty string if neither is
+    available, in which case rate-limit checks should skip rather than fail.
+    """
+    forwarded = request.headers.get("x-forwarded-for", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    if request.client and request.client.host:
+        return request.client.host
+    return ""
+
+
+def check_signup_rate_limit(ip: str):
+    """Throttle signups per IP. Counts attempts in the last hour, raises on excess.
+
+    Fails open on DB errors so an outage doesn't block legitimate signups.
+    """
+    if not ip:
+        return
+
+    from backend.connectors.supabase.rate_limits import (
+        count_recent_signup_attempts, record_signup_attempt, cleanup_old_signup_attempts,
+    )
+
+    one_hour_ago = datetime.now(timezone.utc) - timedelta(hours=1)
+    try:
+        count = count_recent_signup_attempts(ip, one_hour_ago)
+    except Exception as e:
+        logger.warning("Signup rate-limit DB check failed for %s: %s", ip, e)
+        return
+
+    if count >= SIGNUP_ATTEMPTS_PER_HOUR:
+        logger.warning(
+            "Signup rate limit hit for IP %s: %d/%d in last hour",
+            ip, count, SIGNUP_ATTEMPTS_PER_HOUR,
+        )
+        raise HTTPException(
+            status_code=429,
+            detail="Too many signup attempts from this network. Please try again in an hour.",
+        )
+
+    try:
+        record_signup_attempt(ip)
+        # Opportunistic prune so the table stays small without a separate cron
+        cleanup_old_signup_attempts(ip, older_than_hours=24)
+    except Exception as e:
+        logger.warning("Failed to record signup attempt for %s: %s", ip, e)
 
 
 def track_child_llm_call(child_id: str):

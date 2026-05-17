@@ -186,3 +186,14 @@ begin
   return new_count;
 end;
 $$;
+
+-- ================================================
+-- SIGNUP_ATTEMPTS
+-- Per-IP signup throttling. Rows older than 24h can be pruned.
+-- ================================================
+create table signup_attempts (
+  ip text not null,
+  attempted_at timestamptz not null default now()
+);
+
+create index idx_signup_attempts_ip_time on signup_attempts(ip, attempted_at desc);

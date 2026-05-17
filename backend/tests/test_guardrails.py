@@ -18,6 +18,8 @@ from backend.gateway.guardrails import (
     check_concurrent_conversations,
     track_llm_call,
     track_child_llm_call,
+    check_signup_rate_limit,
+    get_request_ip,
     SAFE_FALLBACK,
     MAX_MESSAGE_LENGTH,
     MAX_MESSAGES_PER_CONVERSATION,
@@ -26,6 +28,7 @@ from backend.gateway.guardrails import (
     _daily_calls,
     DAILY_LLM_CALL_LIMIT,
     DAILY_LLM_CALL_LIMIT_PER_CHILD,
+    SIGNUP_ATTEMPTS_PER_HOUR,
 )
 
 
@@ -412,6 +415,61 @@ def test_track_child_llm_call_db_failure_does_not_block(mock_increment):
     """If Supabase is unreachable, the counter fails open — kids' learning continues."""
     mock_increment.side_effect = RuntimeError("supabase down")
     track_child_llm_call("child-123")  # should not raise
+
+
+# ── Signup rate limit ────────────────────────────────────────────────
+
+def _mock_request(forwarded: str | None = None, client_host: str | None = "1.2.3.4"):
+    headers = {"x-forwarded-for": forwarded} if forwarded else {}
+    req = MagicMock()
+    req.headers = headers
+    req.client = MagicMock(host=client_host) if client_host else None
+    return req
+
+
+def test_get_request_ip_prefers_forwarded_for():
+    req = _mock_request(forwarded="9.9.9.9, 10.0.0.1", client_host="1.2.3.4")
+    assert get_request_ip(req) == "9.9.9.9"
+
+
+def test_get_request_ip_falls_back_to_client_host():
+    req = _mock_request(forwarded=None, client_host="1.2.3.4")
+    assert get_request_ip(req) == "1.2.3.4"
+
+
+def test_get_request_ip_returns_empty_when_unavailable():
+    req = _mock_request(forwarded=None, client_host=None)
+    assert get_request_ip(req) == ""
+
+
+@patch("backend.connectors.supabase.rate_limits.cleanup_old_signup_attempts")
+@patch("backend.connectors.supabase.rate_limits.record_signup_attempt")
+@patch("backend.connectors.supabase.rate_limits.count_recent_signup_attempts")
+def test_signup_rate_limit_under_threshold(mock_count, mock_record, mock_cleanup):
+    mock_count.return_value = SIGNUP_ATTEMPTS_PER_HOUR - 1
+    check_signup_rate_limit("1.2.3.4")
+    mock_record.assert_called_once_with("1.2.3.4")
+
+
+@patch("backend.connectors.supabase.rate_limits.record_signup_attempt")
+@patch("backend.connectors.supabase.rate_limits.count_recent_signup_attempts")
+def test_signup_rate_limit_at_threshold_blocks(mock_count, mock_record):
+    mock_count.return_value = SIGNUP_ATTEMPTS_PER_HOUR
+    with pytest.raises(HTTPException) as exc_info:
+        check_signup_rate_limit("1.2.3.4")
+    assert exc_info.value.status_code == 429
+    assert "signup" in exc_info.value.detail.lower()
+    mock_record.assert_not_called()
+
+
+def test_signup_rate_limit_empty_ip_skips():
+    check_signup_rate_limit("")  # should not raise, no DB call
+
+
+@patch("backend.connectors.supabase.rate_limits.count_recent_signup_attempts")
+def test_signup_rate_limit_db_failure_fails_open(mock_count):
+    mock_count.side_effect = RuntimeError("supabase down")
+    check_signup_rate_limit("1.2.3.4")  # should not raise
 
 
 # ── Edge cases: Unicode / Devanagari handling ────────────────────────

@@ -8,7 +8,7 @@ import logging
 from datetime import datetime, timezone
 from functools import wraps
 
-from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Request
 from fastapi.responses import Response
 from pydantic import BaseModel, EmailStr
 
@@ -17,6 +17,7 @@ from backend.gateway.guardrails import (
     validate_message_input, validate_llm_output,
     check_message_limit, check_conversation_duration, check_concurrent_conversations,
     track_llm_call, track_child_llm_call, flag_conversation,
+    check_signup_rate_limit, get_request_ip,
 )
 from backend.core.skill_loader import load_skills
 from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMAuthError, LLMContentFilterError, LLMServiceError
@@ -105,7 +106,9 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @auth_router.post("/signup")
-def signup(req: SignupRequest):
+def signup(req: SignupRequest, request: Request):
+    check_signup_rate_limit(get_request_ip(request))
+
     try:
         auth_response = signup_user(req.email, req.password)
     except AuthApiError as e:
