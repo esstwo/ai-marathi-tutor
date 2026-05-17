@@ -12,7 +12,12 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<{ children: Child[] }>;
-  signup: (name: string, email: string, password: string) => Promise<{ emailVerificationRequired: boolean }>;
+  signup: (
+    name: string,
+    email: string,
+    password: string,
+    captchaToken?: string | null
+  ) => Promise<{ emailVerificationRequired: boolean }>;
   logout: () => void;
   addChild: (name: string, age: number, avatar: string) => Promise<Child>;
   selectChild: (child: Child) => void;
@@ -65,8 +70,13 @@ export function AuthProvider({ children: reactChildren }: { children: React.Reac
   );
 
   const signup = useCallback(
-    async (name: string, email: string, password: string) => {
-      const res = await api.signup(name, email, password);
+    async (
+      name: string,
+      email: string,
+      password: string,
+      captchaToken?: string | null
+    ) => {
+      const res = await api.signup(name, email, password, captchaToken);
       if (res.email_verification_required || !res.access_token) {
         return { emailVerificationRequired: true };
       }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,16 +6,28 @@ import { Label } from "@/components/ui/label";
 import { Flower2, Sparkles, Rocket } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import { Turnstile } from "@/components/Turnstile";
 import { useAuth } from "@/contexts/AuthContext";
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, signup } = useAuth();
+
+  const handleCaptchaVerify = useCallback((token: string) => {
+    setCaptchaToken(token);
+  }, []);
+
+  const handleCaptchaExpire = useCallback(() => {
+    setCaptchaToken(null);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,15 +35,25 @@ const Login = () => {
       toast.error("Please fill in all fields");
       return;
     }
+    if (isSignUp && TURNSTILE_SITE_KEY && !captchaToken) {
+      toast.error("Please complete the verification challenge");
+      return;
+    }
 
     setLoading(true);
     try {
       if (isSignUp) {
-        const { emailVerificationRequired } = await signup(name, email, password);
+        const { emailVerificationRequired } = await signup(
+          name,
+          email,
+          password,
+          captchaToken
+        );
         if (emailVerificationRequired) {
           toast.success("Check your email to verify your account, then sign in.");
           setIsSignUp(false);
           setPassword("");
+          setCaptchaToken(null);
         } else {
           toast.success("Account created! Let's set up your child's profile.");
           navigate("/child-setup");
@@ -111,6 +133,16 @@ const Login = () => {
                   className="bg-background rounded-xl h-12 text-base"
                 />
               </div>
+
+              {isSignUp && TURNSTILE_SITE_KEY && (
+                <div className="pt-2">
+                  <Turnstile
+                    sitekey={TURNSTILE_SITE_KEY}
+                    onVerify={handleCaptchaVerify}
+                    onExpire={handleCaptchaExpire}
+                  />
+                </div>
+              )}
 
               <Button
                 variant="hero"

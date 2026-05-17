@@ -96,9 +96,15 @@ api.interceptors.response.use(
 export async function signup(
   name: string,
   email: string,
-  password: string
+  password: string,
+  captchaToken?: string | null
 ): Promise<SignupResponse> {
-  const { data } = await api.post("/auth/signup", { name, email, password });
+  const { data } = await api.post("/auth/signup", {
+    name,
+    email,
+    password,
+    captcha_token: captchaToken ?? null,
+  });
   return data;
 }
 

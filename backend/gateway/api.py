@@ -61,6 +61,7 @@ class SignupRequest(BaseModel):
     email: EmailStr
     password: str
     name: str
+    captcha_token: str | None = None
 
 class LoginRequest(BaseModel):
     email: EmailStr
@@ -110,7 +111,7 @@ def signup(req: SignupRequest, request: Request):
     check_signup_rate_limit(get_request_ip(request))
 
     try:
-        auth_response = signup_user(req.email, req.password)
+        auth_response = signup_user(req.email, req.password, captcha_token=req.captcha_token)
     except AuthApiError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
