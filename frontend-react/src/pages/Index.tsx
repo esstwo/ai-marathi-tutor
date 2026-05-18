@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpen, MessageCircle, BarChart3, Users, Sparkles, Star, Rocket } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import marathiMitra from "@/assets/marathi-mitra.png";
 
 const features = [
   {
@@ -76,13 +75,9 @@ const Index = () => {
               <div className="relative">
                 <div className="absolute -inset-6 bg-lemon/30 rounded-full blur-3xl" />
                 <div className="absolute -inset-8 bg-mint/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
-                <img
-                  src={marathiMitra}
-                  alt="Marathi Mitra - Your AI Marathi learning friend"
-                  width={340}
-                  height={340}
-                  className="relative animate-float drop-shadow-xl"
-                />
+                <div className="relative animate-float drop-shadow-xl">
+                  <Logo size={340} alt="Marathi Mitra - Your AI Marathi learning friend" />
+                </div>
               </div>
             </div>
           </div>

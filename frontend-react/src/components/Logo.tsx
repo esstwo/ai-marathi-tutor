@@ -5,7 +5,7 @@ interface LogoProps {
   alt?: string;
 }
 
-const SIZES = [16, 32, 48, 64, 96, 180, 192, 512] as const;
+const SIZES = [16, 32, 48, 64, 96, 180, 192, 512, 1024] as const;
 
 function pickSrc(displayPx: number): string {
   const target = displayPx * 2;
