@@ -136,7 +136,13 @@ def _text_to_html(text: str) -> str:
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#308A85 0%,#5BAFA9 100%);padding:40px 32px;text-align:center;">
-              <div style="font-size:48px;line-height:1;margin-bottom:8px;">🌸</div>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 12px;">
+                <tr>
+                  <td style="background:#FFFFFF;border-radius:18px;padding:10px;line-height:0;">
+                    <img src="https://marathimitra.site/mm-logo-192.png" alt="MarathiMitra" width="56" height="56" style="display:block;border:0;" />
+                  </td>
+                </tr>
+              </table>
               <h1 style="margin:0;color:#FFFFFF;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
                 MarathiMitra
               </h1>
