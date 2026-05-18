@@ -35,7 +35,7 @@ const Login = () => {
       toast.error("Please fill in all fields");
       return;
     }
-    if (isSignUp && TURNSTILE_SITE_KEY && !captchaToken) {
+    if (TURNSTILE_SITE_KEY && !captchaToken) {
       toast.error("Please complete the verification challenge");
       return;
     }
@@ -59,7 +59,7 @@ const Login = () => {
           navigate("/child-setup");
         }
       } else {
-        const { children } = await login(email, password);
+        const { children } = await login(email, password, captchaToken);
         toast.success("Welcome back!");
         navigate(children.length > 0 ? "/home" : "/child-setup");
       }
@@ -134,7 +134,7 @@ const Login = () => {
                 />
               </div>
 
-              {isSignUp && TURNSTILE_SITE_KEY && (
+              {TURNSTILE_SITE_KEY && (
                 <div className="pt-2">
                   <Turnstile
                     sitekey={TURNSTILE_SITE_KEY}

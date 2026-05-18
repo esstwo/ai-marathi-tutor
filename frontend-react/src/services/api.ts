@@ -110,9 +110,14 @@ export async function signup(
 
 export async function login(
   email: string,
-  password: string
+  password: string,
+  captchaToken?: string | null
 ): Promise<LoginResponse> {
-  const { data } = await api.post("/auth/login", { email, password });
+  const { data } = await api.post("/auth/login", {
+    email,
+    password,
+    captcha_token: captchaToken ?? null,
+  });
   return data;
 }
 

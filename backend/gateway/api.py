@@ -66,6 +66,7 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    captcha_token: str | None = None
 
 class ChildCreateRequest(BaseModel):
     name: str
@@ -147,7 +148,7 @@ def signup(req: SignupRequest, request: Request):
 @auth_router.post("/login")
 def login(req: LoginRequest):
     try:
-        auth_response = login_user(req.email, req.password)
+        auth_response = login_user(req.email, req.password, captcha_token=req.captcha_token)
     except AuthApiError as e:
         raise HTTPException(status_code=401, detail=str(e))
 

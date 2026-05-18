@@ -11,7 +11,11 @@ interface AuthState {
 }
 
 interface AuthContextValue extends AuthState {
-  login: (email: string, password: string) => Promise<{ children: Child[] }>;
+  login: (
+    email: string,
+    password: string,
+    captchaToken?: string | null
+  ) => Promise<{ children: Child[] }>;
   signup: (
     name: string,
     email: string,
@@ -58,8 +62,8 @@ export function AuthProvider({ children: reactChildren }: { children: React.Reac
   );
 
   const login = useCallback(
-    async (email: string, password: string) => {
-      const res = await api.login(email, password);
+    async (email: string, password: string, captchaToken?: string | null) => {
+      const res = await api.login(email, password, captchaToken);
       const kids = res.children || [];
       const active = kids.length > 0 ? kids[0] : null;
       persist(res.access_token, res.user_id, kids, active);

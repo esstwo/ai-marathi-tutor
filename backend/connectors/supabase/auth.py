@@ -26,11 +26,16 @@ def create_parent_record(user_id: str, email: str, name: str) -> dict | None:
     return result.data[0] if result.data else None
 
 
-def login_user(email: str, password: str):
-    """Authenticate a user via Supabase Auth. Lets AuthApiError propagate."""
-    return supabase.auth.sign_in_with_password(
-        {"email": email, "password": password}
-    )
+def login_user(email: str, password: str, captcha_token: str | None = None):
+    """Authenticate a user via Supabase Auth. Lets AuthApiError propagate.
+
+    Supabase's CAPTCHA protection (when enabled) applies to all auth endpoints,
+    so login must forward the token too — same shape as signup.
+    """
+    payload: dict = {"email": email, "password": password}
+    if captcha_token:
+        payload["options"] = {"captcha_token": captcha_token}
+    return supabase.auth.sign_in_with_password(payload)
 
 
 def refresh_session(refresh_token: str):
