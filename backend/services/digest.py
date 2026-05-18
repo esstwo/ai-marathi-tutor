@@ -1,5 +1,6 @@
 """Weekly parent digest — gather stats, generate AI summary, send email."""
 
+import html
 import logging
 import math
 import os
@@ -105,34 +106,70 @@ def generate_digest_text(parent_name: str, children_stats: list[dict]) -> str:
 # ── Email sending ─────────────────────────────────────────────────────
 
 def _text_to_html(text: str) -> str:
-    """Convert plain-text digest into a simple styled HTML email."""
+    """Render the LLM-generated digest text into the shared MarathiMitra email shell.
+
+    Matches the Supabase auth-email template (teal gradient header, rounded white
+    card, neutral footer) so all transactional + recurring mail looks like one app.
+    Escapes the LLM body before substituting newlines — Resend serves the HTML
+    verbatim, so we don't want stray model output to render as markup.
+    """
     paragraphs = [p.strip() for p in text.strip().split("\n\n") if p.strip()]
-    body = "".join(f"<p>{p.replace(chr(10), '<br>')}</p>" for p in paragraphs)
+    body = "".join(
+        f'<p style="margin:0 0 16px;color:#1F2937;font-size:16px;line-height:1.65;">'
+        f'{html.escape(p, quote=False).replace(chr(10), "<br>")}'
+        f'</p>'
+        for p in paragraphs
+    )
 
     return f"""<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<style>
-  body {{ font-family: system-ui, sans-serif; background: #fdf8f3; margin: 0; padding: 0; }}
-  .wrap {{ max-width: 560px; margin: 32px auto; background: #fff; border-radius: 12px;
-           padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }}
-  .logo {{ font-size: 1.5rem; font-weight: 700; color: #f97316; margin-bottom: 4px; }}
-  .sub {{ color: #888; font-size: 0.875rem; margin-bottom: 24px; }}
-  p {{ color: #333; line-height: 1.65; margin: 0 0 16px; }}
-  .footer {{ margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;
-             font-size: 0.8rem; color: #aaa; }}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your weekly MarathiMitra digest</title>
 </head>
-<body>
-<div class="wrap">
-  <div class="logo">🇮🇳 MarathiMitra</div>
-  <div class="sub">Your weekly learning digest</div>
-  {body}
-  <div class="footer">
-    You're receiving this because you have an account on MarathiMitra.
-  </div>
-</div>
+<body style="margin:0;padding:0;background-color:#FAF7F2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#FAF7F2;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="560" style="max-width:560px;background-color:#FFFFFF;border-radius:24px;overflow:hidden;box-shadow:0 4px 20px -4px rgba(48,138,133,0.15);">
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#308A85 0%,#5BAFA9 100%);padding:40px 32px;text-align:center;">
+              <div style="font-size:48px;line-height:1;margin-bottom:8px;">🌸</div>
+              <h1 style="margin:0;color:#FFFFFF;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
+                MarathiMitra
+              </h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.85);font-size:14px;font-weight:500;">
+                Your weekly learning digest
+              </p>
+            </td>
+          </tr>
+
+          <!-- Body (LLM-generated) -->
+          <tr>
+            <td style="padding:40px 32px 16px;">
+              {body}
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:24px 32px;border-top:1px solid #F0EBE3;text-align:center;">
+              <p style="margin:0;color:#9CA3AF;font-size:12px;line-height:1.5;">
+                You're receiving this because you have a MarathiMitra account.
+              </p>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Outside footer -->
+        <p style="margin:16px 0 0;color:#9CA3AF;font-size:11px;text-align:center;">
+          MarathiMitra · marathimitra.site
+        </p>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>"""
 
