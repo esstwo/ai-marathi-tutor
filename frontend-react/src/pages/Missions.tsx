@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Send, Target, Sparkles, Volume2, ArrowLeft, Star, Flower2, User, Square, Trophy, Mic, MicOff,
+  Send, Target, Sparkles, Volume2, ArrowLeft, Star, User, Square, Trophy, Mic, MicOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import { Logo } from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
 import type { Mission, MissionProgress } from "@/types";
@@ -479,7 +480,7 @@ const Missions = () => {
                     }
                   >
                     {msg.role === "assistant" ? (
-                      <Flower2 className="h-4 w-4" />
+                      <Logo size={20} />
                     ) : (
                       <User className="h-4 w-4" />
                     )}
@@ -521,7 +522,7 @@ const Missions = () => {
               <div className="flex gap-3 animate-pop">
                 <Avatar className="h-9 w-9 shrink-0 mt-0.5">
                   <AvatarFallback className="bg-primary/15 text-primary rounded-xl">
-                    <Flower2 className="h-4 w-4" />
+                    <Logo size={20} />
                   </AvatarFallback>
                 </Avatar>
                 <div className="bg-muted rounded-3xl rounded-tl-lg px-5 py-4 flex items-center gap-2">

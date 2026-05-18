@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Flower2, Sparkles, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, Sparkles, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
@@ -32,9 +33,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to={isAuthenticated ? "/home" : "/"} className="flex items-center gap-2 group">
-          <div className="h-9 w-9 rounded-xl bg-primary/15 flex items-center justify-center group-hover:animate-wiggle transition-transform">
-            <Flower2 className="w-5 h-5 text-primary" />
-          </div>
+          <Logo size={36} className="group-hover:animate-wiggle transition-transform" />
           <span className="font-display text-xl font-bold text-gradient">Marathi Mitra</span>
         </Link>
 

@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Flower2, Sparkles, Rocket } from "lucide-react";
+import { Sparkles, Rocket } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import { Logo } from "@/components/Logo";
 import { Turnstile } from "@/components/Turnstile";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -79,8 +80,8 @@ const Login = () => {
         <div className="w-full max-w-md">
           <div className="gradient-card rounded-3xl border-2 border-border/50 p-8 fun-shadow animate-pop">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-2xl bg-primary/15 flex items-center justify-center mx-auto mb-4 animate-bounce-gentle">
-                <Flower2 className="w-8 h-8 text-primary" />
+              <div className="mx-auto mb-4 animate-bounce-gentle inline-block">
+                <Logo size={64} />
               </div>
               <h1 className="font-display text-2xl font-bold text-foreground">
                 {isSignUp ? "Join the Fun!" : "Welcome Back!"}

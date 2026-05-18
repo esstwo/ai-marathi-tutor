@@ -1,7 +1,8 @@
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { BookOpen, MessageCircle, BarChart3, Users, Sparkles, Star, Rocket, Flower2 } from "lucide-react";
+import { BookOpen, MessageCircle, BarChart3, Users, Sparkles, Star, Rocket } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import marathiMitra from "@/assets/marathi-mitra.png";
 
 const features = [
@@ -146,7 +147,7 @@ const Index = () => {
       <footer className="border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <div className="flex items-center justify-center gap-2 mb-1">
-            <Flower2 className="w-4 h-4 text-primary" />
+            <Logo size={20} />
             <p className="font-display font-bold text-foreground">Marathi Mitra</p>
           </div>
           <p>Making Marathi learning joyful for kids everywhere.</p>

@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Send, Flower2, User, Sparkles, Square, Zap, Volume2, Mic, MicOff } from "lucide-react";
+import { Send, User, Sparkles, Square, Zap, Volume2, Mic, MicOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import { Logo } from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
 
@@ -257,9 +258,7 @@ const Chats = () => {
       <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
         {/* Header */}
         <div className="px-4 py-4 border-b flex items-center gap-3">
-          <div className="h-12 w-12 rounded-2xl bg-primary/15 flex items-center justify-center">
-            <Flower2 className="h-6 w-6 text-primary" />
-          </div>
+          <Logo size={48} />
           <div>
             <h1 className="font-display text-lg font-bold text-foreground">
               Marathi Mitra
@@ -321,7 +320,7 @@ const Chats = () => {
                     }
                   >
                     {msg.role === "assistant" ? (
-                      <Flower2 className="h-4 w-4" />
+                      <Logo size={20} />
                     ) : (
                       <User className="h-4 w-4" />
                     )}
@@ -365,7 +364,7 @@ const Chats = () => {
               <div className="flex gap-3 animate-pop">
                 <Avatar className="h-9 w-9 shrink-0 mt-0.5">
                   <AvatarFallback className="bg-primary/15 text-primary rounded-xl">
-                    <Flower2 className="h-4 w-4" />
+                    <Logo size={20} />
                   </AvatarFallback>
                 </Avatar>
                 <div className="bg-muted rounded-3xl rounded-tl-lg px-5 py-4 flex items-center gap-2">
