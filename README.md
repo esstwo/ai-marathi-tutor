@@ -18,7 +18,8 @@ celebrating Ganpati).
 - **AI:** Groq API (Llama 3.3 70B) — conversations, missions, weekly digest
 - **TTS:** Google Cloud Text-to-Speech (Marathi) — vocabulary, quiz, chat
 - **STT:** Groq Whisper large-v3 — Marathi speech-to-text input
-- **Email:** Resend — weekly AI-written parent digest
+- **Email:** Resend — weekly AI-written parent digest (custom domain) + Supabase auth emails routed via Resend SMTP
+- **Bot protection:** Cloudflare Turnstile on signup + login (server-verified by Supabase Auth)
 - **MCP:** MCP App server (Node/TypeScript) with OAuth 2.1 for Claude Desktop + claude.ai
 - **Deployment:** Vercel (frontend) + Render (backend + MCP App + digest cron)
 
@@ -40,19 +41,21 @@ backend/
     parent_digest.md               # Weekly parent email — tone rules + 3 few-shot examples
   connectors/                      # Minimal code bridging skills to external systems
     supabase/
-      auth.py                      # signup, login, refresh, parent records
+      auth.py                      # signup, login, refresh, parent records (captcha-aware)
       children.py                  # child profiles, ownership checks
       conversations.py             # start/end conversations, save/get messages
       lessons.py                   # list/get/complete lessons
       progress.py                  # counts and aggregations for reporting
       missions.py                  # CRUD for missions + child mission progress
       digest.py                    # date-filtered queries for weekly digest
+      usage.py                     # persisted per-child daily LLM call counter (atomic RPC)
+      rate_limits.py               # per-IP signup attempt tracking
     tts/
       google_tts.py                # speak_marathi (base64 MP3)
   gateway/                         # Thin HTTP layer
     api.py                         # All REST endpoints (single file)
     auth.py                        # Token validation + child ownership
-    guardrails.py                  # Input/output validation, session limits, cost protection
+    guardrails.py                  # Input/output validation, session limits, cost protection (per-child + global), signup rate limit, IP extraction
     progress_utils.py              # Deterministic XP/streak calculations
   services/
     tts.py                         # Google Cloud TTS wrapper with caching
@@ -61,7 +64,7 @@ backend/
     supabase_client.py             # Supabase client init
     migrations.sql                 # Database schema
   tests/
-    test_guardrails.py             # 112 eval tests for all guardrail categories
+    test_guardrails.py             # 123 eval tests covering all guardrail categories (input, output, session, per-child cost, signup rate limit)
 mcp_server.py                      # Standalone MCP server for Claude Desktop (stdio)
 mcp-app/
   server.ts                        # MCP App server — interactive UIs inside Claude
@@ -150,21 +153,42 @@ The backend uses a **skills + connectors** architecture:
    GROQ_API_KEY=...
    RESEND_API_KEY=...
    RESEND_FROM_EMAIL=MarathiMitra <digest@yourdomain.com>
+   ALLOWED_ORIGINS=http://localhost:5173,https://yourdomain.com  # comma-separated; whitespace + trailing slashes tolerated
+
+   # Cost protection (all have sensible defaults — override only to tune)
+   DAILY_LLM_CALL_LIMIT=500              # global daily backstop (in-memory)
+   DAILY_LLM_CALL_LIMIT_PER_CHILD=100    # persisted per-child daily cap (Supabase)
+   SIGNUP_ATTEMPTS_PER_HOUR=5            # per-IP signup throttle (persisted)
    ```
 3. Install backend dependencies: `pip install -r requirements.txt`
-4. Run the database migration: apply `backend/db/migrations.sql` in Supabase SQL Editor
+4. Run the database migration: apply `backend/db/migrations.sql` in Supabase SQL Editor (creates the new `usage_counters` + `signup_attempts` tables and `increment_usage_counter` Postgres function)
 5. Seed lesson content: `python -m scripts.seed_content`
 6. Start backend:
    ```bash
    uvicorn backend.main:app --reload
    ```
-7. Start React frontend:
+7. Configure the React frontend `.env`:
+   ```
+   VITE_API_BASE_URL=http://localhost:8000
+   VITE_TURNSTILE_SITE_KEY=0x4...        # optional — if unset, Turnstile widget hides and signup/login proceed without a captcha token
+   ```
+8. Start React frontend:
    ```bash
    cd frontend-react
    npm install
    npm run dev
    ```
-8. Open `http://localhost:5173`
+9. Open `http://localhost:5173`
+
+### Production hardening (recommended before opening signups publicly)
+
+These are dashboard config — no code changes:
+
+- **Supabase** → Authentication → Sign In/Up → enable **Confirm email** so verification is required before login
+- **Supabase** → Authentication → CAPTCHA Protection → enable, choose **Turnstile**, paste your Cloudflare Turnstile secret
+- **Supabase** → Project Settings → Authentication → SMTP Settings → enable custom SMTP, point at Resend (`smtp.resend.com:465`, username `resend`, password = Resend API key) so auth emails come from your domain instead of Supabase's default sender
+- **Cloudflare Turnstile** → register every hostname that will load the widget (`localhost`, your prod domain, any Vercel preview domains)
+- **Provider spend caps**: Groq tier/email alerts, Google Cloud TTS daily character quota, Supabase plan spend cap toggle
 
 ## Claude Desktop Integration (stdio)
 

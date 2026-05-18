@@ -57,5 +57,21 @@
 - [x] Output validation: JSON structure check, URL/email/phone stripping, profanity fallback
 - [x] Session limits: 50 messages/conversation, 30 min duration, 3 concurrent conversations
 - [x] Content flagging: `conversation_flags` table, auto-flag sanitized outputs, parent review endpoint
-- [x] Cost protection: daily LLM call limit (configurable via `DAILY_LLM_CALL_LIMIT`)
-- [x] Eval tests: 112 pytest cases covering all guardrail categories
+- [x] Cost protection: global daily LLM call limit (configurable via `DAILY_LLM_CALL_LIMIT`)
+- [x] Eval tests: 123 pytest cases covering all guardrail categories
+
+## Public Launch Hardening
+- [x] Persisted per-child daily LLM cap (`usage_counters` table + atomic `increment_usage_counter` Postgres RPC; `DAILY_LLM_CALL_LIMIT_PER_CHILD`, default 100)
+- [x] Email verification on signup (Supabase "Confirm email" + signup endpoint returns `email_verification_required` flag + frontend "check your email" toast)
+- [x] Per-IP signup rate limit (`signup_attempts` table; `SIGNUP_ATTEMPTS_PER_HOUR`, default 5; X-Forwarded-For aware)
+- [x] Cloudflare Turnstile on signup AND login (token forwarded to Supabase Auth, verified server-side; widget conditional on `VITE_TURNSTILE_SITE_KEY`)
+- [x] CORS parsing tolerates whitespace + trailing slashes; logs the parsed allowlist at startup
+- [x] Resend domain (marathimitra.site) verified — weekly digest sends end-to-end
+- [x] Supabase auth emails routed through Resend SMTP (custom sender on your domain, no Supabase rate limit)
+- [x] Branded HTML email templates (Confirm signup + Reset password) in Supabase
+- [ ] Per-child cap on mission generation (currently shares the LLM call counter — heavy endpoint, worth its own limit ~5/day)
+- [ ] Per-child cap on Whisper STT (`/tts/transcribe`) — currently ungated, charges Groq per audio second
+- [ ] Per-child / per-day cap on Google TTS character spend (`/tts/speak`) — currently ungated apart from 200-char per-request limit
+- [ ] Hard daily quota on Google Cloud TTS API characters/day (provider-side, set in GCP console)
+- [ ] Spend alert on Groq + spend cap on Supabase plan + budget alerts on GCP billing
+- [ ] Per-IP rate limit on `/auth/login` (currently only signup is throttled — login brute-force protection is Supabase's responsibility but a thin pre-check would help)

@@ -31,7 +31,11 @@
 │  │  │ Input:  max length, profanity filter, injection detect │ │   │
 │  │  │ Output: JSON validation, PII/URL strip, safe fallback  │ │   │
 │  │  │ Session: msg cap (50), time cap (30m), concurrency (3) │ │   │
-│  │  │ Cost:   daily LLM call limit, usage tracking           │ │   │
+│  │  │ Cost:   per-child daily LLM cap (persisted, atomic)    │ │   │
+│  │  │         + global daily backstop (in-memory)            │ │   │
+│  │  │ Abuse:  per-IP signup rate limit (persisted),          │ │   │
+│  │  │         Cloudflare Turnstile token forwarded to        │ │   │
+│  │  │         Supabase for server-side verification          │ │   │
 │  │  └────────────────────────────────────────────────────────┘ │   │
 │  └──────┬────────────────────┬──────────────────────────────────┘   │
 │         │                    │                                       │
@@ -63,6 +67,9 @@
 │  │    missions.py                                               │    │
 │  │    progress.py                                               │    │
 │  │    digest.py          (weekly stats queries)                 │    │
+│  │    usage.py           (per-child LLM call counter, atomic    │    │
+│  │                        increment via Postgres RPC)           │    │
+│  │    rate_limits.py     (per-IP signup attempt tracking)       │    │
 │  └──────┬──────────────────────────────┬───────────────────────┘    │
 │         │                              │                             │
 │  ┌──────▼──────────┐   ┌──────────────▼──────────────┐              │
@@ -315,12 +322,12 @@ Child taps "Generate New Mission" for level 2
 | Layer | Directory | Responsibility |
 |-------|-----------|----------------|
 | **Gateway** | `backend/gateway/` | HTTP endpoints, auth validation, request/response mapping. CRUD calls connectors directly. Conversations and missions use `run_skill()`. Mission scoring and XP are deterministic (in `progress_utils.py`). |
-| **Guardrails** | `backend/gateway/guardrails.py` | Child safety: input validation (length, profanity, prompt injection), output sanitization (PII/URL stripping, JSON validation), session limits (message/time/concurrency caps), cost protection (daily LLM call limit). |
+| **Guardrails** | `backend/gateway/guardrails.py` | Child safety + abuse prevention: input validation (length, profanity, prompt injection), output sanitization (PII/URL stripping, JSON validation), session limits (message/time/concurrency caps), cost protection (per-child persisted daily LLM cap + global in-memory backstop), per-IP signup rate limit (persisted), X-Forwarded-For aware IP extraction. |
 | **Core** | `backend/core/` | Generic infrastructure: skill loader, connector registry, agentic tool-calling loop. Not MarathiMitra-specific. |
 | **Skills** | `backend/skills/` | Portable Markdown files — system prompts with YAML frontmatter declaring inputs, outputs, and connector dependencies. Five skills: conversation, lessons, progress, mission_generator, mission_guide. The product's intelligence. |
 | **Connectors** | `backend/connectors/` | Minimal glue code — plain Python functions that call external systems. No business logic. |
 | **Services** | `backend/services/` | Shared utilities: Google Cloud TTS wrapper with caching; weekly digest service (stats gathering, LLM call, Resend email). |
-| **Tests** | `backend/tests/` | 112 eval tests covering all guardrail categories. Run: `pytest backend/tests/` |
+| **Tests** | `backend/tests/` | 123 eval tests covering all guardrail categories (input, output, session, per-child cost, signup rate limit). Run: `pytest backend/tests/` |
 | **MCP App** | `mcp-app/` | TypeScript MCP server serving interactive HTML UIs (chat, lessons, progress) inside Claude Desktop/claude.ai. TTS buttons on all Marathi text (detected via Devanagari Unicode range). stdio mode uses service key; HTTP mode uses OAuth 2.1 + PKCE backed by Supabase email/password. |
 
 ## Skill File Format
@@ -380,6 +387,12 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 
 **Few-shot prompting in skill files**: The `parent_digest` skill embeds three annotated input/output examples directly in the Markdown body — an active week, a quiet week, and two children with mixed activity. This constrains tone, structure, and the contextualised XP phrasing without extra code. Any skill can adopt this pattern; the examples live in the same `.md` file as the instructions, so they stay in sync as the prompt evolves.
 
+**Per-child cost protection (persisted, not in-memory)**: The original `track_llm_call()` counter was a single global in-memory dict — it reset on every Render redeploy and didn't isolate users. `track_child_llm_call(child_id)` now writes through a Postgres `increment_usage_counter` RPC (atomic upsert with returning) backed by the `usage_counters` table. One abusive child cannot exhaust the global budget; the counter survives restarts and is consistent across workers. The DB call fails open on errors — a Supabase outage logs a warning rather than blocking learning. The original global limit remains as a cheap backstop.
+
+**Signup hardening (defence in depth)**: Three layers gate account creation: (1) a persisted per-IP rate limit (`signup_attempts` table, 5/hr default) blocks burst signup attempts even before any external service is called; (2) Cloudflare Turnstile tokens are forwarded to Supabase Auth, which verifies them server-side using the configured secret and rejects forged/invalid tokens; (3) Supabase email confirmation requires clicking a verification link before the account becomes usable. Any single layer being bypassed still leaves the other two. The Turnstile widget is conditional on `VITE_TURNSTILE_SITE_KEY`, so local dev without a Cloudflare account still works — Supabase silently accepts a missing `captcha_token` when its own CAPTCHA setting is off. Login is gated by the same Turnstile token because Supabase's CAPTCHA toggle is project-wide.
+
+**CORS that doesn't lie**: `ALLOWED_ORIGINS` is parsed defensively — whitespace and trailing slashes are stripped per entry so `"a, b, c"` and `"https://a/"` both work. The parsed list is logged at startup (`[cors] allowed origins: [...]`) so misconfigurations are immediately visible in Render logs instead of presenting as mysterious "Disallowed CORS origin" errors hours later.
+
 ## Database Schema (Supabase)
 
 ```
@@ -389,7 +402,13 @@ parents ──────< children ──────< conversations ───
                    │
                    ├──────< child_lesson_progress >────── lessons (icon, vocab, quiz)
                    │
-                   └──────< child_mission_progress >───── missions
+                   ├──────< child_mission_progress >───── missions
+                   │
+                   └──────< usage_counters    (per-child × per-day LLM call count)
+
+signup_attempts                              (per-IP, attempted_at — not joined to anything)
 ```
 
-Core tables: `parents`, `children`, `lessons`, `child_lesson_progress`, `conversations`, `conversation_messages`, `conversation_flags`, `missions`, `child_mission_progress`. Missions store `steps` (jsonb) and `required_vocab` alongside the scenario. RLS on `parents` and `children`; all other access goes through the FastAPI gateway with auth checks.
+Core tables: `parents`, `children`, `lessons`, `child_lesson_progress`, `conversations`, `conversation_messages`, `conversation_flags`, `missions`, `child_mission_progress`, `usage_counters`, `signup_attempts`. Missions store `steps` (jsonb) and `required_vocab` alongside the scenario. RLS on `parents` and `children`; all other access goes through the FastAPI gateway with auth checks.
+
+The `usage_counters` table is incremented atomically via the `increment_usage_counter(child_id, date)` Postgres function — `insert ... on conflict do update returning` so two concurrent backend workers can't race. The `signup_attempts` table is pruned opportunistically on insert (rows older than 24h for that IP are deleted), avoiding a separate cleanup job.
