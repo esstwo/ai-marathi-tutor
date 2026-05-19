@@ -4,7 +4,8 @@ supabase
 python-dotenv
 pydantic[email]
 streamlit
-groq
+openai  # Used against Sarvam's OpenAI-compatible chat completions endpoint
+groq    # Still used for Whisper STT (see backend/gateway/api.py /tts/transcribe)
 google-cloud-texttospeech
 fastmcp
 python-frontmatter

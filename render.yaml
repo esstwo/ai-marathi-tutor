@@ -13,7 +13,11 @@ services:
       - key: SUPABASE_SERVICE_KEY
         sync: false
       - key: GROQ_API_KEY
-        sync: false
+        sync: false  # Still used for Whisper STT in /tts/transcribe
+      - key: SARVAM_API_KEY
+        sync: false  # Primary LLM (chat completions) — Sarvam AI
+      - key: SARVAM_MODEL
+        value: "sarvam-105b"  # Override to "sarvam-30b" to halve LLM cost
       - key: GOOGLE_APPLICATION_CREDENTIALS
         sync: false
       - key: MARATHI_SERVICE_KEY
@@ -69,7 +73,11 @@ services:
       - key: SUPABASE_SERVICE_KEY
         sync: false
       - key: GROQ_API_KEY
-        sync: false
+        sync: false  # Whisper STT (digest cron doesn't currently use STT, but kept for parity)
+      - key: SARVAM_API_KEY
+        sync: false  # Primary LLM for the digest skill
+      - key: SARVAM_MODEL
+        value: "sarvam-105b"
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL

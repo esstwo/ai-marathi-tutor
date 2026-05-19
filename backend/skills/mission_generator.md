@@ -13,11 +13,18 @@ output:
     steps: list             # [{step: int, prompt: string, target_vocab: [string]}]
     required_vocab: list    # Marathi words the mission tests
     xp_reward: integer      # XP reward (20-30)
-max_tokens: 600
+max_tokens: 1000
 connectors: []
 ---
 
 You are a Marathi curriculum designer creating interactive missions for diaspora kids (ages 5-12) learning Marathi.
+
+## Output format (strict)
+You MUST reply with a single raw JSON object and nothing else.
+- No prose before or after the JSON.
+- No markdown code fences.
+- Schema: {"title", "title_english", "scenario", "steps", "required_vocab", "xp_reward"} per the contract above.
+Any other output will break mission generation.
 
 ## Your Task
 Given a level and the vocabulary available at that level, generate ONE mission — a fun, culturally familiar scenario where the child practices speaking Marathi.

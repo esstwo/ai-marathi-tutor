@@ -1,18 +1,21 @@
 """Generic agentic loop — runs any skill by combining its prompt with connectors.
 
-Extracts the Groq-specific agentic loop from mitra_conversation.py into a
-reusable function: run_skill(skill, messages) → parsed output.
+Calls Sarvam AI's chat completions endpoint via the OpenAI SDK (Sarvam exposes
+an OpenAI-compatible API at https://api.sarvam.ai/v1). Tool-calling format
+matches OpenAI exactly. Note: Sarvam does NOT support response_format —
+JSON output is enforced via prompt engineering + defensive parsing instead.
 """
 
 import inspect
 import json
 import logging
 import os
+import re
 import time
 from typing import Callable
 
-from groq import (
-    Groq,
+from openai import (
+    OpenAI,
     RateLimitError,
     APITimeoutError,
     AuthenticationError,
@@ -27,11 +30,24 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-
-MODEL = "llama-3.3-70b-versatile"
+SARVAM_BASE_URL = "https://api.sarvam.ai/v1"
+MODEL = os.environ.get("SARVAM_MODEL", "sarvam-105b")
 MAX_TOKENS = 300
 MAX_TOOL_ROUNDS = 3
+
+_client: OpenAI | None = None
+
+
+def _get_client() -> OpenAI:
+    """Lazy-init the LLM client so import works without SARVAM_API_KEY set
+    (useful for tests and tooling that don't make live calls)."""
+    global _client
+    if _client is None:
+        _client = OpenAI(
+            api_key=os.environ.get("SARVAM_API_KEY") or "missing",
+            base_url=SARVAM_BASE_URL,
+        )
+    return _client
 
 
 # ── LLM error hierarchy ─────────────────────────────────────────────────
@@ -107,12 +123,11 @@ def connectors_to_tools(connectors: dict[str, Callable]) -> list[dict]:
     return [_fn_to_tool_schema(name, fn) for name, fn in connectors.items()]
 
 
-# ── Groq API call with retries ──────────────────────────────────────────
+# ── Sarvam API call with retries ────────────────────────────────────────
 
-def _call_groq(messages: list[dict], tools: list[dict] | None = None,
-               response_format: dict | None = None, max_retries: int = 2,
-               max_tokens: int = MAX_TOKENS):
-    """Single Groq API call with retry logic. Returns the raw response."""
+def _call_llm(messages: list[dict], tools: list[dict] | None = None,
+              max_retries: int = 2, max_tokens: int = MAX_TOKENS):
+    """Single Sarvam chat-completions call with retry logic. Returns the raw response."""
     kwargs = {
         "model": MODEL,
         "max_tokens": max_tokens,
@@ -120,22 +135,28 @@ def _call_groq(messages: list[dict], tools: list[dict] | None = None,
     }
     if tools:
         kwargs["tools"] = tools
-    if response_format:
-        kwargs["response_format"] = response_format
 
     for attempt in range(max_retries + 1):
         try:
-            return client.chat.completions.create(**kwargs)
+            response = _get_client().chat.completions.create(**kwargs)
+            usage = response.usage
+            logger.info(
+                "LLM responded — model=%s, prompt_tokens=%s, completion_tokens=%s",
+                response.model,
+                getattr(usage, "prompt_tokens", "?"),
+                getattr(usage, "completion_tokens", "?"),
+            )
+            return response
         except RateLimitError as e:
             if attempt < max_retries:
                 wait = 2 ** (attempt + 1)
-                logger.warning("Groq rate limited, retrying in %ds (attempt %d/%d)", wait, attempt + 1, max_retries)
+                logger.warning("Sarvam rate limited, retrying in %ds (attempt %d/%d)", wait, attempt + 1, max_retries)
                 time.sleep(wait)
             else:
                 raise LLMRateLimitError("LLM is rate limited — please try again shortly.") from e
         except APITimeoutError as e:
             if attempt < max_retries:
-                logger.warning("Groq timeout, retrying (attempt %d/%d)", attempt + 1, max_retries)
+                logger.warning("Sarvam timeout, retrying (attempt %d/%d)", attempt + 1, max_retries)
             else:
                 raise LLMTimeoutError("LLM took too long to respond — please try again.") from e
         except AuthenticationError as e:
@@ -144,7 +165,7 @@ def _call_groq(messages: list[dict], tools: list[dict] | None = None,
             raise LLMContentFilterError("Could not generate a response for this input.") from e
         except APIConnectionError as e:
             if attempt < max_retries:
-                logger.warning("Groq connection error, retrying (attempt %d/%d)", attempt + 1, max_retries)
+                logger.warning("Sarvam connection error, retrying (attempt %d/%d)", attempt + 1, max_retries)
             else:
                 raise LLMConnectionError("Could not reach the language service.") from e
 
@@ -191,14 +212,13 @@ def run_skill_raw(messages: list[dict], connectors: dict[str, Callable],
     tools = connectors_to_tools(connectors) if connectors else None
 
     for round_num in range(MAX_TOOL_ROUNDS + 1):
-        response_format = None
-        current_tools = tools
-        if round_num == MAX_TOOL_ROUNDS:
-            current_tools = None
-            response_format = {"type": "json_object"}
+        # On the final round, drop tool definitions so the model is forced to
+        # produce a final text response (matches the prior Groq behaviour, just
+        # without the response_format JSON enforcement Sarvam doesn't support —
+        # parse_json_response handles non-strict JSON output defensively).
+        current_tools = None if round_num == MAX_TOOL_ROUNDS else tools
 
-        response = _call_groq(messages, tools=current_tools, response_format=response_format,
-                              max_tokens=max_tokens)
+        response = _call_llm(messages, tools=current_tools, max_tokens=max_tokens)
         message = response.choices[0].message
 
         if message.tool_calls and round_num < MAX_TOOL_ROUNDS:
@@ -223,24 +243,43 @@ def run_skill_raw(messages: list[dict], connectors: dict[str, Callable],
     return ""
 
 
+_JSON_OBJECT_RE = re.compile(r"\{.*\}", re.DOTALL)
+
+
 def parse_json_response(raw_text: str) -> dict:
-    """Parse LLM's JSON response. Falls back gracefully for plain text."""
+    """Parse LLM's JSON response. Defensive — Sarvam doesn't enforce JSON output.
+
+    Order of attempts:
+      1. Strip markdown code fences if present, then json.loads.
+      2. If that fails, find the first '{...}' substring and try again
+         (handles "Sure! Here is your reply: {...}" style preambles).
+      3. Last resort: treat the whole raw text as marathi_text plain text.
+    """
     text = raw_text.strip()
 
     # Strip markdown code fences (```json ... ``` or ``` ... ```)
     if text.startswith("```"):
         lines = text.split("\n")
-        # Remove first line (```json or ```) and last line (```)
         lines = lines[1:]
         if lines and lines[-1].strip() == "```":
             lines = lines[:-1]
         text = "\n".join(lines).strip()
 
     try:
-        data = json.loads(text)
-        return data
+        return json.loads(text)
     except (json.JSONDecodeError, TypeError):
-        return {"marathi_text": text, "english_hint": None}
+        pass
+
+    # Try to extract the first JSON object from anywhere in the text
+    match = _JSON_OBJECT_RE.search(text)
+    if match:
+        try:
+            return json.loads(match.group(0))
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    logger.warning("LLM returned non-JSON output, falling back to plain text: %s", text[:200])
+    return {"marathi_text": text, "english_hint": None}
 
 
 def run_skill(skill: Skill, messages: list[dict],

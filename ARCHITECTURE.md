@@ -94,15 +94,15 @@
 └──────────────────┘            └─────────────────────┘
 
           ▲
-          │ Tool calls via Groq API
+          │ Chat completions via OpenAI-compatible SDK
           │
-┌─────────┴────────┐
-│   Groq Cloud     │
-│  Llama 3.3 70B   │
-│  (LLM engine)    │
-│  Whisper v3      │
-│  (speech-to-text)│
-└──────────────────┘
+┌─────────┴────────┐    ┌──────────────────┐
+│   Sarvam AI      │    │   Groq Cloud     │
+│  sarvam-105b     │    │  Whisper v3      │
+│  (LLM engine,    │    │  (speech-to-text │
+│  Indian-native)  │    │   for /tts/      │
+│                  │    │   transcribe)    │
+└──────────────────┘    └──────────────────┘
 
 
                     ┌──────────────────────────────────┐
@@ -373,9 +373,9 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 
 **Shared, LLM-Generated Missions**: Missions are not static content — they're generated on-the-fly by the `mission_generator` skill using level vocabulary. Generated missions are saved to a shared `missions` table so all children can play them. Any child can request a new mission to grow the pool. The `mission_guide` skill plays the scenario character, tracks step progression, and scores Marathi usage (0-3 per step). The gateway aggregates step scores into a final 0-100 percentage and awards XP proportionally.
 
-**Voice Input via Groq Whisper**: Kids can tap a mic button to speak instead of type. Audio is recorded in the browser (WebM), sent to Groq's Whisper large-v3 model with `language="mr"` (Marathi), and the transcribed text is inserted into the input field for review before sending. This keeps the STT on the same provider as the LLM, and Whisper's multilingual model handles the mixed Marathi-English speech diaspora kids naturally produce.
+**Voice Input via Groq Whisper**: Kids can tap a mic button to speak instead of type. Audio is recorded in the browser (WebM), sent to Groq's Whisper large-v3 model with `language="mr"` (Marathi), and the transcribed text is inserted into the input field for review before sending. Whisper's multilingual model handles the mixed Marathi-English speech diaspora kids naturally produce. (Note: this is the only thing Groq is still used for — LLM moved to Sarvam.)
 
-**Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}` enforced via `response_format`. Falls back gracefully if the LLM returns plain text.
+**Structured JSON Output**: The LLM returns `{"marathi_text": "...", "english_hint": "..."}`. Sarvam does not support OpenAI's `response_format={"type":"json_object"}` parameter, so JSON output is enforced via three layers instead: (1) each JSON-producing skill prompt has an explicit "Output format (strict)" section near the top, (2) the gateway appends a single-line JSON reminder to each user turn before sending to the LLM — the reminder is NOT saved to conversation history so the UI is unaffected, and (3) `parse_json_response` is defensive: tries `json.loads` after stripping markdown fences, then falls back to extracting the first `{...}` substring from prose-wrapped output, and only as a last resort treats the entire response as plain text.
 
 **Token Refresh**: The frontend's Axios interceptor catches 401s, refreshes the JWT via `/auth/refresh`, and retries the original request. Concurrent requests queue behind the refresh.
 
@@ -392,6 +392,12 @@ The frontmatter declares structured metadata. The Markdown body is used directly
 **Signup hardening (defence in depth)**: Three layers gate account creation: (1) a persisted per-IP rate limit (`signup_attempts` table, 5/hr default) blocks burst signup attempts even before any external service is called; (2) Cloudflare Turnstile tokens are forwarded to Supabase Auth, which verifies them server-side using the configured secret and rejects forged/invalid tokens; (3) Supabase email confirmation requires clicking a verification link before the account becomes usable. Any single layer being bypassed still leaves the other two. The Turnstile widget is conditional on `VITE_TURNSTILE_SITE_KEY`, so local dev without a Cloudflare account still works — Supabase silently accepts a missing `captcha_token` when its own CAPTCHA setting is off. Login is gated by the same Turnstile token because Supabase's CAPTCHA toggle is project-wide.
 
 **CORS that doesn't lie**: `ALLOWED_ORIGINS` is parsed defensively — whitespace and trailing slashes are stripped per entry so `"a, b, c"` and `"https://a/"` both work. The parsed list is logged at startup (`[cors] allowed origins: [...]`) so misconfigurations are immediately visible in Render logs instead of presenting as mysterious "Disallowed CORS origin" errors hours later.
+
+**Sarvam over Groq, OpenAI SDK over Sarvam SDK**: LLM provider is Sarvam AI (`sarvam-105b`) — Marathi-native, ~10× cheaper than Groq paid (Groq free-tier rate limits were becoming a constraint). Sarvam exposes an OpenAI-compatible chat-completions endpoint at `https://api.sarvam.ai/v1`, so the integration uses the official `openai` Python SDK pointed at that base URL — no vendor lock-in to Sarvam-specific client code, and swapping providers in the future is a base-URL change. Tool calling format matches OpenAI exactly. Groq is retained only for Whisper STT (`/tts/transcribe`).
+
+**Mission context injected, not tool-fetched**: The gateway already fetches the child profile and mission row before calling the mission_guide skill, so making the LLM call `get_child_profile` + `get_mission_by_id` as tools was pure overhead — extra round-trips, extra tokens, extra failure modes. `_build_mission_context()` renders the full mission (title, scenario, all steps with target vocab, required vocab) and child summary into a `## Mission Context` block appended to the system prompt. mission_guide ships with `connectors: []` and the system prompt explicitly says "do NOT call tools — all the data you need is right above." Result: 1 LLM round per mission turn instead of 3-4, and no possibility of an empty response from an exhausted tool loop. This same pattern is worth applying to the conversation skill next.
+
+**JSON reminders are appended, not saved**: Saved assistant messages in `conversation_messages` contain only the rendered `marathi_text` — not the JSON wrapper. When the LLM sees that history on subsequent turns, it tends to mirror the plain-text format and skip JSON. The gateway sidesteps this by appending a short `[Reply as a single JSON object: {...}]` reminder to each child message immediately before sending to the LLM. The reminder is not persisted, so the chat UI shows the child's actual message and the conversation history stays clean — but the LLM sees a fresh JSON cue on every turn. Same fix applied to both `/conversations/.../message` and `/missions/.../message`.
 
 ## Database Schema (Supabase)
 

@@ -15,7 +15,7 @@ celebrating Ganpati).
 - **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui
 - **Backend:** Python + FastAPI (thin gateway) + portable Markdown skill files
 - **Database:** Supabase (PostgreSQL + Auth)
-- **AI:** Groq API (Llama 3.3 70B) — conversations, missions, weekly digest
+- **LLM:** Sarvam AI (`sarvam-105b`, Indian-language-native) via OpenAI-compatible SDK — conversations, missions, weekly digest
 - **TTS:** Google Cloud Text-to-Speech (Marathi) — vocabulary, quiz, chat
 - **STT:** Groq Whisper large-v3 — Marathi speech-to-text input
 - **Email:** Resend — weekly AI-written parent digest (custom domain) + Supabase auth emails routed via Resend SMTP
@@ -31,7 +31,7 @@ backend/
   core/
     skill_loader.py                # Discovers and loads .md skill files
     connector_registry.py          # Maps connector names → callable functions
-    llm.py                         # Generic agentic loop + LLM error hierarchy
+    llm.py                         # Sarvam chat-completions via openai SDK + defensive JSON parsing + agentic loop
   skills/                          # Portable skill definitions (Markdown + YAML frontmatter)
     conversation.md                # Mitra tutor — personality, safety, response format
     lessons.md                     # Lesson delivery — retrieve and present vocabulary
@@ -150,7 +150,9 @@ The backend uses a **skills + connectors** architecture:
    SUPABASE_URL=...
    SUPABASE_KEY=...
    SUPABASE_SERVICE_KEY=...
-   GROQ_API_KEY=...
+   SARVAM_API_KEY=...                    # Primary LLM — chat completions
+   SARVAM_MODEL=sarvam-105b              # Or sarvam-30b for ~60% lower cost
+   GROQ_API_KEY=...                      # Used only for Whisper STT (audio transcription)
    RESEND_API_KEY=...
    RESEND_FROM_EMAIL=MarathiMitra <digest@yourdomain.com>
    ALLOWED_ORIGINS=http://localhost:5173,https://yourdomain.com  # comma-separated; whitespace + trailing slashes tolerated
@@ -159,6 +161,7 @@ The backend uses a **skills + connectors** architecture:
    DAILY_LLM_CALL_LIMIT=500              # global daily backstop (in-memory)
    DAILY_LLM_CALL_LIMIT_PER_CHILD=100    # persisted per-child daily cap (Supabase)
    SIGNUP_ATTEMPTS_PER_HOUR=5            # per-IP signup throttle (persisted)
+   LOG_LEVEL=INFO                        # backend.* INFO logs (LLM calls, guardrails)
    ```
 3. Install backend dependencies: `pip install -r requirements.txt`
 4. Run the database migration: apply `backend/db/migrations.sql` in Supabase SQL Editor (creates the new `usage_counters` + `signup_attempts` tables and `increment_usage_counter` Postgres function)

@@ -1,3 +1,4 @@
+import logging
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -5,6 +6,13 @@ from dotenv import load_dotenv
 from backend.gateway.api import all_routers
 
 load_dotenv()
+
+# Surface our INFO-level logs (LLM calls, guardrails, digest) through uvicorn's
+# stderr. Without this, Python's default root level (WARNING) drops them silently.
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
 
 app = FastAPI(title="MarathiMitra API")
 

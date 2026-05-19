@@ -25,7 +25,7 @@ from backend.core.connector_registry import get_for_skill
 
 # Connectors (direct calls for CRUD)
 from backend.connectors.supabase.auth import signup_user, create_parent_record, login_user, refresh_session
-from backend.connectors.supabase.children import get_children_by_parent, create_child
+from backend.connectors.supabase.children import get_children_by_parent, create_child, get_child_profile
 from backend.connectors.supabase.lessons import list_lessons, get_lesson_by_id, record_lesson_completion
 from backend.connectors.supabase.conversations import (
     start_conversation_record, save_message, get_conversation_messages,
@@ -324,7 +324,17 @@ async def send_message(conversation_id: str, req: SendMessageRequest, parent_id:
     for msg in history_rows[-MAX_HISTORY:]:
         role = "assistant" if msg["role"] == "mitra" else "user"
         messages.append({"role": role, "content": msg["content"]})
-    messages.append({"role": "user", "content": clean_message})
+    # JSON reminder appended to the child's message (not saved) — saved assistant
+    # history is plain marathi_text, so without this the model can drift into
+    # plain-text replies that break the JSON contract.
+    messages.append({
+        "role": "user",
+        "content": (
+            f"{clean_message}\n\n"
+            "[Reply as a single JSON object: "
+            "{\"marathi_text\":\"...\",\"english_hint\":\"...\"}. No prose outside the JSON.]"
+        ),
+    })
 
     # Append child_id to system prompt so tools can use it
     original_prompt = conversation_skill.system_prompt
@@ -463,6 +473,37 @@ async def transcribe(audio: UploadFile = File(...), _parent_id: str = Depends(ge
 missions_router = APIRouter(prefix="/missions", tags=["missions"])
 
 
+def _build_mission_context(child: dict, mission: dict) -> str:
+    """Render the child + mission data the mission_guide skill needs as a single
+    block to append to the system prompt. Replaces tool calls — we already have
+    this data in the gateway, so making the LLM fetch it again is pure overhead
+    (and was the source of empty responses when Sarvam's tool loop didn't terminate)."""
+    import json as _json
+    steps = mission.get("steps") or []
+    steps_lines = []
+    for s in steps:
+        if not isinstance(s, dict):
+            continue
+        step_num = s.get("step")
+        prompt = s.get("prompt", "")
+        target_vocab = s.get("target_vocab") or []
+        steps_lines.append(
+            f"  Step {step_num}: {prompt}"
+            + (f" (target vocab: {', '.join(target_vocab)})" if target_vocab else "")
+        )
+    steps_block = "\n".join(steps_lines) if steps_lines else "  (no steps defined)"
+
+    return (
+        f"\n\n## Mission Context (already loaded — do NOT call tools)\n"
+        f"Child: {child.get('name', '?')} (age {child.get('age', '?')}, level {child.get('current_level', '?')})\n"
+        f"Mission title: {mission.get('title', '?')} ({mission.get('title_english', '')})\n"
+        f"Scenario: {mission.get('scenario', '')}\n"
+        f"Total steps: {len(steps)}\n"
+        f"Steps:\n{steps_block}\n"
+        f"Required vocab: {', '.join(mission.get('required_vocab') or [])}\n"
+    )
+
+
 @missions_router.get("/by-level/{level}")
 def list_missions_by_level(level: int, _parent_id: str = Depends(get_current_parent)):
     return list_missions_db(level)
@@ -495,33 +536,63 @@ async def generate_mission(req: GenerateMissionRequest, parent_id: str = Depends
     import json
     vocab_context = json.dumps(vocab_items, ensure_ascii=False) if vocab_items else "[]"
 
-    # Run the generator skill (no connectors — vocab is passed inline)
-    topic_instruction = (
-        f"\n\nTHE MISSION MUST BE ABOUT: {req.topic}\n"
-        "Build all steps around this specific scenario. Only use vocabulary from the list above that fits naturally — do not force unrelated words."
-    ) if req.topic else "\n\nChoose a creative, culturally relevant scenario from the variety suggestions in your instructions."
+    # Sandwich the topic between header and footer so it survives attention
+    # drift through the (potentially huge) vocab list in the middle.
+    if req.topic:
+        header = (
+            f"=== MISSION TOPIC: {req.topic} ===\n\n"
+            f"Generate a Level {req.level} Marathi mission that is entirely about: {req.topic}\n"
+            f"Every step must directly involve this exact scenario. Do not substitute a similar one."
+        )
+        footer = (
+            f"REMINDER: This mission MUST be about \"{req.topic}\". "
+            f"Only use vocabulary above that fits naturally with that scenario — "
+            f"do not force unrelated words. If the vocabulary doesn't have a perfect "
+            f"match for some words you need, use simple Marathi words a kid would know.\n\n"
+            f"Respond as a JSON object."
+        )
+    else:
+        header = (
+            f"Generate a Level {req.level} Marathi mission.\n"
+            f"Choose a creative, culturally relevant scenario from the variety suggestions in your instructions."
+        )
+        footer = "Respond as a JSON object."
 
     messages = [
         {
             "role": "user",
             "content": (
-                f"Generate a mission for Level {req.level}.\n\n"
-                f"Available vocabulary you may draw from:\n{vocab_context}"
-                f"{topic_instruction}\n\n"
-                "Respond as JSON."
+                f"{header}\n\n"
+                f"Available vocabulary you may draw from:\n{vocab_context}\n\n"
+                f"{footer}"
             ),
         },
     ]
     connectors = get_for_skill(mission_generator_skill.connector_names)
     result = run_skill(mission_generator_skill, messages, connectors)
 
-    # Save generated mission to shared table
+    # Validate the LLM produced a real mission — without this, a parser
+    # fallback (Sarvam doesn't enforce JSON) would silently persist an empty
+    # mission with no scenario/steps that the mission_guide can't actually play.
+    title = result.get("title")
+    scenario = result.get("scenario")
+    steps = result.get("steps")
+    if not title or not scenario or not isinstance(steps, list) or len(steps) == 0:
+        logger.warning(
+            "Mission generation produced incomplete output — title=%r, scenario=%r, steps=%r. Raw LLM output: %s",
+            title, scenario, steps, (result.get("raw") or "")[:500],
+        )
+        raise HTTPException(
+            status_code=502,
+            detail="Couldn't generate a mission this time — please try again with a different topic or in a moment.",
+        )
+
     mission = create_mission(
         level=req.level,
-        title=result.get("title", "मिशन"),
-        title_english=result.get("title_english", "Mission"),
-        scenario=result.get("scenario", ""),
-        steps=result.get("steps", []),
+        title=title,
+        title_english=result.get("title_english", title),
+        scenario=scenario,
+        steps=steps,
         required_vocab=result.get("required_vocab", []),
         xp_reward=result.get("xp_reward", 25),
     )
@@ -556,21 +627,29 @@ async def start_mission(req: StartMissionRequest, parent_id: str = Depends(get_c
     # Mark mission as in_progress
     upsert_mission_progress(req.child_id, req.mission_id, "in_progress")
 
-    connectors = get_for_skill(mission_guide_skill.connector_names)
+    child = get_child_profile(req.child_id) or {}
     total_steps = len(mission.get("steps") or [])
+
+    # Inject mission + child context directly into the prompt so the LLM doesn't
+    # need to make any tool calls just to know who/what it's playing.
+    original_prompt = mission_guide_skill.system_prompt
+    mission_guide_skill.system_prompt = original_prompt + _build_mission_context(child, mission)
 
     messages = [
         {
             "role": "user",
             "content": (
-                f"[SYSTEM: The child (child_id: {req.child_id}) is starting mission (mission_id: {req.mission_id}). "
-                "Use your tools to learn about the child and load the mission details. "
-                "Then set the scene — introduce the scenario in character, and prompt the child for Step 1. "
-                "Respond as JSON with mission_step=1, mission_complete=false, step_score=0.]"
+                "The child just opened this mission. "
+                "Set the scene — introduce the scenario in character based on the Mission Context above, "
+                "and prompt the child for Step 1. "
+                "Respond as JSON with mission_step=1, mission_complete=false, step_score=0."
             ),
         },
     ]
-    result = run_skill(mission_guide_skill, messages, connectors)
+    try:
+        result = run_skill(mission_guide_skill, messages, connectors={})
+    finally:
+        mission_guide_skill.system_prompt = original_prompt
     result = validate_llm_output(result)
 
     save_message(conversation_id, "mitra", result["marathi_text"])
@@ -625,22 +704,34 @@ async def send_mission_message(
     save_message(conversation_id, "child", clean_message)
 
     history_rows = get_conversation_messages(conversation_id)
-    connectors = get_for_skill(mission_guide_skill.connector_names)
+    child = get_child_profile(child_id) or {}
 
     messages = []
     for msg in history_rows[-MAX_HISTORY:]:
         role = "assistant" if msg["role"] == "mitra" else "user"
         messages.append({"role": role, "content": msg["content"]})
-    messages.append({"role": "user", "content": clean_message})
+    # Append a JSON reminder to the child's message before sending to the LLM —
+    # the saved assistant history only contains marathi_text (not the JSON wrapper),
+    # so without this nudge the model mirrors the plain-text pattern and skips JSON.
+    # The reminder is NOT saved to the conversation history shown in the UI.
+    messages.append({
+        "role": "user",
+        "content": (
+            f"{clean_message}\n\n"
+            "[Reply as a single JSON object: "
+            "{\"marathi_text\":\"...\",\"english_hint\":\"...\",\"mission_step\":<int>,"
+            "\"mission_complete\":<bool>,\"step_score\":<0-3>}. No prose outside the JSON.]"
+        ),
+    })
 
-    # Inject child_id and mission_id into system prompt
+    # Inject mission + child context — same pattern as start_mission, no tool calls needed
     original_prompt = mission_guide_skill.system_prompt
-    mission_guide_skill.system_prompt = (
-        original_prompt + f"\n\nThe child's ID is: {child_id}\nThe mission ID is: {mission_id}"
-    )
+    mission_guide_skill.system_prompt = original_prompt + _build_mission_context(child, mission)
 
-    result = run_skill(mission_guide_skill, messages, connectors)
-    mission_guide_skill.system_prompt = original_prompt
+    try:
+        result = run_skill(mission_guide_skill, messages, connectors={})
+    finally:
+        mission_guide_skill.system_prompt = original_prompt
 
     # Output guardrails
     result = validate_llm_output(result)
