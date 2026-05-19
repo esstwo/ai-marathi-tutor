@@ -1,5 +1,7 @@
 # Screenshots for the presentation
 
+Used by both `marathimitra.md` (Marp) and `marathimitra.html` (reveal.js).
+
 Drop PNGs here with these filenames and the deck will pick them up:
 
 | Filename | Slide | What to capture |
@@ -13,8 +15,14 @@ Optional extras you could add by editing the Marp file:
 - `parent-digest-email.png` — the weekly email rendered in Gmail/Apple Mail
 - `lesson-quiz.png` — the quiz screen of a lesson
 
-After dropping screenshots in, find the `<div class="placeholder">` blocks in `marathimitra.md` and replace them with markdown image tags:
+After dropping screenshots in:
 
+**For the HTML deck (`marathimitra.html`)** — find each `<div class="placeholder">…</div>` block and replace with:
+```html
+<img src="screenshots/landing.png" alt="Landing page" />
+```
+
+**For the Marp deck (`marathimitra.md`)** — replace `<div class="placeholder">…</div>` blocks with:
 ```markdown
 ![landing](screenshots/landing.png)
 ```

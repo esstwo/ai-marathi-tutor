@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarathiMitra — Project Walkthrough</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css" />
+
+  <style>
+    :root {
+      --teal: #5BAFA9;
+      --teal-deep: #308A85;
+      --bg-deep: #0F1F1E;
+      --bg-mid: #1F3A38;
+      --text: #E8F4F2;
+      --muted: #B8D4D0;
+    }
+
+    .reveal {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+      padding: 40px 60px;
+      box-sizing: border-box;
+      height: 100%;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--teal);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5em;
+    }
+    .reveal h1 { font-size: 2.2em; }
+    .reveal h2 { font-size: 1.6em; }
+    .reveal h3 { font-size: 1.2em; color: var(--muted); }
+
+    .reveal p, .reveal li {
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 0.85em;
+    }
+
+    .reveal strong { color: var(--teal); }
+
+    .reveal blockquote {
+      border-left: 4px solid var(--teal);
+      background: rgba(91, 175, 169, 0.08);
+      color: var(--muted);
+      padding: 16px 24px;
+      font-style: italic;
+      font-size: 0.9em;
+      box-shadow: none;
+    }
+
+    .reveal code {
+      background: rgba(91, 175, 169, 0.15);
+      color: #B8E0DC;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    .reveal pre {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      font-size: 0.6em;
+      border-radius: 8px;
+    }
+    .reveal pre code {
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.35);
+      max-height: 400px;
+    }
+
+    .reveal table {
+      font-size: 0.75em;
+      border-collapse: collapse;
+      margin: 16px 0;
+      width: 100%;
+    }
+    .reveal table th, .reveal table td {
+      padding: 10px 14px;
+      border: 1px solid rgba(91, 175, 169, 0.3);
+    }
+    .reveal table th {
+      background: rgba(91, 175, 169, 0.2);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .reveal a { color: var(--teal); }
+    .reveal a:hover { color: #7CC8C2; }
+
+    /* Title slide */
+    .title-slide {
+      text-align: center;
+    }
+    .title-slide h1 {
+      font-size: 3.5em;
+      margin-bottom: 0.1em;
+    }
+    .title-slide .tagline {
+      font-size: 1.3em;
+      color: var(--muted);
+      margin-top: 0;
+    }
+    .title-slide .subtitle {
+      color: var(--text);
+      font-size: 1em;
+      margin-top: 1.5em;
+    }
+    .title-slide .url {
+      color: var(--teal);
+      font-family: "SF Mono", Menlo, monospace;
+      margin-top: 2em;
+      font-size: 0.9em;
+    }
+
+    /* Screenshot placeholders */
+    .placeholder {
+      background: rgba(91, 175, 169, 0.1);
+      border: 2px dashed var(--teal);
+      padding: 50px 30px;
+      text-align: center;
+      color: var(--teal);
+      font-style: italic;
+      border-radius: 12px;
+      margin: 16px 0;
+      font-size: 0.85em;
+    }
+    .placeholder .filename {
+      font-family: "SF Mono", Menlo, monospace;
+      color: var(--muted);
+      font-size: 0.85em;
+      margin-top: 4px;
+      display: block;
+    }
+    .placeholder-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Layout helpers */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .footer-tagline {
+      margin-top: 1em;
+      color: var(--muted);
+      font-size: 0.85em;
+    }
+
+    .reveal .progress {
+      color: var(--teal);
+    }
+
+    /* Logo badge for title */
+    .logo-badge {
+      display: inline-block;
+      font-size: 4em;
+      background: rgba(255, 255, 255, 0.95);
+      width: 1.5em;
+      height: 1.5em;
+      line-height: 1.5em;
+      border-radius: 0.3em;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Title -->
+      <section class="title-slide">
+        <div class="logo-badge">🤖</div>
+        <h1>MarathiMitra</h1>
+        <p class="tagline">मराठीमित्र</p>
+        <p class="subtitle"><strong>Your child's AI best friend for learning spoken Marathi</strong></p>
+        <p class="url">marathimitra.site</p>
+      </section>
+
+      <!-- Slide 2: Problem -->
+      <section>
+        <h2>The problem</h2>
+        <p><strong>Diaspora kids understand Marathi — but freeze when it's time to speak.</strong></p>
+        <ul>
+          <li>They hear it at home, but reply in English</li>
+          <li>Lose confidence; the gap widens with age</li>
+          <li>Traditional apps (Duolingo-style) are great for vocab, terrible for <em>spoken</em> practice</li>
+          <li>1:1 tutors cost ₹500–1500/hour, can't be on-demand at bedtime</li>
+          <li>Parents juggle full-time work; they can't run Marathi lessons every evening</li>
+        </ul>
+        <blockquote>
+          Result: a whole generation of kids who can <em>understand</em> their mother tongue but can't comfortably <em>speak</em> it.
+        </blockquote>
+      </section>
+
+      <!-- Slide 3: How it helps -->
+      <section>
+        <h2>How MarathiMitra helps</h2>
+        <p><strong>A patient, always-available AI tutor — designed around how kids actually learn languages.</strong></p>
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>What it does</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Mitra (AI chat)</strong></td><td>Friendly Marathi conversation partner — never judgmental, code-switches naturally</td></tr>
+            <tr><td><strong>80 Lessons</strong></td><td>Bite-sized vocab + grammar + interactive quizzes across 4 levels</td></tr>
+            <tr><td><strong>Missions</strong></td><td>Scenario gameplay — "buy from a shopkeeper", "video-call आजी"</td></tr>
+            <tr><td><strong>Voice in & out</strong></td><td>Mic for the kid, Marathi TTS for Mitra — practice the <em>sounds</em>, not just text</td></tr>
+            <tr><td><strong>Weekly parent digest</strong></td><td>AI writes a personalised "here's how your child did this week" email every Sunday</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Slide 4: See it in action -->
+      <section>
+        <h2>See it in action</h2>
+        <div class="placeholder">
+          Landing page
+          <span class="filename">screenshots/landing.png</span>
+        </div>
+        <div class="placeholder-row">
+          <div class="placeholder">
+            Chat with Mitra
+            <span class="filename">screenshots/chat.png</span>
+          </div>
+          <div class="placeholder">
+            Mission in progress
+            <span class="filename">screenshots/mission.png</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Architecture -->
+      <section>
+        <h2>Architecture at a glance</h2>
+        <div class="placeholder" style="padding: 80px 40px;">
+          Architecture diagram
+          <span class="filename">screenshots/architecture-diagram.png</span>
+        </div>
+        <p style="font-size: 0.8em;">
+          <strong>Stack:</strong> React + Vite (Vercel) · FastAPI (Render) · Supabase · Sarvam AI · Google TTS · Resend
+        </p>
+      </section>
+
+      <!-- Slide 6: Skills + Connectors -->
+      <section>
+        <h2>The key idea: Skills + Connectors</h2>
+        <p><strong>Old way:</strong> business logic + AI prompts buried in Python service code.</p>
+        <p><strong>New way:</strong></p>
+        <ul>
+          <li><strong>Skills</strong> = portable Markdown files. System prompt + YAML metadata (inputs, outputs, connector deps). The skill <em>is</em> the intelligence.</li>
+          <li><strong>Connectors</strong> = tiny Python functions that touch external systems. Zero business logic.</li>
+          <li><strong>Gateway</strong> = thin HTTP layer that loads a skill, hands it connectors, runs a generic agentic loop.</li>
+        </ul>
+        <blockquote>
+          Adding a new capability = writing a new <code>.md</code> file. No Python plumbing.
+        </blockquote>
+        <p style="font-size: 0.8em;">Same skill files run in the web app, in Claude Desktop (via MCP), or in any future client.</p>
+      </section>
+
+      <!-- Slide 7: LLM as orchestrator -->
+      <section>
+        <h2>LLM as orchestrator</h2>
+        <p><strong>Instead of the backend orchestrating the LLM…</strong></p>
+        <pre><code class="language-python"># OLD: backend knows what context it needs
+profile = fetch_profile(child_id)
+lesson = fetch_lesson(level)
+response = call_llm(prompt, profile, lesson)</code></pre>
+        <p><strong>…the LLM orchestrates the backend.</strong></p>
+        <pre><code class="language-python"># NEW: LLM gets connector tools and decides what it needs
+result = run_skill(conversation_skill, messages, connectors={
+    "get_child_profile": ...,
+    "get_lesson_context": ...,
+})</code></pre>
+        <p style="font-size: 0.78em;">Tool schemas auto-generated from Python signatures. Backend logic shrinks; intelligence grows.</p>
+      </section>
+
+      <!-- Slide 8: Why Sarvam -->
+      <section>
+        <h2>Why we moved off Groq to Sarvam AI</h2>
+        <p><strong>Was:</strong> Groq Llama 3.3 70B (free-tier, rate-limited — became a launch blocker)</p>
+        <p><strong>Now:</strong> Sarvam-105B — Marathi-native model, OpenAI-compatible API</p>
+        <table>
+          <thead>
+            <tr><th></th><th>Groq Llama 3.3 (paid)</th><th>Sarvam-105B</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Input cost</td><td>$0.59/M tokens</td><td><strong>$0.048/M tokens</strong></td></tr>
+            <tr><td>Output cost</td><td>$0.79/M tokens</td><td><strong>$0.19/M tokens</strong></td></tr>
+            <tr><td>Marathi quality</td><td>Decent (multilingual)</td><td><strong>Native</strong></td></tr>
+            <tr><td>Hard rate cap</td><td>Tier-based</td><td>Pay-per-use</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size: 0.85em;"><strong>Estimated cost at 100 active kids, 20 msgs/day each: ~$15–25/month.</strong> ₹1000 free credits cover the first 1–2 months entirely.</p>
+      </section>
+
+      <!-- Slide 9: Sarvam design choices -->
+      <section>
+        <h2>Sarvam: three sharp design choices</h2>
+        <p><strong>1. No vendor SDK lock-in.</strong> Sarvam exposes an OpenAI-compatible API, so we use the <code>openai</code> Python SDK pointed at <code>api.sarvam.ai/v1</code>. Future provider swap = one base-URL change.</p>
+        <p><strong>2. Three-layer JSON enforcement.</strong> Sarvam doesn't support <code>response_format</code>, so we enforce JSON via:</p>
+        <ul>
+          <li>Strict "Output format" sections at the top of each skill prompt</li>
+          <li><code>[Reply as JSON object: {...}]</code> reminder appended to every user turn (not saved to history — chat UI stays clean)</li>
+          <li>Defensive <code>parse_json_response</code> — strips markdown fences, extracts first <code>{...}</code> substring, then falls back to plain text</li>
+        </ul>
+        <p><strong>3. Pre-fetch context instead of tool-calling.</strong> The gateway already has child + mission data; making the LLM call tools to re-fetch was overhead. Now injected directly into the system prompt — <strong>1 LLM round per turn instead of 3–4</strong>, no empty-response failures.</p>
+      </section>
+
+      <!-- Slide 10: Production hardening -->
+      <section>
+        <h2>Production-ready: cost & abuse hardening</h2>
+        <p>Before opening signups publicly:</p>
+        <ul>
+          <li><strong>Per-child daily LLM cap</strong> — persisted in Supabase via atomic Postgres RPC, defaults to 100 calls/day. One abusive account can't burn the global budget.</li>
+          <li><strong>Per-IP signup rate limit</strong> — persisted, X-Forwarded-For aware, blocks bots even before they touch Supabase Auth.</li>
+          <li><strong>Cloudflare Turnstile</strong> on both signup AND login — verified server-side by Supabase.</li>
+          <li><strong>Email verification</strong> before login + <strong>branded Resend templates</strong> for verification / reset / digest.</li>
+          <li><strong>CORS that doesn't lie</strong> — env parser tolerates whitespace, logs parsed allowlist at startup.</li>
+          <li><strong>123 pytest cases</strong> covering every guardrail surface.</li>
+        </ul>
+      </section>
+
+      <!-- Slide 11: What's next -->
+      <section>
+        <h2>What's next</h2>
+        <ul>
+          <li>Per-child caps on heavy LLM endpoints: mission generation, Whisper STT, Google TTS</li>
+          <li>Provider-side hard quotas: GCP TTS character/day, Sarvam spend alerts</li>
+          <li>Deploy the MCP App as a remote MCP server → interactive Marathi practice <strong>inside claude.ai</strong></li>
+          <li>Sarvam Bulbul TTS — Marathi-native voice synthesis to replace Google TTS</li>
+        </ul>
+        <p class="footer-tagline">
+          🌐 <strong>marathimitra.site</strong> &nbsp;&nbsp;·&nbsp;&nbsp; 📦 <strong>github.com/esstwo/ai-marathi-tutor</strong>
+        </p>
+      </section>
+
+      <!-- Slide 12: Thank you -->
+      <section class="title-slide">
+        <h1 style="font-size: 4em;">धन्यवाद!</h1>
+        <p class="tagline" style="font-size: 1.5em;">Thank you</p>
+        <p class="subtitle" style="margin-top: 2em;"><strong>Questions?</strong></p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      controls: true,
+      progress: true,
+      slideNumber: 'c/t',
+      plugins: [RevealHighlight, RevealNotes],
+    });
+  </script>
+</body>
+</html>
