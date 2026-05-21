@@ -119,7 +119,8 @@ The backend uses a **skills + connectors** architecture:
 | Method | Path                                | Description                              | Auth              |
 |--------|-------------------------------------|------------------------------------------|-------------------|
 | GET    | /health                             | Health check                             | None              |
-| POST   | /auth/signup                        | Create account                           | None              |
+| POST   | /auth/signup                        | Create account (sends verification email) | None             |
+| POST   | /auth/resend-verification           | Re-send signup confirmation email        | None              |
 | POST   | /auth/login                         | Authenticate user                        | None              |
 | POST   | /auth/children                      | Add a child profile                      | Bearer token      |
 | POST   | /auth/refresh                       | Refresh expired access token             | None              |
@@ -156,6 +157,7 @@ The backend uses a **skills + connectors** architecture:
    RESEND_API_KEY=...
    RESEND_FROM_EMAIL=MarathiMitra <digest@yourdomain.com>
    ALLOWED_ORIGINS=http://localhost:5173,https://yourdomain.com  # comma-separated; whitespace + trailing slashes tolerated
+   FRONTEND_URL=https://yourdomain.com    # used as the email-verification redirect target → {FRONTEND_URL}/login?verified=1
 
    # Cost protection (all have sensible defaults — override only to tune)
    DAILY_LLM_CALL_LIMIT=500              # global daily backstop (in-memory)
@@ -188,6 +190,7 @@ The backend uses a **skills + connectors** architecture:
 These are dashboard config — no code changes:
 
 - **Supabase** → Authentication → Sign In/Up → enable **Confirm email** so verification is required before login
+- **Supabase** → Authentication → URL Configuration → **Redirect URLs** → add `{FRONTEND_URL}/login?verified=1` (and any local/preview equivalents). Without this, Supabase silently falls back to the Site URL and the post-verification banner never fires
 - **Supabase** → Authentication → CAPTCHA Protection → enable, choose **Turnstile**, paste your Cloudflare Turnstile secret
 - **Supabase** → Project Settings → Authentication → SMTP Settings → enable custom SMTP, point at Resend (`smtp.resend.com:465`, username `resend`, password = Resend API key) so auth emails come from your domain instead of Supabase's default sender
 - **Cloudflare Turnstile** → register every hostname that will load the widget (`localhost`, your prod domain, any Vercel preview domains)
@@ -241,7 +244,7 @@ The MCP App server renders interactive HTML UIs (chat, lessons, progress dashboa
 
 ## Weekly Parent Digest
 
-Every Sunday at 9am UTC a Render cron job generates and emails personalised learning summaries to all parents. For each child the AI (Llama 3.3 70B) is given:
+Every Sunday at 9am UTC a Render cron job generates and emails personalised learning summaries to all parents. For each child the AI (Sarvam `sarvam-105b`) is given:
 
 - Lessons completed this week with quiz scores
 - Number of Mitra conversations
