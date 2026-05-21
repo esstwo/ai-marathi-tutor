@@ -1,6 +1,13 @@
 """Auth connectors — signup, login, token refresh, parent records."""
 
+import os
+
 from backend.db.supabase_client import supabase, supabase_admin
+
+# Where Supabase redirects after a user clicks the email-verification link.
+# Must be present in the project's "Redirect URLs" allowlist in Supabase Auth settings.
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://marathimitra.site")
+EMAIL_VERIFY_REDIRECT = f"{FRONTEND_URL}/login?verified=1"
 
 
 def signup_user(email: str, password: str, captcha_token: str | None = None):
@@ -10,9 +17,13 @@ def signup_user(email: str, password: str, captcha_token: str | None = None):
     will verify the token with Cloudflare (or hCaptcha) using the configured
     secret and reject the signup if invalid.
     """
-    payload: dict = {"email": email, "password": password}
+    payload: dict = {
+        "email": email,
+        "password": password,
+        "options": {"email_redirect_to": EMAIL_VERIFY_REDIRECT},
+    }
     if captcha_token:
-        payload["options"] = {"captcha_token": captcha_token}
+        payload["options"]["captcha_token"] = captcha_token
     return supabase.auth.sign_up(payload)
 
 

@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, Rocket } from "lucide-react";
+import { Sparkles, Rocket, Mail, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import { Logo } from "@/components/Logo";
@@ -19,7 +19,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [verificationSentTo, setVerificationSentTo] = useState<string | null>(null);
+  const [unverifiedError, setUnverifiedError] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const justVerified = searchParams.get("verified") === "1";
   const { login, signup } = useAuth();
 
   const handleCaptchaVerify = useCallback((token: string) => {
@@ -42,6 +46,7 @@ const Login = () => {
     }
 
     setLoading(true);
+    setUnverifiedError(false);
     try {
       if (isSignUp) {
         const { emailVerificationRequired } = await signup(
@@ -51,7 +56,7 @@ const Login = () => {
           captchaToken
         );
         if (emailVerificationRequired) {
-          toast.success("Check your email to verify your account, then sign in.");
+          setVerificationSentTo(email);
           setIsSignUp(false);
           setPassword("");
           setCaptchaToken(null);
@@ -67,7 +72,13 @@ const Login = () => {
     } catch (err: any) {
       const msg =
         err?.response?.data?.detail || err?.message || "Something went wrong";
-      toast.error(msg);
+      // Supabase returns "Email not confirmed" when an unverified user tries to log in.
+      if (!isSignUp && /email\s+not\s+confirmed/i.test(msg)) {
+        setUnverifiedError(true);
+        setVerificationSentTo(email);
+      } else {
+        toast.error(msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -77,7 +88,53 @@ const Login = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md space-y-4">
+          {justVerified && !verificationSentTo && !unverifiedError && (
+            <div
+              role="status"
+              className="flex items-start gap-3 rounded-2xl border-2 border-mint/60 bg-mint/20 p-4 fun-shadow animate-pop"
+            >
+              <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0 text-emerald-700" />
+              <div className="text-sm font-display">
+                <p className="font-bold text-foreground">Email verified!</p>
+                <p className="text-muted-foreground mt-0.5">
+                  Sign in below to start learning.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {verificationSentTo && !unverifiedError && (
+            <div
+              role="status"
+              className="flex items-start gap-3 rounded-2xl border-2 border-lemon/60 bg-lemon/20 p-4 fun-shadow animate-pop"
+            >
+              <Mail className="w-5 h-5 mt-0.5 flex-shrink-0 text-foreground" />
+              <div className="text-sm font-display">
+                <p className="font-bold text-foreground">Verification email sent</p>
+                <p className="text-muted-foreground mt-0.5">
+                  We sent a link to <span className="font-bold text-foreground">{verificationSentTo}</span>.
+                  Click it to activate your account, then come back here to sign in.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {unverifiedError && (
+            <div
+              role="alert"
+              className="flex items-start gap-3 rounded-2xl border-2 border-destructive/40 bg-destructive/10 p-4 fun-shadow animate-pop"
+            >
+              <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-destructive" />
+              <div className="text-sm font-display">
+                <p className="font-bold text-foreground">Your email isn't verified yet</p>
+                <p className="text-muted-foreground mt-0.5">
+                  Check your inbox{verificationSentTo ? <> at <span className="font-bold text-foreground">{verificationSentTo}</span></> : null} for the verification link, then try signing in again.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="gradient-card rounded-3xl border-2 border-border/50 p-8 fun-shadow animate-pop">
             <div className="text-center mb-8">
               <div className="mx-auto mb-4 animate-bounce-gentle inline-block">
@@ -169,7 +226,11 @@ const Login = () => {
             <p className="text-center text-sm text-muted-foreground mt-6 font-display font-medium">
               {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
               <button
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={() => {
+                  setIsSignUp(!isSignUp);
+                  setUnverifiedError(false);
+                  setVerificationSentTo(null);
+                }}
                 className="text-primary font-bold hover:underline"
               >
                 {isSignUp ? "Sign In" : "Sign Up"}
