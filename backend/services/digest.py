@@ -233,6 +233,16 @@ def send_all_digests() -> dict:
                 continue
 
             children_stats = [_child_weekly_stats(c, since) for c in children]
+
+            # Skip silent weeks — no lesson completions and no conversations
+            # across any child. Avoids sending hollow "nothing happened" emails.
+            total_lessons = sum(len(c["lessons"]) for c in children_stats)
+            total_convos = sum(c["conversations_count"] for c in children_stats)
+            if total_lessons == 0 and total_convos == 0:
+                logger.info("Skipping digest for parent %s — no activity this week", parent["id"])
+                skipped += 1
+                continue
+
             digest_text = generate_digest_text(parent["name"] or "there", children_stats)
             ok = send_digest_email(parent["email"], parent["name"] or "", digest_text)
             if ok:
