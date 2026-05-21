@@ -121,6 +121,17 @@ export async function login(
   return data;
 }
 
+export async function resendVerification(
+  email: string,
+  captchaToken?: string | null
+): Promise<{ message: string }> {
+  const { data } = await api.post("/auth/resend-verification", {
+    email,
+    captcha_token: captchaToken ?? null,
+  });
+  return data;
+}
+
 export async function createChild(
   name: string,
   age: number,

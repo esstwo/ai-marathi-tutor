@@ -3,14 +3,49 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, Rocket, Mail, CheckCircle2, AlertCircle } from "lucide-react";
+import { Sparkles, Rocket, Mail, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import { Logo } from "@/components/Logo";
 import { Turnstile } from "@/components/Turnstile";
 import { useAuth } from "@/contexts/AuthContext";
+import { resendVerification } from "@/services/api";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+
+const ResendLink = ({
+  resending,
+  resendDone,
+  onClick,
+}: {
+  resending: boolean;
+  resendDone: boolean;
+  onClick: () => void;
+}) => {
+  if (resendDone) {
+    return (
+      <p className="text-emerald-700 font-bold mt-2 inline-flex items-center gap-1">
+        <CheckCircle2 className="w-4 h-4" /> Email re-sent
+      </p>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={resending}
+      className="text-primary font-bold hover:underline mt-2 inline-flex items-center gap-1 disabled:opacity-60"
+    >
+      {resending ? (
+        <>
+          <Loader2 className="w-4 h-4 animate-spin" /> Sending...
+        </>
+      ) : (
+        <>Resend verification email</>
+      )}
+    </button>
+  );
+};
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -21,6 +56,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [verificationSentTo, setVerificationSentTo] = useState<string | null>(null);
   const [unverifiedError, setUnverifiedError] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendDone, setResendDone] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const justVerified = searchParams.get("verified") === "1";
@@ -33,6 +70,25 @@ const Login = () => {
   const handleCaptchaExpire = useCallback(() => {
     setCaptchaToken(null);
   }, []);
+
+  const handleResend = async () => {
+    const target = verificationSentTo ?? email;
+    if (!target) {
+      toast.error("Enter your email first, then try again.");
+      return;
+    }
+    setResending(true);
+    try {
+      await resendVerification(target, captchaToken);
+      setResendDone(true);
+      toast.success(`Verification email re-sent to ${target}.`);
+    } catch (err: any) {
+      const msg = err?.response?.data?.detail || err?.message || "Couldn't resend right now";
+      toast.error(msg);
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +113,7 @@ const Login = () => {
         );
         if (emailVerificationRequired) {
           setVerificationSentTo(email);
+          setResendDone(false);
           setIsSignUp(false);
           setPassword("");
           setCaptchaToken(null);
@@ -76,6 +133,7 @@ const Login = () => {
       if (!isSignUp && /email\s+not\s+confirmed/i.test(msg)) {
         setUnverifiedError(true);
         setVerificationSentTo(email);
+        setResendDone(false);
       } else {
         toast.error(msg);
       }
@@ -110,12 +168,17 @@ const Login = () => {
               className="flex items-start gap-3 rounded-2xl border-2 border-lemon/60 bg-lemon/20 p-4 fun-shadow animate-pop"
             >
               <Mail className="w-5 h-5 mt-0.5 flex-shrink-0 text-foreground" />
-              <div className="text-sm font-display">
+              <div className="text-sm font-display flex-1">
                 <p className="font-bold text-foreground">Verification email sent</p>
                 <p className="text-muted-foreground mt-0.5">
                   We sent a link to <span className="font-bold text-foreground">{verificationSentTo}</span>.
                   Click it to activate your account, then come back here to sign in.
                 </p>
+                <ResendLink
+                  resending={resending}
+                  resendDone={resendDone}
+                  onClick={handleResend}
+                />
               </div>
             </div>
           )}
@@ -126,11 +189,16 @@ const Login = () => {
               className="flex items-start gap-3 rounded-2xl border-2 border-destructive/40 bg-destructive/10 p-4 fun-shadow animate-pop"
             >
               <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-destructive" />
-              <div className="text-sm font-display">
+              <div className="text-sm font-display flex-1">
                 <p className="font-bold text-foreground">Your email isn't verified yet</p>
                 <p className="text-muted-foreground mt-0.5">
                   Check your inbox{verificationSentTo ? <> at <span className="font-bold text-foreground">{verificationSentTo}</span></> : null} for the verification link, then try signing in again.
                 </p>
+                <ResendLink
+                  resending={resending}
+                  resendDone={resendDone}
+                  onClick={handleResend}
+                />
               </div>
             </div>
           )}
@@ -230,6 +298,7 @@ const Login = () => {
                   setIsSignUp(!isSignUp);
                   setUnverifiedError(false);
                   setVerificationSentTo(null);
+                  setResendDone(false);
                 }}
                 className="text-primary font-bold hover:underline"
               >

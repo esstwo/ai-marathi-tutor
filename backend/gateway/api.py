@@ -24,7 +24,7 @@ from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMA
 from backend.core.connector_registry import get_for_skill
 
 # Connectors (direct calls for CRUD)
-from backend.connectors.supabase.auth import signup_user, create_parent_record, login_user, refresh_session
+from backend.connectors.supabase.auth import signup_user, create_parent_record, login_user, refresh_session, resend_verification_email
 from backend.connectors.supabase.children import get_children_by_parent, create_child, get_child_profile
 from backend.connectors.supabase.lessons import list_lessons, get_lesson_by_id, record_lesson_completion
 from backend.connectors.supabase.conversations import (
@@ -66,6 +66,10 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    captcha_token: str | None = None
+
+class ResendVerificationRequest(BaseModel):
+    email: EmailStr
     captcha_token: str | None = None
 
 class ChildCreateRequest(BaseModel):
@@ -143,6 +147,17 @@ def signup(req: SignupRequest, request: Request):
         "email_verification_required": False,
         "parent": parent,
     }
+
+
+@auth_router.post("/resend-verification")
+def resend_verification(req: ResendVerificationRequest):
+    """Resend the signup confirmation email. Relies on Supabase's built-in throttle."""
+    try:
+        resend_verification_email(req.email, captcha_token=req.captcha_token)
+    except AuthApiError as e:
+        # Surface Supabase's own rate-limit / validation messages back to the user.
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"message": "Verification email sent. Please check your inbox."}
 
 
 @auth_router.post("/login")

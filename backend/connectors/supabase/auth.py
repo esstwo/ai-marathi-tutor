@@ -37,6 +37,22 @@ def create_parent_record(user_id: str, email: str, name: str) -> dict | None:
     return result.data[0] if result.data else None
 
 
+def resend_verification_email(email: str, captcha_token: str | None = None):
+    """Resend the signup confirmation email via Supabase Auth.
+
+    Supabase enforces its own per-user throttle (typically ~1 email per 60s).
+    Lets AuthApiError propagate so the caller can surface rate-limit errors.
+    """
+    payload: dict = {
+        "type": "signup",
+        "email": email,
+        "options": {"email_redirect_to": EMAIL_VERIFY_REDIRECT},
+    }
+    if captcha_token:
+        payload["options"]["captcha_token"] = captcha_token
+    return supabase.auth.resend(payload)
+
+
 def login_user(email: str, password: str, captcha_token: str | None = None):
     """Authenticate a user via Supabase Auth. Lets AuthApiError propagate.
 
