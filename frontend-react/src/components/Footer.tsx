@@ -29,7 +29,15 @@ const Footer = () => {
             content should be verified by qualified educators or parents.
           </p>
           <p>
-            Use of this service constitutes acceptance of our Terms of Service and Privacy Policy.
+            Use of this service constitutes acceptance of our{" "}
+            <Link to="/terms" className="font-bold text-foreground/80 hover:text-primary hover:underline">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link to="/privacy" className="font-bold text-foreground/80 hover:text-primary hover:underline">
+              Privacy Policy
+            </Link>
+            .
           </p>
           <p className="pt-2">© {year} Marathi Mitra. All rights reserved.</p>
         </div>
