@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import LessonCard from "@/components/LessonCard";
 import LessonView from "@/components/LessonView";
 import { BookOpen, Loader2 } from "lucide-react";
@@ -20,13 +21,13 @@ const Lessons = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
       {activeLesson ? (
         <LessonView lesson={activeLesson} onBack={() => setActiveLesson(null)} />
       ) : (
-        <section className="container mx-auto px-4 py-10 md:py-16">
+        <section className="flex-1 container mx-auto px-4 py-10 md:py-16">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-mint/30 text-foreground px-4 py-2 rounded-full text-sm font-display font-bold mb-4 animate-bounce-gentle">
               <BookOpen className="w-4 h-4 text-primary" />
@@ -78,6 +79,7 @@ const Lessons = () => {
           )}
         </section>
       )}
+      {!activeLesson && <Footer />}
     </div>
   );
 };

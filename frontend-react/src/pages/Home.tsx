@@ -4,6 +4,7 @@ import { Flame, Zap, Trophy, BookOpen, MessageCircle, BarChart3, Sparkles, Targe
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
 
@@ -30,10 +31,10 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      <div className="container mx-auto max-w-2xl px-4 py-8 space-y-8">
+      <div className="flex-1 container mx-auto max-w-2xl px-4 py-8 space-y-8">
         {/* Greeting */}
         <div className="text-center animate-pop">
           <p className="text-5xl mb-3 animate-bounce-gentle">{activeChild?.avatar}</p>
@@ -96,6 +97,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

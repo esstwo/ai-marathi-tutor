@@ -7,6 +7,7 @@ import { Rocket, Users } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 
 const AVATARS = ["🐘", "🦁", "🦜", "🐢", "🦋", "🐒"];
@@ -45,9 +46,9 @@ const ChildSetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <div className="flex items-center justify-center px-4 py-12">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           {/* Existing children selector */}
           {children.length > 0 && !showForm && (
@@ -177,6 +178,7 @@ const ChildSetup = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -14,6 +14,8 @@ import Chats from "./pages/Chats";
 import Missions from "./pages/Missions";
 import ProgressPage from "./pages/Progress";
 import ParentProgress from "./pages/ParentProgress";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route
               path="/child-setup"
               element={

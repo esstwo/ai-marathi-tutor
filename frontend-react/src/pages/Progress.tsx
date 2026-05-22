@@ -3,6 +3,7 @@ import { Trophy, Flame, BookOpen, MessageCircle, Star, ChevronRight, Target, Zap
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress as ProgressBar } from "@/components/ui/progress";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
 
@@ -72,10 +73,10 @@ const ProgressPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      <div className="container mx-auto max-w-2xl px-4 py-8 space-y-6">
+      <div className="flex-1 container mx-auto max-w-2xl px-4 py-8 space-y-6">
         <div className="text-center mb-2">
           <div className="inline-flex items-center gap-2 bg-lemon/40 text-foreground px-4 py-2 rounded-full text-sm font-display font-bold mb-3 animate-bounce-gentle">
             <Sparkles className="w-4 h-4 text-primary" />
@@ -236,6 +237,7 @@ const ProgressPage = () => {
           </CardContent>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 };

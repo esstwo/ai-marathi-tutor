@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
@@ -425,6 +426,7 @@ const Chats = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

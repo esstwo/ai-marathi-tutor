@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpen, MessageCircle, BarChart3, Users, Sparkles, Star, Rocket } from "lucide-react";
@@ -138,16 +139,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Logo size={20} />
-            <p className="font-display font-bold text-foreground">Marathi Mitra</p>
-          </div>
-          <p>Making Marathi learning joyful for kids everywhere.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

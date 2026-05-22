@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Users, BookOpen, Zap, Flame, MessageCircle, Languages, Loader2, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
 
@@ -33,10 +34,10 @@ const ParentProgress = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      <div className="container mx-auto max-w-2xl px-4 py-8 space-y-6">
+      <div className="flex-1 container mx-auto max-w-2xl px-4 py-8 space-y-6">
         <div className="text-center mb-4">
           <div className="inline-flex items-center gap-2 bg-sky/30 text-foreground px-4 py-2 rounded-full text-sm font-display font-bold mb-3 animate-bounce-gentle">
             <Sparkles className="w-4 h-4 text-primary" />
@@ -92,6 +93,7 @@ const ParentProgress = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

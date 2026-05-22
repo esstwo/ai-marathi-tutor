@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Sparkles, Rocket, Mail, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { Turnstile } from "@/components/Turnstile";
 import { useAuth } from "@/contexts/AuthContext";
@@ -143,9 +144,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <div className="flex items-center justify-center px-4 py-12">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md space-y-4">
           {justVerified && !verificationSentTo && !unverifiedError && (
             <div
@@ -308,6 +309,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

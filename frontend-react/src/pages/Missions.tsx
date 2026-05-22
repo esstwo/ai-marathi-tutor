@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import * as api from "@/services/api";
@@ -280,9 +281,9 @@ const Missions = () => {
   // ══════════════════════════════════════════════════════════════════
   if (view === "list") {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
-        <div className="container mx-auto max-w-2xl px-4 py-8 space-y-6">
+        <div className="flex-1 container mx-auto max-w-2xl px-4 py-8 space-y-6">
           <div className="text-center animate-pop">
             <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground flex items-center justify-center gap-2">
               <Target className="w-7 h-7 text-primary" />
@@ -368,6 +369,7 @@ const Missions = () => {
           </div>
 
         </div>
+        <Footer />
       </div>
     );
   }
@@ -582,6 +584,7 @@ const Missions = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
