@@ -32,7 +32,7 @@ const About = () => {
               Lots of diaspora kids understand Marathi when their parents or grandparents speak
               to them — but they answer back in English. The words are there. The confidence
               isn't. Traditional lessons feel like homework, and there's nowhere safe for a
-              5- to 12-year-old to just <em>practise speaking</em> without being judged.
+              5- to 12-year-old to just <em>practice speaking</em> without being judged.
               Marathi Mitra is that safe space.
             </p>
           </div>
@@ -64,7 +64,7 @@ const About = () => {
               </div>
               <h3 className="font-display text-lg font-bold mb-2">Culturally grounded</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Missions are set in scenes kids recognise — visiting Ajji, shopping at the
+                Missions are set in scenes kids recognize — visiting Ajji, shopping at the
                 market, celebrating Ganpati. The language sticks because the context does.
               </p>
             </div>
@@ -77,7 +77,7 @@ const About = () => {
             <p className="text-muted-foreground leading-relaxed">
               Parents get a weekly digest — what their child learned, conversations they had,
               and gentle suggestions for words to use at home. The aim isn't to replace family
-              time. It's to give kids a safe place to practise so when grandma calls, they're
+              time. It's to give kids a safe place to practice so when grandma calls, they're
               ready.
             </p>
           </div>
@@ -88,7 +88,7 @@ const About = () => {
             </h2>
             <p className="text-muted-foreground leading-relaxed">
               Marathi Mitra is built by a Marathi-speaking parent and developer who watched
-              their own kid drift away from the language. It's a labour of love for the
+              their own kid drift away from the language. It's a labor of love for the
               diaspora community — and we'd love your feedback. Drop us a note on the{" "}
               <a href="/contact" className="text-primary font-bold hover:underline">
                 Contact page
