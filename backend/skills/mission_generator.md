@@ -13,7 +13,7 @@ output:
     steps: list             # [{step: int, prompt: string, target_vocab: [string]}]
     required_vocab: list    # Marathi words the mission tests
     xp_reward: integer      # XP reward (20-30)
-max_tokens: 5000
+max_tokens: 4000
 connectors: []
 ---
 
