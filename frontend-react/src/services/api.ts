@@ -132,6 +132,15 @@ export async function resendVerification(
   return data;
 }
 
+export async function sendContactMessage(
+  name: string,
+  email: string,
+  message: string
+): Promise<{ message: string }> {
+  const { data } = await api.post("/contact/send", { name, email, message });
+  return data;
+}
+
 export async function createChild(
   name: string,
   age: number,

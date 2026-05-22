@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Send, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { sendContactMessage } from "@/services/api";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -21,11 +22,15 @@ const Contact = () => {
       return;
     }
     setLoading(true);
-    // Wired to backend in Phase 2 — for now, optimistic local-only confirmation.
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await sendContactMessage(name.trim(), email.trim(), message.trim());
       setSent(true);
-    }, 500);
+    } catch (err: any) {
+      const msg = err?.response?.data?.detail || err?.message || "Couldn't send right now";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

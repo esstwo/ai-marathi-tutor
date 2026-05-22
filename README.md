@@ -142,6 +142,7 @@ The backend uses a **skills + connectors** architecture:
 | POST   | /tts/transcribe                     | Transcribe Marathi audio to text         | Bearer token      |
 | POST   | /digest/send                        | Trigger weekly digests for all parents   | Service key only  |
 | GET    | /digest/preview/{parent_id}         | Preview digest without sending           | Bearer / svc key  |
+| POST   | /contact/send                       | Submit contact form (IP rate-limited)    | None              |
 
 ## Setup
 
@@ -158,11 +159,13 @@ The backend uses a **skills + connectors** architecture:
    RESEND_FROM_EMAIL=MarathiMitra <digest@yourdomain.com>
    ALLOWED_ORIGINS=http://localhost:5173,https://yourdomain.com  # comma-separated; whitespace + trailing slashes tolerated
    FRONTEND_URL=https://yourdomain.com    # used as the email-verification redirect target → {FRONTEND_URL}/login?verified=1
+   CONTACT_TO_EMAIL=you@yourdomain.com    # destination inbox for /contact/send submissions
 
    # Cost protection (all have sensible defaults — override only to tune)
    DAILY_LLM_CALL_LIMIT=500              # global daily backstop (in-memory)
    DAILY_LLM_CALL_LIMIT_PER_CHILD=100    # persisted per-child daily cap (Supabase)
    SIGNUP_ATTEMPTS_PER_HOUR=5            # per-IP signup throttle (persisted)
+   CONTACT_ATTEMPTS_PER_HOUR=5           # per-IP contact-form throttle (in-memory)
    LOG_LEVEL=INFO                        # backend.* INFO logs (LLM calls, guardrails)
    ```
 3. Install backend dependencies: `pip install -r requirements.txt`

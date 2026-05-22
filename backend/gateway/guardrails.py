@@ -24,6 +24,11 @@ MAX_CONCURRENT_CONVERSATIONS = 10
 DAILY_LLM_CALL_LIMIT = int(os.environ.get("DAILY_LLM_CALL_LIMIT", "500"))
 DAILY_LLM_CALL_LIMIT_PER_CHILD = int(os.environ.get("DAILY_LLM_CALL_LIMIT_PER_CHILD", "100"))
 SIGNUP_ATTEMPTS_PER_HOUR = int(os.environ.get("SIGNUP_ATTEMPTS_PER_HOUR", "5"))
+CONTACT_ATTEMPTS_PER_HOUR = int(os.environ.get("CONTACT_ATTEMPTS_PER_HOUR", "5"))
+
+# In-memory contact-form throttle: { ip: [timestamps...] }. Per-instance only;
+# acceptable for a single Render worker. If we ever scale out, move to Supabase.
+_contact_attempts: dict[str, list[float]] = {}
 
 # ── Input guardrails ──────────────────────────────────────────────────
 
@@ -320,6 +325,30 @@ def check_signup_rate_limit(ip: str):
         cleanup_old_signup_attempts(ip, older_than_hours=24)
     except Exception as e:
         logger.warning("Failed to record signup attempt for %s: %s", ip, e)
+
+
+def check_contact_rate_limit(ip: str):
+    """In-memory throttle of contact-form submissions per IP. Raises 429 on excess.
+
+    Single-instance only — fine for current Render setup. If scaled out, swap
+    for the same persisted pattern used by signup throttling.
+    """
+    if not ip:
+        return
+    now = time.time()
+    cutoff = now - 3600  # one-hour window
+    history = [t for t in _contact_attempts.get(ip, []) if t > cutoff]
+    if len(history) >= CONTACT_ATTEMPTS_PER_HOUR:
+        logger.warning(
+            "Contact rate limit hit for IP %s: %d/%d in last hour",
+            ip, len(history), CONTACT_ATTEMPTS_PER_HOUR,
+        )
+        raise HTTPException(
+            status_code=429,
+            detail="Too many messages from this network. Please try again in an hour.",
+        )
+    history.append(now)
+    _contact_attempts[ip] = history
 
 
 def track_child_llm_call(child_id: str):

@@ -17,7 +17,7 @@ from backend.gateway.guardrails import (
     validate_message_input, validate_llm_output,
     check_message_limit, check_conversation_duration, check_concurrent_conversations,
     track_llm_call, track_child_llm_call, flag_conversation,
-    check_signup_rate_limit, get_request_ip,
+    check_signup_rate_limit, check_contact_rate_limit, get_request_ip,
 )
 from backend.core.skill_loader import load_skills
 from backend.core.llm import run_skill, LLMRateLimitError, LLMTimeoutError, LLMAuthError, LLMContentFilterError, LLMServiceError
@@ -33,6 +33,7 @@ from backend.connectors.supabase.conversations import (
 )
 from backend.db.supabase_client import supabase_admin
 from backend.services.tts import synthesize_marathi
+from backend.services.contact import send_contact_email
 from backend.gateway.progress_utils import (
     award_lesson_xp, award_conversation_xp, award_mission_xp,
     get_child_progress, get_parent_progress,
@@ -103,6 +104,11 @@ class StartMissionRequest(BaseModel):
     mission_id: str
 
 class SendMissionMessageRequest(BaseModel):
+    message: str
+
+class ContactRequest(BaseModel):
+    name: str
+    email: EmailStr
     message: str
 
 
@@ -876,6 +882,33 @@ def preview_digest(parent_id: str, current_parent_id: str = Depends(get_current_
     }
 
 
+# ── Contact routes ─────────────────────────────────────────────────────
+
+contact_router = APIRouter(prefix="/contact", tags=["contact"])
+
+
+@contact_router.post("/send")
+def submit_contact(req: ContactRequest, request: Request):
+    """Forward a contact-form submission to the admin inbox.
+
+    IP-rate-limited (in-memory). Validates lightly; rejects suspiciously
+    long submissions to keep payloads small. Returns 200 on accepted-and-sent;
+    503 if Resend isn't configured or the send fails.
+    """
+    check_contact_rate_limit(get_request_ip(request))
+
+    name = req.name.strip()
+    message = req.message.strip()
+    if not name or not message:
+        raise HTTPException(status_code=400, detail="Name and message are required.")
+    if len(name) > 100 or len(message) > 5000:
+        raise HTTPException(status_code=400, detail="Name or message too long.")
+
+    if not send_contact_email(name, str(req.email), message):
+        raise HTTPException(status_code=503, detail="Couldn't send right now. Please try again later.")
+    return {"message": "Message sent. We'll get back to you soon."}
+
+
 # ── Collect all routers ─────────────────────────────────────────────────
 
-all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router, missions_router, digest_router]
+all_routers = [auth_router, lessons_router, conversations_router, progress_router, tts_router, missions_router, digest_router, contact_router]
