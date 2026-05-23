@@ -230,9 +230,17 @@ export function tokenExchange(req: Request, res: Response): void {
 
 // ── Middleware: validate Bearer token on /mcp ─────────────────────────
 
+// Per MCP authorization spec, 401 responses MUST advertise the
+// protected-resource metadata URL via WWW-Authenticate so clients
+// (claude.ai, Claude Desktop) can discover the OAuth flow. Without
+// this header the client gives up with "Couldn't reach the MCP server."
+const WWW_AUTHENTICATE_HEADER =
+  `Bearer resource_metadata="${MCP_BASE_URL}/.well-known/oauth-protected-resource"`;
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
+    res.set("WWW-Authenticate", WWW_AUTHENTICATE_HEADER);
     res.status(401).json({ error: "unauthorized", error_description: "Missing Bearer token" });
     return;
   }
@@ -241,6 +249,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   const { data, error } = await getSupabase().auth.getUser(token);
 
   if (error || !data.user) {
+    res.set("WWW-Authenticate", WWW_AUTHENTICATE_HEADER);
     res.status(401).json({ error: "unauthorized", error_description: "Invalid or expired token" });
     return;
   }
