@@ -81,6 +81,7 @@ export function oauthMetadata(_req: Request, res: Response): void {
     issuer: MCP_BASE_URL,
     authorization_endpoint: `${MCP_BASE_URL}/authorize`,
     token_endpoint: `${MCP_BASE_URL}/token`,
+    registration_endpoint: `${MCP_BASE_URL}/register`,
     response_types_supported: ["code"],
     grant_types_supported: ["authorization_code"],
     code_challenge_methods_supported: ["S256"],
@@ -92,6 +93,25 @@ export function protectedResourceMetadata(_req: Request, res: Response): void {
   res.json({
     resource: MCP_BASE_URL,
     authorization_servers: [MCP_BASE_URL],
+  });
+}
+
+// ── POST /register — Dynamic Client Registration (RFC 7591) ─────────────
+// claude.ai and other MCP clients don't have pre-shared client IDs, so they
+// register themselves on first connect. We don't enforce a per-client secret
+// because PKCE + Supabase-bound auth codes already prevent token theft. We
+// echo back a constant client_id; tracking individual MCP clients adds DB
+// surface without any real security benefit at this scale.
+export function dynamicRegister(req: Request, res: Response): void {
+  const body = (req.body ?? {}) as { redirect_uris?: string[]; client_name?: string };
+  res.status(201).json({
+    client_id: "marathi-mitra-mcp-public",
+    client_id_issued_at: Math.floor(Date.now() / 1000),
+    redirect_uris: body.redirect_uris ?? [],
+    client_name: body.client_name ?? "MCP Client",
+    token_endpoint_auth_method: "none",
+    grant_types: ["authorization_code"],
+    response_types: ["code"],
   });
 }
 

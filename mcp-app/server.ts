@@ -39,6 +39,7 @@ import {
   loginPage,
   loginSubmit,
   tokenExchange,
+  dynamicRegister,
   requireAuth,
   type AuthenticatedRequest,
 } from "./auth.js";
@@ -290,6 +291,7 @@ if (useStdio) {
   // ── OAuth 2.1 endpoints (no auth required) ───────────────────────
   expressApp.get("/.well-known/oauth-authorization-server", oauthMetadata);
   expressApp.get("/.well-known/oauth-protected-resource", protectedResourceMetadata);
+  expressApp.post("/register", dynamicRegister);
   expressApp.get("/authorize", authorize);
   expressApp.get("/login", loginPage);
   expressApp.post("/login", loginSubmit);
