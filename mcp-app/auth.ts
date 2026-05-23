@@ -19,6 +19,10 @@ import { createHash, randomBytes } from "crypto";
 import type { Request, Response, NextFunction } from "express";
 
 const MCP_BASE_URL = (process.env.MCP_BASE_URL ?? `http://localhost:${process.env.PORT ?? 3001}`).replace(/\/+$/, "");
+// If Supabase CAPTCHA Protection is on, login requires a Turnstile token.
+// Site key is safe to embed in the HTML; if unset, the widget is omitted
+// and login proceeds without a token (works only when Supabase CAPTCHA is off).
+const TURNSTILE_SITE_KEY = process.env.TURNSTILE_SITE_KEY ?? "";
 
 // Lazily initialised so missing env vars produce a clear error at first use,
 // not a cryptic Supabase internal error at module load time.
@@ -175,9 +179,11 @@ export function loginPage(req: Request, res: Response): void {
       <input type="email" id="email" name="email" required autocomplete="email">
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required autocomplete="current-password">
+      ${TURNSTILE_SITE_KEY ? `<div class="cf-turnstile" data-sitekey="${esc(TURNSTILE_SITE_KEY)}" style="margin-bottom:1rem"></div>` : ""}
       <button type="submit">Sign In</button>
     </form>
   </div>
+  ${TURNSTILE_SITE_KEY ? `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ""}
 </body>
 </html>`);
 }
@@ -187,13 +193,20 @@ export function loginPage(req: Request, res: Response): void {
 export async function loginSubmit(req: Request, res: Response): Promise<void> {
   const { email, password, redirect_uri, state, code_challenge, client_id } =
     req.body as Record<string, string>;
+  // Turnstile injects the token under this exact field name.
+  const captchaToken = (req.body as Record<string, string>)["cf-turnstile-response"];
 
   if (!email || !password || !redirect_uri || !code_challenge) {
     res.status(400).send("Bad request");
     return;
   }
 
-  const { data, error } = await getSupabase().auth.signInWithPassword({ email, password });
+  const signInOptions = captchaToken ? { captchaToken } : undefined;
+  const { data, error } = await getSupabase().auth.signInWithPassword({
+    email,
+    password,
+    options: signInOptions,
+  });
 
   if (error || !data.session) {
     const params = new URLSearchParams({
