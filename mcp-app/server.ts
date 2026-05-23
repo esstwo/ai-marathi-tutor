@@ -267,9 +267,11 @@ if (useStdio) {
 } else {
   const expressApp = createMcpExpressApp({ host: "0.0.0.0" });
 
-  // Body parsers for login form and token endpoint
+  // createMcpExpressApp already registers express.json() globally. Registering
+  // it again here causes body-parser's "stream is not readable" — the SDK's
+  // parser consumes the body stream and ours then tries to re-read it. Only
+  // add urlencoded() for the OAuth /login form post.
   expressApp.use(express.urlencoded({ extended: false }));
-  expressApp.use(express.json());
 
   // ── OAuth 2.1 endpoints (no auth required) ───────────────────────
   expressApp.get("/.well-known/oauth-authorization-server", oauthMetadata);
