@@ -24,6 +24,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
+import cors from "cors";
 import { z } from "zod";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
@@ -266,6 +267,19 @@ if (useStdio) {
   console.error(`MarathiMitra MCP App running (stdio). Backend: ${API_BASE_URL}`);
 } else {
   const expressApp = createMcpExpressApp({ host: "0.0.0.0" });
+
+  // claude.ai (and other browser-based MCP clients) make cross-origin requests.
+  // Without CORS headers the preflight fails and the client surfaces a generic
+  // "Couldn't reach the MCP server" error. Bearer auth is what actually protects
+  // /mcp, so the CORS policy here is permissive about origins — but it must
+  // expose WWW-Authenticate and the mcp-session-id header for the MCP streaming
+  // transport to round-trip session state across requests.
+  expressApp.use(cors({
+    origin: true,
+    credentials: true,
+    exposedHeaders: ["WWW-Authenticate", "mcp-session-id"],
+    allowedHeaders: ["Content-Type", "Authorization", "mcp-session-id", "mcp-protocol-version"],
+  }));
 
   // createMcpExpressApp already registers express.json() globally. Registering
   // it again here causes body-parser's "stream is not readable" — the SDK's
